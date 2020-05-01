@@ -1,0 +1,17 @@
+@import 'variables';
+
+:host {
+  .mat-toolbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $header-z-index;
+    height: $header-height;
+  }
+  .mat-progress-bar {
+    position: fixed;
+    z-index: $header-z-index - 1;
+    top: $header-height;
+  }
+}

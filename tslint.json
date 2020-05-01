@@ -31,14 +31,14 @@
     ],
     "typedef": [true, "call-signature", "property-declaration"],
     "array-type": false,
-    "arrow-parens": false,
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "deprecation": {
       "severity": "warning"
     },
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,
-    "directive-selector": [true, "attribute", "app", "camelCase"],
+    "directive-selector": [true, "attribute", "", "camelCase"],
     "component-selector": [true, "element", "app", "kebab-case"],
     "import-blacklist": [true, "rxjs/Rx"],
     "interface-name": false,

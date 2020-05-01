@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+  Biomercs
+  <span style="flex: 1 1 auto;"></span>
+  <button
+    [matMenuTriggerFor]="userMenu"
+    mat-button
+    *ngIf="authQuery.isLogged$ | async; else loginRef"
+  >
+    {{ (authQuery.user$ | async)?.username }}
+    <mat-icon>person</mat-icon>
+  </button>
+  <mat-menu #userMenu="matMenu" xPosition="before">
+    <button mat-menu-item (click)="profile()">Profile</button>
+    <button mat-menu-item (click)="admin()" *ngIf="authQuery.isAdmin$ | async">
+      Admin
+    </button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
+  <ng-template #loginRef>
+    <button mat-button (click)="login()">Login</button>
+  </ng-template>
+</mat-toolbar>
+<mat-progress-bar
+  *ngIf="loadingService.isLoading$ | async"
+  mode="indeterminate"
+  color="accent"
+  @inOut
+></mat-progress-bar>
