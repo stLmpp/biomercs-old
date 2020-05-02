@@ -17,7 +17,8 @@
     <button mat-menu-item (click)="logout()">Logout</button>
   </mat-menu>
   <ng-template #loginRef>
-    <button mat-button (click)="login()">Login</button>
+    <button mat-button [routerLink]="['/auth', 'login']">Login</button>
+    <button mat-button [routerLink]="['/auth', 'register']">Register</button>
   </ng-template>
 </mat-toolbar>
 <mat-progress-bar

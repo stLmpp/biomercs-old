@@ -11,15 +11,15 @@ export class AuthQuery extends Query<Auth> {
     super(store);
   }
 
-  isLogged$ = this.select((state) => {
+  isLogged$ = this.select(state => {
     return !!state?.user?.token;
   });
 
   user$ = this.select('user');
 
   isAdmin$ = this.user$.pipe(
-    map((user) =>
-      user?.userRoles.some((userRole) => userRole.role.name === RoleEnum.admin)
+    map(user =>
+      user?.userRoles?.some(userRole => userRole.role.name === RoleEnum.admin)
     )
   );
 

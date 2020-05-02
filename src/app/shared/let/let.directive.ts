@@ -9,11 +9,11 @@ import {
 
 class LetContext<T> {
   $implicit: T = null;
-  ykLet: T = null;
+  let: T = null;
 
   setData(value: T): void {
     this.$implicit = value;
-    this.ykLet = value;
+    this.let = value;
   }
 }
 
@@ -34,7 +34,7 @@ export class LetDirective<T> implements OnDestroy, OnInit {
   }
 
   @Input()
-  set ykLet(value: T) {
+  set let(value: T) {
     this._context.setData(value);
   }
 

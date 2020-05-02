@@ -1,11 +1,23 @@
-import { LOCALE_ID, ModuleWithProviders, NgModule, Provider, } from '@angular/core';
+import {
+  LOCALE_ID,
+  ModuleWithProviders,
+  NgModule,
+  Provider,
+} from '@angular/core';
 import { WINDOW_PROVIDERS } from './window.service';
 import { ApiInterceptor } from './api.interceptor';
 import { LoadingInterceptor } from './loading/loading.interceptor';
 import { DateInterceptor } from './date.interceptor';
 import { FormatErrorInterceptor } from './error/format-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, } from '@angular/material/snack-bar';
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBarConfig,
+} from '@angular/material/snack-bar';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldDefaultOptions,
+} from '@angular/material/form-field';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -36,6 +48,12 @@ export class CoreModule {
           useValue: {
             duration: 5000,
           } as MatSnackBarConfig,
+        },
+        {
+          provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+          useValue: {
+            appearance: 'outline',
+          } as MatFormFieldDefaultOptions,
         },
       ],
     };

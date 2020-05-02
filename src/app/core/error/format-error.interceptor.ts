@@ -17,14 +17,8 @@ export class FormatErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
-      catchError(({ status, error }: HttpErrorResponse) => {
-        const newErr: HttpError = { ...error, status };
-        if (status === 500) {
-          newErr.message = 'Internal error!';
-        }
-        return throwError(newErr);
-      })
-    );
+    return next
+      .handle(request)
+      .pipe(catchError(({ error }: HttpErrorResponse) => throwError(error)));
   }
 }

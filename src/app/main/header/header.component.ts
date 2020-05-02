@@ -28,8 +28,6 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  login(): void {}
-
   logout(): void {
     this.authService.logout();
   }

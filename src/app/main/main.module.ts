@@ -4,6 +4,7 @@ import { HeaderComponent } from './header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RouterModule } from '@angular/router';
 
 const DECLARATIONS = [HeaderComponent];
 
@@ -13,6 +14,7 @@ const DECLARATIONS = [HeaderComponent];
     MatToolbarModule,
     MatMenuModule,
     MatProgressBarModule,
+    RouterModule,
   ],
   declarations: [...DECLARATIONS],
   exports: [...DECLARATIONS],

@@ -1,6 +1,7 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "typedef": [true, "call-signature", "property-declaration"],
     "array-bracket-spacing": [true, "always"],
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "no-trailing-whitespace": [
@@ -29,9 +30,8 @@
       "allow-leading-underscore",
       "allow-pascal-case"
     ],
-    "typedef": [true, "call-signature", "property-declaration"],
     "array-type": false,
-    "arrow-parens": [true, "ban-single-arg-parens"],
+    "arrow-parens": false,
     "deprecation": {
       "severity": "warning"
     },
@@ -57,7 +57,16 @@
       }
     ],
     "no-consecutive-blank-lines": false,
-    "no-console": [true, "log", "error", "debug", "info", "time", "timeEnd", "trace"],
+    "no-console": [
+      true,
+      "log",
+      "error",
+      "debug",
+      "info",
+      "time",
+      "timeEnd",
+      "trace"
+    ],
     "no-empty": false,
     "no-inferrable-types": [true, "ignore-params"],
     "no-non-null-assertion": true,

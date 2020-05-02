@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="login()">
+  <mat-card>
+    <h1 mat-card-title>Login</h1>
+    <mat-card-content>
+      <mat-form-field *let="form.get('username') as usernameControl">
+        <mat-label>Email / Username</mat-label>
+        <input
+          matInput
+          placeholder="Email / Username"
+          formControlName="username"
+          autocomplete="username"
+        />
+        <mat-error *ngIf="usernameControl.hasError('required')">
+          Email / Username is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *let="form.get('password') as passwordControl">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          formControlName="password"
+          autocomplete="current-password"
+        />
+        <mat-error *ngIf="passwordControl.hasError('required')">
+          Password is required
+        </mat-error>
+        <mat-error *ngIf="form.hasError('loginError')">
+          Login error
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox formControlName="rememberMe">
+        Remember me
+      </mat-checkbox>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button type="submit" [disabled]="form.invalid || logging">
+        Login
+      </button>
+      <button mat-button [disabled]="logging">Cancelar</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+{{ form.errors | json }}
