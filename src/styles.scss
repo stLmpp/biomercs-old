@@ -1,8 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
 
+@include mat-core();
+
+@import 'global';
 @import 'variables';
 @import 'form';
 @import 'tab';
+@import 'dialog';
+@import 'list';
+@import 'button';
+
+@include angular-material-theme($theme);
+@include mat-list-theme-custom($theme);
 
 html,
 body {
@@ -11,4 +21,15 @@ body {
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+button.mat-menu-item {
+  line-height: 24px !important;
+}
+a.mat-menu-item > mat-icon {
+  margin-bottom: 14px;
+}
+.mat-icon svg {
+  height: 24px;
+  width: 24px;
 }

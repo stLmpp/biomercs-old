@@ -17,11 +17,17 @@ export class AuthQuery extends Query<Auth> {
 
   user$ = this.select('user');
 
-  isAdmin$ = this.user$.pipe(
-    map(user =>
-      user?.userRoles?.some(userRole => userRole.role.name === RoleEnum.admin)
-    )
-  );
+  isAdmin$ = this.user$.pipe(map(this.isAdmin));
+
+  private isAdmin(user: User): boolean {
+    return user?.userRoles?.some(
+      userRole => userRole.role.name === RoleEnum.admin
+    );
+  }
+
+  getIsAdmin(): boolean {
+    return this.isAdmin(this.getUserSnapshot());
+  }
 
   getTokenSnapshot(): string {
     return this.getValue().user?.token;

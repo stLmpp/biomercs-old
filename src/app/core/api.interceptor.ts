@@ -19,6 +19,9 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   handleUrl(url: string): string {
+    if (url.includes('assets')) {
+      return url;
+    }
     return `${environment.api}${url.startsWith('/') ? url : '/' + url}`;
   }
 }

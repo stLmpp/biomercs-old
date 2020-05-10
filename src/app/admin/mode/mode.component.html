@@ -1,0 +1,10 @@
+<app-base
+  [fields]="['name']"
+  [entities]="modeQuery.all$ | async"
+  [trackBy]="trackBy"
+  [service]="modeService"
+  [fieldsConfig]="fieldsConfig"
+  updateLabel="name"
+  deleteAllowed
+  entityName="Mode"
+></app-base>

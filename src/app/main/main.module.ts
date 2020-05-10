@@ -5,8 +5,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 
-const DECLARATIONS = [HeaderComponent];
+const DECLARATIONS = [HeaderComponent, HomeComponent];
 
 @NgModule({
   imports: [

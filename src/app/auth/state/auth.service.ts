@@ -1,30 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthStore } from './auth.store';
-import { catchError, delay, tap } from 'rxjs/operators';
-import { User } from '../../model/user';
+import { catchError, tap } from 'rxjs/operators';
+import { User, UserRegisterDto, UserRegisterResponse } from '../../model/user';
 import { Observable, of, throwError } from 'rxjs';
 import { AuthQuery } from './auth.query';
 import { setLoading } from '@datorama/akita';
-import { MatDialog } from '@angular/material/dialog';
-import { LoginRegisterComponent } from '../login-register/login-register.component';
+import { HttpParams } from '../../util/http-params';
+import { catchHttpError } from '../../util/operators/catchError';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(
     private authStore: AuthStore,
     private http: HttpClient,
-    private authQuery: AuthQuery,
-    private matDialog: MatDialog
+    private authQuery: AuthQuery
   ) {}
+
+  private target = '/auth';
+  private targetUser = '/user';
 
   autoLogin(): Observable<User> {
     const userLocal = this.authQuery.getUserSnapshot();
-    if (!userLocal?.token || !!userLocal?.id) return of(null);
-    return this.http.post<User>('/auth/auto-login', undefined).pipe(
+    if (!userLocal?.token || !!userLocal?.id) {
+      return of(null);
+    }
+    return this.http.post<User>(`${this.target}/auto-login`, undefined).pipe(
       setLoading(this.authStore),
+
       tap(user => {
         this.authStore.update({ user });
+      }),
+      // @ts-ignore
+      catchHttpError(() => {
+        this.authStore.update({ user: null });
+        return of(null);
       })
     );
   }
@@ -35,7 +45,7 @@ export class AuthService {
     rememberMe = false
   ): Observable<User> {
     return this.http
-      .post<User>('/auth/login', { username, password, rememberMe })
+      .post<User>(`${this.target}/login`, { username, password, rememberMe })
       .pipe(
         setLoading(this.authStore),
         tap(user => {
@@ -52,10 +62,21 @@ export class AuthService {
     this.authStore.update({ user: null });
   }
 
-  openLoginRegister(): void {
-    this.matDialog.open(LoginRegisterComponent, {
-      width: '500px',
-      minHeight: '5rem',
+  register(dto: UserRegisterDto): Observable<UserRegisterResponse> {
+    return this.http.post<UserRegisterResponse>(`${this.target}/register`, dto);
+  }
+
+  existsByEmail(email: string): Observable<boolean> {
+    const params = new HttpParams({ email });
+    return this.http.get<boolean>(`${this.targetUser}/exists/email`, {
+      params,
+    });
+  }
+
+  existsByUsername(username: string): Observable<boolean> {
+    const params = new HttpParams({ username });
+    return this.http.get<boolean>(`${this.targetUser}/exists/username`, {
+      params,
     });
   }
 }

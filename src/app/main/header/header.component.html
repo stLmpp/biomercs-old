@@ -1,17 +1,21 @@
-<mat-toolbar color="primary">
-  Biomercs
+<mat-toolbar color="primary" *let="authQuery.user$ | async as user">
+  <span class="c-pointer" routerLink="/">Biomercs</span>
   <span style="flex: 1 1 auto;"></span>
   <button
     [matMenuTriggerFor]="userMenu"
     mat-button
     *ngIf="authQuery.isLogged$ | async; else loginRef"
   >
-    {{ (authQuery.user$ | async)?.username }}
+    {{ user?.username }}
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #userMenu="matMenu" xPosition="before">
-    <button mat-menu-item (click)="profile()">Profile</button>
-    <button mat-menu-item (click)="admin()" *ngIf="authQuery.isAdmin$ | async">
+    <button mat-menu-item [routerLink]="['/user', user?.id]">Profile</button>
+    <button
+      mat-menu-item
+      routerLink="/admin"
+      *ngIf="authQuery.isAdmin$ | async"
+    >
       Admin
     </button>
     <button mat-menu-item (click)="logout()">Logout</button>

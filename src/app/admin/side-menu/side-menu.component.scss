@@ -1,0 +1,8 @@
+@import 'variables';
+
+mat-card {
+  position: fixed;
+  bottom: 0;
+  top: $header-height-plus-padding;
+  width: 15rem;
+}

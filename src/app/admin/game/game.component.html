@@ -1,0 +1,11 @@
+<app-base
+  [entities]="gameQuery.all$ | async"
+  [fields]="['name', 'shortName']"
+  updateLabel="name"
+  [service]="gameService"
+  [fieldsConfig]="fieldsConfig"
+  deleteAllowed
+  uploadImage
+  imageKey="idLogo"
+  entityName="Game"
+></app-base>

@@ -67,3 +67,10 @@ export function removeNullObject<T = any>(
 export function isAllNull<T = any>(obj: T): boolean {
   return !obj || Object.values(obj).every(o => isNil(o));
 }
+
+export function startCase(str: string): string {
+  return str
+    .replace(/([A-Z])/g, match => ` ${match}`)
+    .replace(/^./, match => match.toUpperCase())
+    .trim();
+}

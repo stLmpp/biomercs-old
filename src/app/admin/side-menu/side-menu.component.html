@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-content>
+    <mat-nav-list>
+      <mat-list-item
+        *ngFor="let menu of sideMenuService.list$ | async; trackBy: trackBy"
+        [routerLink]="menu.routerLink"
+        routerLinkActive="active"
+      >
+        <a matLine>{{ menu.title }}</a>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-card-content>
+</mat-card>

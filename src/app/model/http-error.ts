@@ -4,7 +4,7 @@ export interface HttpError {
   sqlErrono?: number;
   sqlMessage?: string;
   message: string;
-  statusCode: number;
+  status: number;
   error?: string;
 }
 

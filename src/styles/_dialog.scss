@@ -1,0 +1,10 @@
+.mat-dialog-container {
+  .mat-dialog-actions {
+    &.align-end {
+      justify-content: flex-end;
+    }
+    &.align-start {
+      justify-content: flex-start;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<div class="side-menu">
+  <app-side-menu></app-side-menu>
+</div>
+<div class="content">
+  <mat-card>
+    <h1 mat-card-title>{{ (sideMenuService.active$ | async)?.title }}</h1>
+    <mat-card-content>
+      <router-outlet></router-outlet>
+    </mat-card-content>
+  </mat-card>
+</div>

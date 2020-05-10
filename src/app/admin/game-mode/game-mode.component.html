@@ -1,0 +1,12 @@
+<app-base-relation
+  [entities]="gameModeQuery.all$ | async"
+  [one]="gameQuery.all$ | async"
+  oneIdKey="idGame"
+  oneLabel="name"
+  [many]="modeQuery.all$ | async"
+  manyIdKey="idMode"
+  manyLabel="name"
+  [service]="gameModeService"
+  uploadImage
+  imageKey="idImage"
+></app-base-relation>

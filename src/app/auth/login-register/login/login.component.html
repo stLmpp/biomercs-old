@@ -2,7 +2,7 @@
   <mat-card>
     <h1 mat-card-title>Login</h1>
     <mat-card-content>
-      <mat-form-field *let="form.get('username') as usernameControl">
+      <mat-form-field>
         <mat-label>Email / Username</mat-label>
         <input
           matInput
@@ -14,7 +14,7 @@
           Email / Username is required
         </mat-error>
       </mat-form-field>
-      <mat-form-field *let="form.get('password') as passwordControl">
+      <mat-form-field>
         <mat-label>Password</mat-label>
         <input
           matInput
@@ -26,8 +26,8 @@
         <mat-error *ngIf="passwordControl.hasError('required')">
           Password is required
         </mat-error>
-        <mat-error *ngIf="form.hasError('loginError')">
-          Login error
+        <mat-error *ngIf="passwordControl.hasError('loginError')">
+          {{ passwordControl.getError('loginError') }}
         </mat-error>
       </mat-form-field>
       <mat-checkbox formControlName="rememberMe">
@@ -35,11 +35,14 @@
       </mat-checkbox>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button mat-button type="submit" [disabled]="form.invalid || logging">
+      <button
+        mat-button
+        type="submit"
+        [disabled]="form.invalid || form.disabled"
+      >
         Login
       </button>
-      <button mat-button [disabled]="logging">Cancelar</button>
+      <button mat-button [disabled]="form.disabled">Cancel</button>
     </mat-card-actions>
   </mat-card>
 </form>
-{{ form.errors | json }}

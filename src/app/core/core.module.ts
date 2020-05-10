@@ -18,6 +18,9 @@ import {
   MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatFormFieldDefaultOptions,
 } from '@angular/material/form-field';
+import { ErrorComponent } from './error/error.component';
+import { SharedModule } from '../shared/shared.module';
+import { MatListModule } from '@angular/material/list';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -26,7 +29,11 @@ const withInterceptors = (...interceptors: any[]): Provider[] =>
     multi: true,
   }));
 
-@NgModule()
+@NgModule({
+  declarations: [ErrorComponent],
+  exports: [ErrorComponent],
+  imports: [SharedModule, MatListModule],
+})
 export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {

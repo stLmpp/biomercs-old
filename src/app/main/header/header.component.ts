@@ -3,6 +3,7 @@ import { AuthQuery } from '../../auth/state/auth.query';
 import { LoadingService } from '../../core/loading/loading.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthService } from '../../auth/state/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -25,16 +26,14 @@ export class HeaderComponent implements OnInit {
   constructor(
     public authQuery: AuthQuery,
     public loadingService: LoadingService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   logout(): void {
+    this.router.navigate(['/']);
     this.authService.logout();
   }
-
-  profile(): void {}
-
-  admin(): void {}
 
   ngOnInit(): void {}
 }

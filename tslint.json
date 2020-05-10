@@ -1,7 +1,6 @@
 {
-  "extends": "tslint:recommended",
+  "extends": ["tslint:recommended", "tslint-angular", "tslint-config-prettier"],
   "rules": {
-    "typedef": [true, "call-signature", "property-declaration"],
     "array-bracket-spacing": [true, "always"],
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "no-trailing-whitespace": [
@@ -23,13 +22,8 @@
       }
     ],
     "curly": [true, "ignore-same-line"],
-    "variable-name": [
-      true,
-      "ban-keywords",
-      "check-format",
-      "allow-leading-underscore",
-      "allow-pascal-case"
-    ],
+    "variable-name": false,
+    "typedef": [true, "call-signature", "property-declaration"],
     "array-type": false,
     "arrow-parens": false,
     "deprecation": {

@@ -10,12 +10,17 @@ import { LetDirective } from './let/let.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogActionsAlignDirective } from './custom-material/mat-dialog-actions-align.directive';
+import { MatListActiveDirective } from './custom-material/mat-list-active.directive';
+import { ImageComponent } from './file-upload/image.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { IsTypePipe } from './is-type/is-type.pipe';
 
 const PIPES = [
   DefaultPipe,
@@ -24,8 +29,14 @@ const PIPES = [
   OrderByPipe,
   SearchPipe,
   SumByPipe,
+  IsTypePipe,
 ];
-const DIRECTIVES = [DisabledControlDirective, LetDirective];
+const DIRECTIVES = [
+  DisabledControlDirective,
+  LetDirective,
+  MatDialogActionsAlignDirective,
+  MatListActiveDirective,
+];
 
 const MODULES = [
   CommonModule,
@@ -37,12 +48,16 @@ const MODULES = [
   MatInputModule,
   MatCheckboxModule,
   MatRadioModule,
+  MatDialogModule,
+  MatProgressSpinnerModule,
 ];
+
+const COMPONENTS = [ImageComponent];
 
 @NgModule({
   imports: [...MODULES],
-  declarations: [...PIPES, ...DIRECTIVES],
-  exports: [...MODULES, ...PIPES, ...DIRECTIVES],
+  declarations: [...PIPES, ...DIRECTIVES, ...COMPONENTS],
+  exports: [...MODULES, ...PIPES, ...DIRECTIVES, ...COMPONENTS],
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

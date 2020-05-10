@@ -1,0 +1,12 @@
+<app-base
+  [entities]="stageQuery.all$ | async"
+  [fields]="['name', 'shortName', 'idGame', 'custom', 'customUrl']"
+  [matLineLabels]="['name', 'shortName', 'game.name']"
+  updateLabel="name"
+  [service]="stageService"
+  [fieldsConfig]="fieldsConfig"
+  deleteAllowed
+  uploadImage
+  imageKey="idImage"
+  entityName="Stage"
+></app-base>

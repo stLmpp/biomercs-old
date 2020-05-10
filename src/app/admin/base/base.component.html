@@ -1,0 +1,156 @@
+<div class="toolbar">
+  <button mat-icon-button color="accent" (click)="openAdd()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+<mat-nav-list>
+  <mat-list-item
+    *ngFor="let entity of entities; trackBy: trackBy"
+    (click)="openEdit(entity)"
+  >
+    <ng-container
+      *ngIf="matLineExtras"
+      [ngTemplateOutlet]="matLineExtras"
+      [ngTemplateOutletContext]="{ $implicit: entity }"
+    ></ng-container>
+    <span matLine *ngFor="let key of matLineLabels; trackBy: trackByLabel">
+      {{ entity | getDeep: key }}
+    </span>
+    <button
+      mat-icon-button
+      matSuffix
+      *ngIf="deleteAllowed"
+      (click)="$event.stopPropagation(); delete(entity)"
+    >
+      <mat-icon *ngIf="!entity.deleting; else deleting">delete</mat-icon>
+      <ng-template #deleting>
+        <mat-spinner diameter="20"></mat-spinner>
+      </ng-template>
+    </button>
+    <button
+      mat-icon-button
+      matSuffix
+      *ngIf="uploadImage"
+      (click)="$event.stopPropagation(); fileUploadInputRef.click()"
+    >
+      <mat-icon *ngIf="!entity.uploading; else loadingImage"
+        >cloud_upload</mat-icon
+      >
+      <ng-template #loadingImage>
+        <mat-spinner diameter="20"></mat-spinner>
+      </ng-template>
+      <input
+        type="file"
+        [accept]="filesAllowed"
+        style="display: none"
+        (change)="fileUpload(entity, $event)"
+        #fileUploadInputRef
+      />
+    </button>
+    <button
+      mat-icon-button
+      matSuffix
+      *ngIf="entity[imageKey]"
+      (click)="$event.stopPropagation(); seeImage(entity[imageKey])"
+    >
+      <mat-icon>image</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-nav-list>
+
+<ng-template #modalRef let-edit>
+  <form
+    *let="edit ? editForm : addForm as form"
+    [formGroup]="form"
+    (ngSubmit)="save(edit)"
+  >
+    <h1 mat-dialog-title>
+      {{ edit ? edit[updateLabel] : 'Add ' + (entityName | lowercase) }}
+    </h1>
+    <mat-dialog-content>
+      <ng-container
+        *ngFor="
+          let key of edit ? updateFields : addFields;
+          trackBy: trackByLabel
+        "
+      >
+        <ng-container *let="form.get(key) as control">
+          <mat-form-field
+            *ngIf="['text', 'number'].includes(fieldsConfig[key]?.type)"
+          >
+            <mat-label>{{ fieldsConfig[key].placeholder }}</mat-label>
+            <input
+              matInput
+              [type]="fieldsConfig[key].type"
+              [formControlName]="key"
+              [placeholder]="fieldsConfig[key].placeholder"
+            />
+            <mat-error
+              *ngFor="
+                let error of fieldsConfig[key].validatorsMessages | keyvalue
+              "
+            >
+              <mat-error *ngIf="control.hasError(error.key)">
+                {{
+                  error.value.replace('{field}', fieldsConfig[key].placeholder)
+                }}
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-checkbox
+            *ngIf="fieldsConfig[key]?.type === 'checkbox'"
+            [formControlName]="key"
+            >{{ fieldsConfig[key].placeholder }}</mat-checkbox
+          >
+          <mat-form-field *ngIf="fieldsConfig[key]?.type === 'select'">
+            <mat-label>{{ fieldsConfig[key].placeholder }}</mat-label>
+            <mat-select
+              [placeholder]="fieldsConfig[key].placeholder"
+              [formControlName]="key"
+            >
+              <mat-option
+                *ngFor="
+                  let item of fieldsConfig[key].selectOptions | async;
+                  trackBy: fieldsConfig[key].selectTrackBy
+                "
+                [value]="item[fieldsConfig[key].selectValue]"
+              >
+                {{ item[fieldsConfig[key].selectLabel] }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-container>
+      </ng-container>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button
+        mat-button
+        color="accent"
+        type="submit"
+        [disabled]="loading || form.invalid || form.pending || form.pristine"
+      >
+        Save
+      </button>
+      <button mat-button mat-dialog-close [disabled]="loading" color="accent">
+        Cancel
+      </button>
+    </mat-dialog-actions>
+  </form>
+</ng-template>
+
+<ng-template #deleteRef>
+  <h1 mat-dialog-title>Delete {{ entityName | lowercase }}?</h1>
+  <mat-dialog-content>
+    This action can't be undone!
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button color="accent" [mat-dialog-close]="true">Yes</button>
+    <button mat-button color="accent" [mat-dialog-close]="false">No</button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #imageRef let-idImage>
+  <mat-dialog-content>
+    <app-image [id]="idImage" alt=""></app-image>
+  </mat-dialog-content>
+</ng-template>

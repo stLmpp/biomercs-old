@@ -18,3 +18,14 @@ export interface User {
 export interface Auth {
   user: User;
 }
+
+export interface UserRegisterDto {
+  username: string;
+  email: string;
+  password: string;
+}
+
+export interface UserRegisterResponse {
+  message: string;
+  email: string;
+}

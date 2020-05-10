@@ -1,2 +1,10 @@
+@import '~@angular/material/theming';
+
 $header-height: 64px;
+$header-height-plus-padding: 80px;
 $header-z-index: 500;
+$background-list-active: rgba(0, 0, 0, 0.04);
+
+$primary: mat-palette($mat-purple, 700, 500, 800);
+$accent: mat-palette($mat-green, A200, A100, A400);
+$theme: mat-dark-theme($primary, $accent);
