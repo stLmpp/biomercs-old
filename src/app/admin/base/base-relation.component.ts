@@ -35,7 +35,7 @@ export class BaseRelationComponent implements OnInit, OnDestroy {
   filesAllowed = 'image/jpg, image/png, image/gif';
 
   @Input() one: CommonColumns[] = [];
-  @Input() oneLabel: string;
+  @Input() oneLabel: string | string[];
   @Input() oneIdKey: string;
   @Input() many: CommonColumns[] = [];
   @Input() manyLabel: string;
@@ -43,6 +43,7 @@ export class BaseRelationComponent implements OnInit, OnDestroy {
   @Input() entities: CommonColumns[] = [];
   @Input() idKey = 'id';
   @Input() service: SuperService<any>;
+  @Input() showCount = true;
 
   @Input('uploadImage')
   set _uploadImage(allowed: '' | boolean) {
@@ -53,8 +54,18 @@ export class BaseRelationComponent implements OnInit, OnDestroy {
   @Input() imageKey: string;
 
   @Input() trackBy: TrackByFunction<CommonColumns> = trackByFactory('id');
+  trackByLabel = trackByFactory<string>();
 
   loading: { [key: string]: boolean } = {};
+
+  openState: { [key: number]: boolean } = {};
+
+  setOpenState(index: number, state: boolean): void {
+    this.openState = {
+      ...this.openState,
+      [index]: state,
+    };
+  }
 
   private setLoading(idOne: number, idMany: number, loading: boolean): void {
     const key = idOne + '-' + idMany;

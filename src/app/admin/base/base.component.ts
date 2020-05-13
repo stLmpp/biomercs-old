@@ -22,7 +22,7 @@ import {
 } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
-import { finalize, take, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';
 import { SuperService } from '../../shared/super/super-service';
 import { CommonColumns } from '../../model/common-history';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -58,7 +58,7 @@ const DEFAULT_VALIDATORS_MESSAGES: { [key: string]: string } = {
 export class BaseComponent implements OnInit, OnDestroy {
   constructor(
     private matDialog: MatDialog,
-    private changeDetectorRef: ChangeDetectorRef,
+    public changeDetectorRef: ChangeDetectorRef,
     private matSnackBar: MatSnackBar
   ) {}
 
@@ -83,6 +83,9 @@ export class BaseComponent implements OnInit, OnDestroy {
   addForm: FormGroup;
   editForm: FormGroup;
 
+  searchControl = new FormControl();
+  search$ = this.searchControl.valueChanges.pipe(debounceTime(300));
+
   filesAllowed = 'image/jpg, image/png, image/gif';
 
   @Input() service: SuperService<any>;
@@ -91,10 +94,12 @@ export class BaseComponent implements OnInit, OnDestroy {
     this.addFields = fields;
     this.updateFields = fields;
     this.matLineLabels = fields;
+    this.searchBy = fields;
   }
 
   @Input() addFields: string[];
   @Input() updateFields: string[];
+  @Input() searchBy: string[];
 
   @Input('fieldsConfig')
   set _fieldsConfig(config: FieldsConfig) {
@@ -142,6 +147,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   uploadImage = false;
 
   @Input() imageKey: string;
+  @Input() imageLabel: string;
 
   @Input() trackBy: TrackByFunction<CommonColumns> = (index, element) =>
     element.id;

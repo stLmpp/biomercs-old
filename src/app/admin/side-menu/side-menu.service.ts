@@ -6,26 +6,17 @@ import { map } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class SideMenuService {
   private _list$ = new BehaviorSubject<SideMenu[]>([
-    {
-      title: 'Game',
-      routerLink: 'game',
-    },
-    {
-      title: 'Mode',
-      routerLink: 'mode',
-    },
-    {
-      title: 'Game Mode',
-      routerLink: 'game-mode',
-    },
-    {
-      title: 'Stage',
-      routerLink: 'stage',
-    },
-    {
-      title: 'Site',
-      routerLink: 'site',
-    },
+    { title: 'Game', routerLink: 'game' },
+    { title: 'Mode', routerLink: 'mode' },
+    { title: 'Game Mode', routerLink: 'game-mode' },
+    { title: 'Stage', routerLink: 'stage' },
+    { title: 'Character', routerLink: 'character' },
+    { title: 'Game Mode Character', routerLink: 'game-mode-character' },
+    { title: 'Type', routerLink: 'type' },
+    { title: 'Game Mode Type', routerLink: 'game-mode-type' },
+    { title: 'Platform', routerLink: 'platform' },
+    { title: 'Game Mode Platform', routerLink: 'game-mode-platform' },
+    { title: 'Site', routerLink: 'site' },
   ]);
 
   list$ = this._list$.asObservable();

@@ -1,21 +1,16 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
   Input,
   OnDestroy,
-  ChangeDetectorRef,
+  OnInit,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { FileUploadService } from './file-upload.service';
-import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-image',
-  template: `
-    <mat-spinner *ngIf="loading"></mat-spinner>
-    <img *ngIf="src && !loading" [src]="src" [alt]="alt" />
-  `,
+  templateUrl: './image.component.html',
   styles: [
     `
       :host {
@@ -29,35 +24,19 @@ import { finalize, takeUntil } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageComponent implements OnInit, OnDestroy {
-  constructor(
-    private fileUploadService: FileUploadService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  constructor(public changeDetectorRef: ChangeDetectorRef) {}
 
   private _destroy$ = new Subject();
 
-  @Input()
-  set id(id: number) {
-    this.src = null;
-    this.loading = true;
-    this.fileUploadService
-      .findById(id)
-      .pipe(
-        takeUntil(this._destroy$),
-        finalize(() => {
-          this.loading = false;
-          this.changeDetectorRef.markForCheck();
-        })
-      )
-      .subscribe(img => {
-        this.src = img;
-      });
-  }
+  @Input() src: number;
   @Input() alt: string;
 
-  src: string;
-
   loading = false;
+
+  onLoading(loading: boolean): void {
+    this.loading = loading;
+    this.changeDetectorRef.detectChanges();
+  }
 
   ngOnInit(): void {}
 

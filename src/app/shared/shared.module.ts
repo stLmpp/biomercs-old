@@ -21,6 +21,7 @@ import { MatListActiveDirective } from './custom-material/mat-list-active.direct
 import { ImageComponent } from './file-upload/image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IsTypePipe } from './is-type/is-type.pipe';
+import { ImageDirective } from './file-upload/image.directive';
 
 const PIPES = [
   DefaultPipe,
@@ -30,6 +31,7 @@ const PIPES = [
   SearchPipe,
   SumByPipe,
   IsTypePipe,
+  ImageDirective,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,

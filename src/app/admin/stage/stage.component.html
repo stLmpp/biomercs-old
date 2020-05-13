@@ -2,6 +2,7 @@
   [entities]="stageQuery.all$ | async"
   [fields]="['name', 'shortName', 'idGame', 'custom', 'customUrl']"
   [matLineLabels]="['name', 'shortName', 'game.name']"
+  [searchBy]="['name', 'shortName', 'game.name']"
   updateLabel="name"
   [service]="stageService"
   [fieldsConfig]="fieldsConfig"

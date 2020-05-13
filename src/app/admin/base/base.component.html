@@ -2,61 +2,84 @@
   <button mat-icon-button color="accent" (click)="openAdd()">
     <mat-icon>add</mat-icon>
   </button>
+  <mat-form-field *ngIf="searchBy">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Search" [formControl]="searchControl" />
+  </mat-form-field>
 </div>
-<mat-nav-list>
-  <mat-list-item
-    *ngFor="let entity of entities; trackBy: trackBy"
-    (click)="openEdit(entity)"
-  >
+<ng-container
+  *ngIf="entities | search: searchBy:(search$ | async) as entitiesFiltered"
+>
+  <mat-nav-list *ngIf="entitiesFiltered?.length; else noDataFound">
     <ng-container
-      *ngIf="matLineExtras"
-      [ngTemplateOutlet]="matLineExtras"
-      [ngTemplateOutletContext]="{ $implicit: entity }"
-    ></ng-container>
-    <span matLine *ngFor="let key of matLineLabels; trackBy: trackByLabel">
-      {{ entity | getDeep: key }}
-    </span>
-    <button
-      mat-icon-button
-      matSuffix
-      *ngIf="deleteAllowed"
-      (click)="$event.stopPropagation(); delete(entity)"
+      *ngFor="
+        let entity of entitiesFiltered;
+        trackBy: trackBy;
+        let $last = last
+      "
     >
-      <mat-icon *ngIf="!entity.deleting; else deleting">delete</mat-icon>
-      <ng-template #deleting>
-        <mat-spinner diameter="20"></mat-spinner>
-      </ng-template>
-    </button>
-    <button
-      mat-icon-button
-      matSuffix
-      *ngIf="uploadImage"
-      (click)="$event.stopPropagation(); fileUploadInputRef.click()"
-    >
-      <mat-icon *ngIf="!entity.uploading; else loadingImage"
-        >cloud_upload</mat-icon
-      >
-      <ng-template #loadingImage>
-        <mat-spinner diameter="20"></mat-spinner>
-      </ng-template>
-      <input
-        type="file"
-        [accept]="filesAllowed"
-        style="display: none"
-        (change)="fileUpload(entity, $event)"
-        #fileUploadInputRef
-      />
-    </button>
-    <button
-      mat-icon-button
-      matSuffix
-      *ngIf="entity[imageKey]"
-      (click)="$event.stopPropagation(); seeImage(entity[imageKey])"
-    >
-      <mat-icon>image</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-nav-list>
+      <mat-divider></mat-divider>
+      <mat-list-item (click)="openEdit(entity)">
+        <img
+          auth
+          (loading)="changeDetectorRef.markForCheck()"
+          [src]="entity[imageKey]"
+          matListAvatar
+          [alt]="entity[imageLabel]"
+          (click)="$event.stopPropagation(); seeImage(entity[imageKey])"
+          *ngIf="uploadImage && entity[imageKey]"
+        />
+        <ng-container
+          *ngIf="matLineExtras"
+          [ngTemplateOutlet]="matLineExtras"
+          [ngTemplateOutletContext]="{ $implicit: entity }"
+        ></ng-container>
+        <span matLine *ngFor="let key of matLineLabels; trackBy: trackByLabel">
+          {{ entity | getDeep: key }}
+        </span>
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="deleteAllowed"
+          (click)="$event.stopPropagation(); delete(entity)"
+        >
+          <mat-icon *ngIf="!entity.deleting; else deleting">delete</mat-icon>
+          <ng-template #deleting>
+            <mat-spinner diameter="20"></mat-spinner>
+          </ng-template>
+        </button>
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="uploadImage"
+          (click)="$event.stopPropagation(); fileUploadInputRef.click()"
+        >
+          <mat-icon *ngIf="!entity.uploading; else loadingImage"
+            >cloud_upload</mat-icon
+          >
+          <ng-template #loadingImage>
+            <mat-spinner diameter="20"></mat-spinner>
+          </ng-template>
+          <input
+            type="file"
+            [accept]="filesAllowed"
+            style="display: none"
+            (change)="fileUpload(entity, $event)"
+            #fileUploadInputRef
+          />
+        </button>
+      </mat-list-item>
+      <mat-divider *ngIf="$last"></mat-divider>
+    </ng-container>
+  </mat-nav-list>
+  <ng-template #noDataFound>
+    <mat-list>
+      <mat-list-item>
+        No data found.
+      </mat-list-item>
+    </mat-list>
+  </ng-template>
+</ng-container>
 
 <ng-template #modalRef let-edit>
   <form
@@ -151,6 +174,6 @@
 
 <ng-template #imageRef let-idImage>
   <mat-dialog-content>
-    <app-image [id]="idImage" alt=""></app-image>
+    <app-image [src]="idImage" alt=""></app-image>
   </mat-dialog-content>
 </ng-template>

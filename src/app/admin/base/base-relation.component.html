@@ -1,120 +1,103 @@
-<mat-accordion [multi]="true">
-  <mat-expansion-panel *ngFor="let entityOne of one; trackBy: trackBy">
-    <mat-expansion-panel-header>
-      {{ entityOne | getDeep: oneLabel }}
-    </mat-expansion-panel-header>
-    <mat-nav-list>
-      <ng-container *ngFor="let entityMany of many; trackBy: trackBy">
-        <mat-list-item
-          checkboxPosition="before"
-          *let="
-            entities
-              | mapRelation
-                : [
-                    [entityOne.id, oneIdKey],
-                    [entityMany.id, manyIdKey]
-                  ] as entity
-          "
-          [active]="!!entity"
-          (click)="onChange(entityOne, entityMany, entity)"
-          [disabled]="
-            entity?.deleting || loading[entityOne.id + '-' + entityMany.id]
-          "
-        >
-          <span matLine>
-            {{ entityMany | getDeep: manyLabel }}
-          </span>
-          <ng-container *ngIf="!!entity">
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="$event.stopPropagation(); fileUploadInputRef.click()"
-              *ngIf="uploadImage"
-            >
-              <mat-icon *ngIf="!entity.uploading; else loadingImage">
-                cloud_upload
-              </mat-icon>
-              <ng-template #loadingImage>
-                <mat-spinner diameter="20"></mat-spinner>
-              </ng-template>
-              <input
-                type="file"
-                [accept]="filesAllowed"
-                style="display: none"
-                (change)="fileUpload(entity, $event)"
-                #fileUploadInputRef
-              />
-            </button>
-            <button
-              mat-icon-button
-              matSuffix
-              *ngIf="entity[imageKey]"
-              (click)="
-                $event.stopPropagation();
-                matDialog.open(imageRef, { data: entity[imageKey] })
-              "
-            >
-              <mat-icon>image</mat-icon>
-            </button>
-          </ng-container>
-        </mat-list-item>
-      </ng-container>
-    </mat-nav-list>
-    <!--<div class="relations">
-      <div *ngFor="let entityMany of many; trackBy: trackBy">
-        <ng-container
-          *let="
-            entities
-              | mapRelation
-                : [
-                    [entityOne.id, oneIdKey],
-                    [entityMany.id, manyIdKey]
-                  ] as entity
-          "
-        >
-          <mat-checkbox
-            [ngModel]="!!entity"
-            (ngModelChange)="onChange(entityOne, entityMany, entity)"
-            [disabled]="
-              entity?.deleting || loading[entityOne.id + '-' + entityMany.id]
+<div>
+  <mat-accordion [multi]="true">
+    <mat-expansion-panel
+      *ngFor="let entityOne of one; trackBy: trackBy; let $indexOne = index"
+      (opened)="setOpenState($indexOne, true)"
+      (afterCollapse)="setOpenState($indexOne, false)"
+    >
+      <mat-expansion-panel-header>
+        <mat-chip-list *ngIf="showCount">
+          <mat-chip>
+            {{ entities | countRelation: [entityOne.id, oneIdKey] }}
+          </mat-chip>
+        </mat-chip-list>
+        <ng-container *ngIf="oneLabel | isType: 'Array'; else simpleLabel">
+          <ng-container
+            *ngFor="
+              let label of oneLabel;
+              trackBy: trackByLabel;
+              let $last = last
             "
           >
-            {{ entityMany | getDeep: manyLabel }}
-          </mat-checkbox>
-          <ng-container *ngIf="!!entity">
-            <button
-              mat-icon-button
-              (click)="fileUploadInputRef.click()"
-              *ngIf="uploadImage"
-            >
-              <mat-icon *ngIf="!entity.uploading; else loadingImage">
-                cloud_upload
-              </mat-icon>
-              <ng-template #loadingImage>
-                <mat-spinner diameter="20"></mat-spinner>
-              </ng-template>
-              <input
-                type="file"
-                [accept]="filesAllowed"
-                style="display: none"
-                (change)="fileUpload(entity, $event)"
-                #fileUploadInputRef
-              />
-            </button>
-            <button
-              mat-icon-button
-              matSuffix
-              *ngIf="entity[imageKey]"
-              (click)="matDialog.open(imageRef, { data: entity[imageKey] })"
-            >
-              <mat-icon>image</mat-icon>
-            </button>
+            {{ entityOne | getDeep: label }}
+            <ng-container *ngIf="!$last">
+              -
+            </ng-container>
           </ng-container>
         </ng-container>
-      </div>
-    </div>-->
-  </mat-expansion-panel>
-</mat-accordion>
+        <ng-template #simpleLabel>
+          {{ entityOne | getDeep: oneLabel }}
+        </ng-template>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="openState[$indexOne]">
+        <ng-container *ngIf="many?.length; else noDataFound">
+          <mat-nav-list>
+            <ng-container *ngFor="let entityMany of many; trackBy: trackBy">
+              <mat-list-item
+                *let="
+                  entities
+                    | mapRelation
+                      : [
+                          [entityOne.id, oneIdKey],
+                          [entityMany.id, manyIdKey]
+                        ] as entity
+                "
+                [active]="!!entity"
+                (click)="onChange(entityOne, entityMany, entity)"
+                [disabled]="
+                  entity?.deleting ||
+                  loading[entityOne.id + '-' + entityMany.id]
+                "
+              >
+                <span matLine>
+                  {{ entityMany | getDeep: manyLabel }}
+                </span>
+                <ng-container *ngIf="!!entity">
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="
+                      $event.stopPropagation(); fileUploadInputRef.click()
+                    "
+                    *ngIf="uploadImage"
+                  >
+                    <mat-icon *ngIf="!entity.uploading; else loadingImage">
+                      cloud_upload
+                    </mat-icon>
+                    <ng-template #loadingImage>
+                      <mat-spinner diameter="20"></mat-spinner>
+                    </ng-template>
+                    <input
+                      type="file"
+                      [accept]="filesAllowed"
+                      style="display: none"
+                      (change)="fileUpload(entity, $event)"
+                      #fileUploadInputRef
+                    />
+                  </button>
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    *ngIf="entity[imageKey]"
+                    (click)="
+                      $event.stopPropagation();
+                      matDialog.open(imageRef, { data: entity[imageKey] })
+                    "
+                  >
+                    <mat-icon>image</mat-icon>
+                  </button>
+                </ng-container>
+              </mat-list-item>
+            </ng-container>
+          </mat-nav-list>
+        </ng-container>
+        <ng-template #noDataFound>
+          No data found.
+        </ng-template>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
 
 <ng-template #imageRef let-idImage>
   <mat-dialog-content>

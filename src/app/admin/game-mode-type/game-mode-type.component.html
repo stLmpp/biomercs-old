@@ -1,0 +1,10 @@
+<app-base-relation
+  [entities]="gameModeTypeQuery.all$ | async"
+  [one]="gameModeQuery.all$ | async"
+  oneIdKey="idGameMode"
+  [oneLabel]="['game.name', 'mode.name']"
+  [many]="typeQuery.all$ | async"
+  manyIdKey="idType"
+  manyLabel="name"
+  [service]="gameModeTypeService"
+></app-base-relation>

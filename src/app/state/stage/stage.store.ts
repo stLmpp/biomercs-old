@@ -5,7 +5,7 @@ import { Stage } from '../../model/stage';
 export interface StageState extends EntityState<Stage> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'stage' })
+@StoreConfig({ name: 'stage', cache: { ttl: 900_000 } })
 export class StageStore extends EntityStore<StageState> {
   constructor() {
     super();

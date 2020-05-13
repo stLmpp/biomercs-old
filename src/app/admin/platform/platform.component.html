@@ -1,0 +1,10 @@
+<app-base
+  [fields]="['name', 'shortName', 'type']"
+  [matLineLabels]="['name', 'shortName']"
+  [entities]="platformQuery.all$ | async"
+  [service]="platformService"
+  [fieldsConfig]="fieldsConfig"
+  updateLabel="name"
+  deleteAllowed
+  entityName="Platform"
+></app-base>

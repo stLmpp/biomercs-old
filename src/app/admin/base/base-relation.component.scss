@@ -1,8 +1,19 @@
-.relations {
-  display: grid;
-  align-items: center;
-  > div {
-    display: flex;
+:host > div {
+  padding: 0 16px;
+  .mat-chip-list {
+    margin-right: 1rem;
+  }
+  ::ng-deep {
+    .mat-content {
+      align-items: center;
+    }
+  }
+  .relations {
+    display: grid;
     align-items: center;
+    > div {
+      display: flex;
+      align-items: center;
+    }
   }
 }

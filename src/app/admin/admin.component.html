@@ -2,7 +2,7 @@
   <app-side-menu></app-side-menu>
 </div>
 <div class="content">
-  <mat-card>
+  <mat-card class="no-padding">
     <h1 mat-card-title>{{ (sideMenuService.active$ | async)?.title }}</h1>
     <mat-card-content>
       <router-outlet></router-outlet>

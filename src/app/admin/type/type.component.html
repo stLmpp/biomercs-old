@@ -1,0 +1,9 @@
+<app-base
+  [entities]="typeQuery.all$ | async"
+  [fields]="['name', 'playerQuantity']"
+  updateLabel="name"
+  [service]="typeService"
+  [fieldsConfig]="fieldsConfig"
+  deleteAllowed
+  entityName="Type"
+></app-base>

@@ -1,0 +1,10 @@
+<app-base-relation
+  [entities]="gameModePlatformQuery.all$ | async"
+  [one]="gameModeQuery.all$ | async"
+  oneIdKey="idGameMode"
+  [oneLabel]="['game.name', 'mode.name']"
+  [many]="platformQuery.all$ | async"
+  manyIdKey="idPlatform"
+  manyLabel="name"
+  [service]="gameModePlatformService"
+></app-base-relation>

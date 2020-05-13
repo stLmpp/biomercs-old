@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { TypeStore } from './type.store';
+import { TypeQuery } from './type.query';
+import { SuperService } from '../../shared/super/super-service';
+import {
+  Type,
+  TypeAddDto,
+  TypeExistsDto,
+  TypeParamsDto,
+  TypeUpdateDto,
+} from '../../model/type';
+
+@Injectable({ providedIn: 'root' })
+export class TypeService extends SuperService<
+  Type,
+  TypeAddDto,
+  TypeUpdateDto,
+  TypeExistsDto,
+  TypeParamsDto
+> {
+  constructor(
+    private typeStore: TypeStore,
+    private http: HttpClient,
+    private typeQuery: TypeQuery
+  ) {
+    super(http, typeStore, typeQuery, {
+      endPoint: 'type',
+    });
+  }
+}

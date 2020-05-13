@@ -19,6 +19,15 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MapRelationPipe } from './base/map-relation.pipe';
 import { StageComponent } from './stage/stage.component';
 import { SiteComponent } from './site/site.component';
+import { CharacterComponent } from './character/character.component';
+import { GameModeCharacterComponent } from './game-mode-character/game-mode-character.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatChipsModule } from '@angular/material/chips';
+import { CountRelationPipe } from './base/count-relation.pipe';
+import { TypeComponent } from './type/type.component';
+import { GameModeTypeComponent } from './game-mode-type/game-mode-type.component';
+import { PlatformComponent } from './platform/platform.component';
+import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +41,13 @@ import { SiteComponent } from './site/site.component';
     MapRelationPipe,
     StageComponent,
     SiteComponent,
+    CharacterComponent,
+    GameModeCharacterComponent,
+    CountRelationPipe,
+    TypeComponent,
+    GameModeTypeComponent,
+    PlatformComponent,
+    GameModePlatformComponent,
   ],
   imports: [
     SharedModule,
@@ -43,6 +59,8 @@ import { SiteComponent } from './site/site.component';
     MatProgressSpinnerModule,
     MatTooltipModule,
     MatExpansionModule,
+    MatBadgeModule,
+    MatChipsModule,
   ],
 })
 export class AdminModule {}

@@ -1,0 +1,11 @@
+<app-base
+  [entities]="characterQuery.all$ | async"
+  [fields]="['name', 'shortName']"
+  updateLabel="name"
+  [service]="characterService"
+  [fieldsConfig]="fieldsConfig"
+  deleteAllowed
+  uploadImage
+  imageKey="idImage"
+  entityName="Character"
+></app-base>

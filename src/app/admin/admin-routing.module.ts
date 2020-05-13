@@ -12,6 +12,18 @@ import { StageComponent } from './stage/stage.component';
 import { StageResolver } from '../state/stage/stage.resolver';
 import { SiteComponent } from './site/site.component';
 import { SiteResolver } from '../state/site/site.resolver';
+import { CharacterComponent } from './character/character.component';
+import { CharacterResolver } from '../state/character/character.resolver';
+import { GameModeCharacterComponent } from './game-mode-character/game-mode-character.component';
+import { GameModeCharacterResolver } from '../state/game-mode-character/game-mode-character.resolver';
+import { TypeComponent } from './type/type.component';
+import { TypeResolver } from '../state/type/type.resolver';
+import { GameModeTypeComponent } from './game-mode-type/game-mode-type.component';
+import { GameModeTypeResolver } from '../state/game-mode-type/game-mode-type.resolver';
+import { PlatformComponent } from './platform/platform.component';
+import { PlatformResolver } from '../state/platform/platform.resolver';
+import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
+import { GameModePlatformResolver } from '../state/game-mode-platform/game-mode-platform.resolver';
 
 const routes: Routes = [
   {
@@ -38,6 +50,40 @@ const routes: Routes = [
         path: 'stage',
         component: StageComponent,
         resolve: [GameResolver, StageResolver],
+      },
+      {
+        path: 'character',
+        component: CharacterComponent,
+        resolve: [CharacterResolver],
+      },
+      {
+        path: 'game-mode-character',
+        component: GameModeCharacterComponent,
+        resolve: [
+          CharacterResolver,
+          GameModeResolver,
+          GameModeCharacterResolver,
+        ],
+      },
+      {
+        path: 'type',
+        component: TypeComponent,
+        resolve: [TypeResolver],
+      },
+      {
+        path: 'game-mode-type',
+        component: GameModeTypeComponent,
+        resolve: [TypeResolver, GameModeResolver, GameModeTypeResolver],
+      },
+      {
+        path: 'platform',
+        component: PlatformComponent,
+        resolve: [PlatformResolver],
+      },
+      {
+        path: 'game-mode-platform',
+        component: GameModePlatformComponent,
+        resolve: [GameModeResolver, PlatformResolver, GameModePlatformResolver],
       },
       {
         path: 'site',

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { GameQuery } from '../../state/game/game.query';
-import { trackByFactory } from '../../util/util';
 import { Game } from '../../model/game';
 import { GameService } from '../../state/game/game.service';
 import { FieldsConfig } from '../base/base.component';
@@ -14,8 +13,6 @@ import { Validators } from '@angular/forms';
 })
 export class GameComponent implements OnInit {
   constructor(public gameQuery: GameQuery, public gameService: GameService) {}
-
-  trackBy = trackByFactory<Game>('id');
 
   fieldsConfig: FieldsConfig<Game> = {
     name: {

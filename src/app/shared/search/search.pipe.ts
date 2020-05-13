@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { isArray } from 'is-what';
-
+import { getDeep } from '../get-deep/get-deep.pipe';
 
 export function search<T = any>(
   array: T[],
-  keyOrKeys: keyof T | (keyof T)[],
+  keyOrKeys: keyof T | (keyof T)[] | string | string[],
   term: any,
   reverse = false
 ): T[] {
@@ -18,7 +18,7 @@ export function search<T = any>(
   const keys = isArray(keyOrKeys) ? keyOrKeys : [keyOrKeys];
   return array.filter(val => {
     return keys.some(key => {
-      const valKey = ('' + val[key])
+      const valKey = ('' + getDeep(val, key as string))
         .toLowerCase()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '');
@@ -31,12 +31,10 @@ export function search<T = any>(
 export class SearchPipe implements PipeTransform {
   transform<T = any>(
     value: T[],
-    keyOrKeys: keyof T | (keyof T)[],
+    keyOrKeys: keyof T | (keyof T)[] | string | string[],
     term: any,
     reverse = false
   ): T[] {
     return search(value, keyOrKeys, term, reverse);
   }
 }
-
-

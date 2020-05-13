@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ModeQuery } from '../../state/mode/mode.query';
 import { ModeService } from '../../state/mode/mode.service';
-import { trackByFactory } from '../../util/util';
 import { Mode } from '../../model/mode';
 import { FieldsConfig } from '../base/base.component';
 import { Validators } from '@angular/forms';
@@ -14,8 +13,6 @@ import { Validators } from '@angular/forms';
 })
 export class ModeComponent implements OnInit {
   constructor(public modeQuery: ModeQuery, public modeService: ModeService) {}
-
-  trackBy = trackByFactory<Mode>('id');
 
   fieldsConfig: FieldsConfig<Mode> = {
     name: {
