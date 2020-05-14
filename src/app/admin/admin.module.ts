@@ -28,6 +28,8 @@ import { TypeComponent } from './type/type.component';
 import { GameModeTypeComponent } from './game-mode-type/game-mode-type.component';
 import { PlatformComponent } from './platform/platform.component';
 import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
+import { HomeComponent } from './home/home.component';
+import { UserComponent } from './base/user/user.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { GameModePlatformComponent } from './game-mode-platform/game-mode-platfo
     GameModeTypeComponent,
     PlatformComponent,
     GameModePlatformComponent,
+    HomeComponent,
+    UserComponent,
   ],
   imports: [
     SharedModule,

@@ -24,6 +24,8 @@ import { PlatformComponent } from './platform/platform.component';
 import { PlatformResolver } from '../state/platform/platform.resolver';
 import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
 import { GameModePlatformResolver } from '../state/game-mode-platform/game-mode-platform.resolver';
+import { HomeComponent } from './home/home.component';
+import { UserComponent } from './base/user/user.component';
 
 const routes: Routes = [
   {
@@ -31,6 +33,14 @@ const routes: Routes = [
     component: AdminComponent,
     canActivate: [AdminGuard],
     children: [
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'user',
+        component: UserComponent,
+      },
       {
         path: 'game',
         component: GameComponent,
@@ -89,6 +99,10 @@ const routes: Routes = [
         path: 'site',
         component: SiteComponent,
         resolve: [SiteResolver],
+      },
+      {
+        path: '**',
+        redirectTo: 'home',
       },
     ],
   },

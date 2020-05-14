@@ -22,6 +22,7 @@ import { uniqueEmailValidator } from '../../../validators/unique-email.directive
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { UserService } from '../../../state/user/user.service';
 
 const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
   parent,
@@ -48,7 +49,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private matDialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   private _destroy$ = new Subject();
@@ -60,12 +62,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     username: new FormControl(
       null,
       [Validators.required],
-      [uniqueUsernameValidator(this.authService)]
+      [uniqueUsernameValidator(this.userService)]
     ),
     email: new FormControl(
       null,
       [Validators.required, Validators.email],
-      [uniqueEmailValidator(this.authService)]
+      [uniqueEmailValidator(this.userService)]
     ),
     password: new FormControl(null, [
       Validators.required,

@@ -6,6 +6,8 @@ import { map } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 export class SideMenuService {
   private _list$ = new BehaviorSubject<SideMenu[]>([
+    { title: 'Home', routerLink: 'home', padding: true },
+    { title: 'User', routerLink: 'user', padding: true },
     { title: 'Game', routerLink: 'game' },
     { title: 'Mode', routerLink: 'mode' },
     { title: 'Game Mode', routerLink: 'game-mode' },

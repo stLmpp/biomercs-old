@@ -6,7 +6,6 @@ import { User, UserRegisterDto, UserRegisterResponse } from '../../model/user';
 import { Observable, of, throwError } from 'rxjs';
 import { AuthQuery } from './auth.query';
 import { setLoading } from '@datorama/akita';
-import { HttpParams } from '../../util/http-params';
 import { catchHttpError } from '../../util/operators/catchError';
 
 @Injectable({ providedIn: 'root' })
@@ -17,21 +16,18 @@ export class AuthService {
     private authQuery: AuthQuery
   ) {}
 
-  private target = '/auth';
-  private targetUser = '/user';
+  endPoint = '/auth';
 
   autoLogin(): Observable<User> {
     const userLocal = this.authQuery.getUserSnapshot();
     if (!userLocal?.token || !!userLocal?.id) {
       return of(null);
     }
-    return this.http.post<User>(`${this.target}/auto-login`, undefined).pipe(
+    return this.http.post<User>(`${this.endPoint}/auto-login`, undefined).pipe(
       setLoading(this.authStore),
-
       tap(user => {
         this.authStore.update({ user });
       }),
-      // @ts-ignore
       catchHttpError(() => {
         this.authStore.update({ user: null });
         return of(null);
@@ -45,7 +41,7 @@ export class AuthService {
     rememberMe = false
   ): Observable<User> {
     return this.http
-      .post<User>(`${this.target}/login`, { username, password, rememberMe })
+      .post<User>(`${this.endPoint}/login`, { username, password, rememberMe })
       .pipe(
         setLoading(this.authStore),
         tap(user => {
@@ -63,20 +59,9 @@ export class AuthService {
   }
 
   register(dto: UserRegisterDto): Observable<UserRegisterResponse> {
-    return this.http.post<UserRegisterResponse>(`${this.target}/register`, dto);
-  }
-
-  existsByEmail(email: string): Observable<boolean> {
-    const params = new HttpParams({ email });
-    return this.http.get<boolean>(`${this.targetUser}/exists/email`, {
-      params,
-    });
-  }
-
-  existsByUsername(username: string): Observable<boolean> {
-    const params = new HttpParams({ username });
-    return this.http.get<boolean>(`${this.targetUser}/exists/username`, {
-      params,
-    });
+    return this.http.post<UserRegisterResponse>(
+      `${this.endPoint}/register`,
+      dto
+    );
   }
 }

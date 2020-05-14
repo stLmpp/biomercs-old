@@ -5,11 +5,11 @@ import {
   NG_ASYNC_VALIDATORS,
   ValidationErrors,
 } from '@angular/forms';
-import { AuthService } from '../auth/state/auth.service';
 import { Observable, of, timer } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { mapToError } from './util';
 import { Directive, forwardRef } from '@angular/core';
+import { UserService } from '../state/user/user.service';
 
 @Directive({
   selector:
@@ -23,23 +23,23 @@ import { Directive, forwardRef } from '@angular/core';
   ],
 })
 export class UniqueEmailDirective implements AsyncValidator {
-  constructor(private authService: AuthService) {}
+  constructor(private userService: UserService) {}
 
   validate(
     control: AbstractControl
   ): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
-    return uniqueEmailValidator(this.authService)(control);
+    return uniqueEmailValidator(this.userService)(control);
   }
 }
 
 export const uniqueEmailValidator = (
-  authService: AuthService
+  userService: UserService
 ): AsyncValidatorFn => ({ value, pristine }) => {
   if (!value || pristine) return of(null);
   return timer(400).pipe(
     distinctUntilChanged(),
     switchMap(() => {
-      return authService.existsByEmail(value).pipe(mapToError('uniqueEmail'));
+      return userService.existsByEmail(value).pipe(mapToError('uniqueEmail'));
     })
   );
 };

@@ -29,3 +29,7 @@ export interface UserRegisterResponse {
   message: string;
   email: string;
 }
+
+export interface UserUpdateDto {
+  email?: string;
+}
