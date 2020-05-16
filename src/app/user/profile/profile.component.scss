@@ -1,0 +1,11 @@
+:host {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  > .user {
+    .mat-card-header {
+      .mat-card-avatar {
+        cursor: pointer;
+      }
+    }
+  }
+}

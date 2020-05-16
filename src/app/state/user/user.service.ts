@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserStore } from './user.store';
 import { Observable } from 'rxjs';
 import { User, UserUpdateDto } from '../../model/user';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { UpdateResult } from '../../model/update-result';
 import { HttpParams } from '../../util/http-params';
+import { FileUpload } from '../../model/file-upload';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -50,6 +51,27 @@ export class UserService {
       .pipe(
         tap(users => {
           this.userStore.upsertMany(users);
+        })
+      );
+  }
+
+  uploadAvatar(idUser: number, file: File): Observable<FileUpload> {
+    this.userStore.update(idUser, { uploading: true });
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+    });
+    return this.http
+      .patch<FileUpload>(`${this.endPoint}/${idUser}/avatar`, formData, {
+        headers,
+      })
+      .pipe(
+        tap(avatar => {
+          this.userStore.update(idUser, { idAvatar: avatar.id, avatar });
+        }),
+        finalize(() => {
+          this.userStore.update(idUser, { uploading: false });
         })
       );
   }

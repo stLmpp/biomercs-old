@@ -2,6 +2,7 @@ import { UserLink } from './user-link';
 import { UserRole } from './user-role';
 import { FileUpload } from './file-upload';
 import { CommonColumns } from './common-history';
+import { Region } from './region';
 
 export interface User extends CommonColumns {
   username: string;
@@ -13,6 +14,9 @@ export interface User extends CommonColumns {
   idAvatar?: number;
   avatar?: FileUpload;
   token: string;
+
+  idRegion?: number;
+  region: Region;
 
   expired?: boolean;
   resetToken?: string;

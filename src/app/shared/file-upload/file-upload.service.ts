@@ -18,4 +18,13 @@ export class FileUploadService {
       })
       .pipe(toBase64());
   }
+
+  findByName(name: string): Observable<string> {
+    return this.http
+      .get<Blob>(`${environment.uploadName}/${name}`, {
+        // @ts-ignore
+        responseType: 'blob',
+      })
+      .pipe(toBase64());
+  }
 }

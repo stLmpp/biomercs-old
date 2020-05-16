@@ -10,6 +10,7 @@
 @import 'dialog';
 @import 'list';
 @import 'button';
+@import 'card';
 
 @include angular-material-theme($theme);
 @include mat-list-theme-custom($theme);
