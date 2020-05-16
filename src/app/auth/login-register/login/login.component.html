@@ -37,12 +37,21 @@
     <mat-card-actions align="end">
       <button
         mat-button
+        color="accent"
         type="submit"
         [disabled]="form.invalid || form.disabled"
       >
         Login
       </button>
-      <button mat-button [disabled]="form.disabled">Cancel</button>
+      <button
+        mat-button
+        color="accent"
+        type="button"
+        [disabled]="form.disabled"
+        [routerLink]="['../', 'forgot-password']"
+      >
+        Forgot password
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>

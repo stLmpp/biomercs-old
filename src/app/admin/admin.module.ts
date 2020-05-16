@@ -29,7 +29,7 @@ import { GameModeTypeComponent } from './game-mode-type/game-mode-type.component
 import { PlatformComponent } from './platform/platform.component';
 import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
 import { HomeComponent } from './home/home.component';
-import { UserComponent } from './base/user/user.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [

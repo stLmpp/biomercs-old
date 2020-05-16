@@ -42,4 +42,15 @@ export class UserService {
       params,
     });
   }
+
+  search(username: string, email: string): Observable<User[]> {
+    const params = new HttpParams({ username, email }, true);
+    return this.http
+      .get<User[]>(`${this.endPoint}/search`, { params })
+      .pipe(
+        tap(users => {
+          this.userStore.upsertMany(users);
+        })
+      );
+  }
 }

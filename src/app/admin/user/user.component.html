@@ -1,0 +1,45 @@
+<form [formGroup]="form" (ngSubmit)="search()">
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="username" placeholder="Username" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>E-mail</mat-label>
+    <input matInput formControlName="email" placeholder="E-mail" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="loading">
+    Search
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="form.reset({}, { emitEvent: false })"
+    [disabled]="loading"
+  >
+    Clear
+  </button>
+</form>
+<mat-list>
+  <ng-container
+    *ngFor="let user of users$ | async; trackBy: trackBy; let $last = last"
+  >
+    <mat-divider></mat-divider>
+    <mat-list-item>
+      <span matLine>{{ user.username }}</span>
+      <span matLine>{{ user.email }}</span>
+      <button mat-icon-button matSuffix [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu>
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item (click)="resetPassword(user)">
+          Reset password
+        </button>
+        <button mat-menu-item>See scores</button>
+        <button mat-menu-item>Ban</button>
+      </mat-menu>
+    </mat-list-item>
+    <mat-divider *ngIf="$last"></mat-divider>
+  </ng-container>
+</mat-list>

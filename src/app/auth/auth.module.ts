@@ -10,9 +10,11 @@ import { LoginComponent } from './login-register/login/login.component';
 import { RegisterComponent } from './login-register/register/register.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ForgotPasswordComponent } from './login-register/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './login-register/reset-password/reset-password.component';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, LoginRegisterComponent],
+  declarations: [LoginComponent, RegisterComponent, LoginRegisterComponent, ForgotPasswordComponent, ResetPasswordComponent],
   imports: [
     AuthRoutingModule,
     SharedModule,

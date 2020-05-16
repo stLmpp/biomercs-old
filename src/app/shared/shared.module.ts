@@ -22,6 +22,7 @@ import { ImageComponent } from './file-upload/image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IsTypePipe } from './is-type/is-type.pipe';
 import { ImageDirective } from './file-upload/image.directive';
+import { DialogComponent } from './dialog/dialog.component';
 
 const PIPES = [
   DefaultPipe,
@@ -32,6 +33,7 @@ const PIPES = [
   SumByPipe,
   IsTypePipe,
   ImageDirective,
+  DialogComponent,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,

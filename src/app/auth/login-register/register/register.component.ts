@@ -24,7 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserService } from '../../../state/user/user.service';
 
-const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
+export const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
   parent,
   value,
   pristine,
@@ -35,6 +35,28 @@ const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
     return { unequalPasswords: true };
   }
   return null;
+};
+
+export const watchPasswords = (
+  control1: FormControl,
+  control2: FormControl,
+  destroy: Subject<any>,
+  changeDetectorRef: ChangeDetectorRef
+) => {
+  control1.valueChanges
+    .pipe(takeUntil(destroy), debounceTime(500))
+    .subscribe(() => {
+      control2.updateValueAndValidity({
+        emitEvent: false,
+      });
+      changeDetectorRef.markForCheck();
+    });
+  control2.valueChanges
+    .pipe(takeUntil(destroy), debounceTime(500))
+    .subscribe(() => {
+      control1.updateValueAndValidity({ emitEvent: false });
+      changeDetectorRef.markForCheck();
+    });
 };
 
 @Component({
@@ -118,20 +140,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.passwordControl.valueChanges
-      .pipe(takeUntil(this._destroy$), debounceTime(500))
-      .subscribe(() => {
-        this.confirmPasswordControl.updateValueAndValidity({
-          emitEvent: false,
-        });
-        this.changeDetectorRef.markForCheck();
-      });
-    this.confirmPasswordControl.valueChanges
-      .pipe(takeUntil(this._destroy$), debounceTime(500))
-      .subscribe(() => {
-        this.passwordControl.updateValueAndValidity({ emitEvent: false });
-        this.changeDetectorRef.markForCheck();
-      });
+    watchPasswords(
+      this.passwordControl,
+      this.confirmPasswordControl,
+      this._destroy$,
+      this.changeDetectorRef
+    );
   }
 
   ngOnDestroy(): void {

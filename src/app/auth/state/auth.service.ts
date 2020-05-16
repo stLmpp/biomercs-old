@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthStore } from './auth.store';
 import { catchError, tap } from 'rxjs/operators';
-import { User, UserRegisterDto, UserRegisterResponse } from '../../model/user';
+import {
+  User,
+  UserForgotPasswordDto,
+  UserRegisterDto,
+  UserRegisterResponse,
+} from '../../model/user';
 import { Observable, of, throwError } from 'rxjs';
 import { AuthQuery } from './auth.query';
 import { setLoading } from '@datorama/akita';
 import { catchHttpError } from '../../util/operators/catchError';
+import { Params } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -62,6 +68,46 @@ export class AuthService {
     return this.http.post<UserRegisterResponse>(
       `${this.endPoint}/register`,
       dto
+    );
+  }
+
+  forgotPassword(dto: UserForgotPasswordDto): Observable<string> {
+    return this.http.post<string>(`${this.endPoint}/forgot-password`, dto, {
+      responseType: 'text' as any,
+    });
+  }
+
+  confirmForgotPassword(idUser: number, token: string): Observable<boolean> {
+    return this.http.post<boolean>(`${this.endPoint}/confirm-forgot-password`, {
+      idUser,
+      token,
+    });
+  }
+
+  changePassword(
+    idUser: number,
+    newPassword: number,
+    token?: string
+  ): Observable<User> {
+    const params: Params = {};
+    let url = `${this.endPoint}/change-password/${idUser}`;
+    if (token) {
+      params.token = token;
+      url += '/token';
+    }
+    return this.http
+      .post<User>(url, { password: newPassword }, { params })
+      .pipe(
+        tap(user => {
+          this.authStore.update({ user });
+        })
+      );
+  }
+
+  resetPassword(idUser: number): Observable<void> {
+    return this.http.post<void>(
+      `${this.endPoint}/reset-password/${idUser}`,
+      undefined
     );
   }
 }

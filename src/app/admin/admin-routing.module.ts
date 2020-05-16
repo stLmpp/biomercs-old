@@ -25,7 +25,7 @@ import { PlatformResolver } from '../state/platform/platform.resolver';
 import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
 import { GameModePlatformResolver } from '../state/game-mode-platform/game-mode-platform.resolver';
 import { HomeComponent } from './home/home.component';
-import { UserComponent } from './base/user/user.component';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   {

@@ -10,7 +10,9 @@
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #userMenu="matMenu" xPosition="before">
-    <button mat-menu-item [routerLink]="['/user', user?.id]">Profile</button>
+    <button mat-menu-item [routerLink]="['/user', user?.id, 'profile']">
+      Profile
+    </button>
     <button
       mat-menu-item
       routerLink="/admin"

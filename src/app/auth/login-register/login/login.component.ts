@@ -11,7 +11,9 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { catchHttpError } from '../../../util/operators/catchError';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RouterQuery } from '@datorama/akita-ng-router-store';
+import { RouteParamEnum } from '../../../model/route-param.enum';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +26,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private changeDetectorRef: ChangeDetectorRef,
     private matSnackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private routerQuery: RouterQuery,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   private _destroy$ = new Subject();
@@ -50,10 +54,19 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService
       .loginApi(username, password, !!rememberMe)
       .pipe(
-        tap(() => {
-          this.router.navigate(['/']).then(() => {
-            this.matSnackBar.open('Login successful!', 'Close');
-          });
+        tap(user => {
+          if (user.expired && user.resetToken) {
+            this.router.navigate(['../', 'reset-password', user.id], {
+              relativeTo: this.activatedRoute,
+              queryParams: {
+                [RouteParamEnum.token]: user.resetToken,
+              },
+            });
+          } else {
+            this.router.navigate(['/']).then(() => {
+              this.matSnackBar.open('Login successful!', 'Close');
+            });
+          }
         }),
         catchHttpError(err => {
           this.form.enable();
@@ -65,6 +78,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const username = this.routerQuery.getQueryParams(RouteParamEnum.username);
+    if (username) {
+      this.form.patchValue({ username });
+    }
     this.form.valueChanges
       .pipe(
         takeUntil(this._destroy$),

@@ -20,4 +20,7 @@ export enum RouteParamEnum {
   idUserLink = 'idUserLink',
   idUserRole = 'idUserRole',
   idType = 'idType',
+
+  token = 'token',
+  username = 'username',
 }
