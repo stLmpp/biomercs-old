@@ -8,7 +8,6 @@ import {
 } from '@datorama/akita';
 import { finalize, tap } from 'rxjs/operators';
 import { catchHttpError } from '../../util/operators/catchError';
-import { DeleteResult } from '../../model/delete-result';
 import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
 import { CommonColumns } from '../../model/common-history';
@@ -22,7 +21,8 @@ export type SuperServiceMethod =
   | 'update'
   | 'exists'
   | 'findByParams'
-  | 'search';
+  | 'search'
+  | 'deleteByParams';
 export type SuperServiceTime = 'after' | 'before';
 export type SuperServiceErrorAction = 'restore' | 'keep';
 
@@ -38,6 +38,18 @@ export interface SuperServiceOptions<Entity> {
     key?: keyof Entity;
   };
   cache?: boolean;
+  afterDelete?: (
+    result: Entity[],
+    store: EntityStore<EntityState<Entity>>,
+    query: QueryEntity<EntityState<Entity>>
+  ) => any;
+}
+
+export interface SuperServiceContructor<Entity extends CommonColumns> {
+  http: HttpClient;
+  options: SuperServiceOptions<Entity>;
+  store: EntityStore<EntityState<Entity>>;
+  query: QueryEntity<EntityState<Entity>>;
 }
 
 export class SuperService<
@@ -45,8 +57,36 @@ export class SuperService<
   AddDto = any,
   UpdateDto = any,
   ExistsDto = any,
-  ParamsDto = any
+  ParamsDto = any,
+  DeleteDto = any
 > {
+  /*constructor({ http, options, store, query }: SuperServiceContructor<Entity>) {
+    this.__http = http;
+    this.__store = store;
+    this.__query = query;
+    this.options = {
+      ...{
+        excludeMethods: [],
+        updateTime: 'after',
+        updateError: 'restore',
+        deleteTime: 'after',
+        deleteError: 'restore',
+        cache: true,
+      },
+      ...options,
+    };
+    if (!this.options.endPoint.startsWith('/')) {
+      this.options.endPoint = '/' + this.options.endPoint;
+    }
+  }
+  private __http: HttpClient;
+  private __store: EntityStore<EntityState<Entity>>;
+  private __query: QueryEntity<EntityState<Entity>>;
+
+  TODO NEXT
+
+  */
+
   constructor(
     private __http: HttpClient,
     private __store: EntityStore<EntityState<Entity>>,
@@ -69,7 +109,7 @@ export class SuperService<
     }
   }
 
-  options: SuperServiceOptions<Entity>;
+  private options: SuperServiceOptions<Entity>;
 
   private isAllowed(method: SuperServiceMethod): boolean {
     const notAllowed = this.options.excludeMethods.includes(method);
@@ -136,12 +176,10 @@ export class SuperService<
     }
   }
 
-  delete(id: number): Observable<DeleteResult> {
+  delete(id: number): Observable<Entity[]> {
     if (this.isAllowed('delete')) {
       this.__store.update(id, { deleting: true } as any);
-      let http = this.__http.delete<DeleteResult>(
-        `${this.options.endPoint}/${id}`
-      );
+      let http = this.__http.delete<Entity[]>(`${this.options.endPoint}/${id}`);
       if (this.options.deleteTime === 'before') {
         if (this.options.deleteError === 'restore') {
           const originalEntity = this.__query.getEntity(id);
@@ -163,6 +201,21 @@ export class SuperService<
           })
         );
       }
+    }
+  }
+
+  deleteByParams(dto: DeleteDto): Observable<Entity[]> {
+    if (this.isAllowed('deleteByParams')) {
+      return this.__http
+        .request<Entity[]>('delete', this.options.endPoint, { body: dto })
+        .pipe(
+          tap(deleteds => {
+            this.__store.remove(deleteds.map(entity => entity.id));
+            if (this.options.afterDelete) {
+              this.options.afterDelete(deleteds, this.__store, this.__query);
+            }
+          })
+        );
     }
   }
 

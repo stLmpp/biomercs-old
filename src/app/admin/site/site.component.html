@@ -1,6 +1,6 @@
 <app-base
   [entities]="siteQuery.all$ | async"
-  [fields]="['name', 'url', 'icon']"
+  [fields]="['name', 'url', 'replace', 'icon']"
   [matLineLabels]="['name', 'url']"
   [matLineExtras]="icon"
   updateLabel="name"

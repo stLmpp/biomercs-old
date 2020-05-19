@@ -2,6 +2,7 @@ import { TrackByFunction } from '@angular/core';
 import { isArray, isNumber, isObject, isString } from 'is-what';
 
 export type CompareFn<T = any> = (valueA: T, valueB: T) => boolean;
+export type Constructor<T = any> = new (...args: any[]) => T;
 
 export const compareByFactory = <T = any>(key: keyof T): CompareFn<T> => (
   valueA,
@@ -66,11 +67,4 @@ export function removeNullObject<T = any>(
 
 export function isAllNull<T = any>(obj: T): boolean {
   return !obj || Object.values(obj).every(o => isNil(o));
-}
-
-export function startCase(str: string): string {
-  return str
-    .replace(/([A-Z])/g, match => ` ${match}`)
-    .replace(/^./, match => match.toUpperCase())
-    .trim();
 }

@@ -24,6 +24,9 @@ import { IsTypePipe } from './is-type/is-type.pipe';
 import { ImageDirective } from './file-upload/image.directive';
 import { DialogComponent } from './dialog/dialog.component';
 import { DefaultImageDirective } from './default/default-image.directive';
+import { MatErrorControlDirective } from './custom-material/mat-error-control.directive';
+import { ReplaceParamsPipe } from './replace-params/replace-params.pipe';
+import { StartCasePipe } from './start-case/start-case.pipe';
 
 const PIPES = [
   DefaultPipe,
@@ -33,8 +36,8 @@ const PIPES = [
   SearchPipe,
   SumByPipe,
   IsTypePipe,
-  ImageDirective,
-  DialogComponent,
+  ReplaceParamsPipe,
+  StartCasePipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,
@@ -42,6 +45,8 @@ const DIRECTIVES = [
   MatDialogActionsAlignDirective,
   MatListActiveDirective,
   DefaultImageDirective,
+  MatErrorControlDirective,
+  ImageDirective,
 ];
 
 const MODULES = [
@@ -58,7 +63,7 @@ const MODULES = [
   MatProgressSpinnerModule,
 ];
 
-const COMPONENTS = [ImageComponent];
+const COMPONENTS = [ImageComponent, DialogComponent];
 
 @NgModule({
   imports: [...MODULES],

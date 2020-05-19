@@ -3,6 +3,7 @@ import { UserRole } from './user-role';
 import { FileUpload } from './file-upload';
 import { CommonColumns } from './common-history';
 import { Region } from './region';
+import { UserFollower } from './user-follower';
 
 export interface User extends CommonColumns {
   username: string;
@@ -20,6 +21,12 @@ export interface User extends CommonColumns {
 
   expired?: boolean;
   resetToken?: string;
+
+  userFollowers?: UserFollower[];
+  userFollowed?: UserFollower[];
+
+  aboutMe?: string;
+  title?: string;
 }
 
 export interface Auth {

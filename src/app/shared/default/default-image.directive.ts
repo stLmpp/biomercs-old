@@ -7,6 +7,7 @@ import {
   OnInit,
   Optional,
   Renderer2,
+  Self,
 } from '@angular/core';
 import { ImageDirective } from '../file-upload/image.directive';
 import { Subject } from 'rxjs';
@@ -19,7 +20,7 @@ export class DefaultImageDirective implements OnInit, OnDestroy {
   constructor(
     private elementRef: ElementRef,
     private renderer2: Renderer2,
-    @Optional() private imageDirective: ImageDirective
+    @Optional() @Self() private imageDirective: ImageDirective
   ) {}
 
   private _destroy$ = new Subject();
@@ -51,6 +52,9 @@ export class DefaultImageDirective implements OnInit, OnDestroy {
       .subscribe(() => {
         this._onError();
       });
+    if (this.imageDirective?.hasError) {
+      this._onError();
+    }
   }
 
   ngOnDestroy(): void {}

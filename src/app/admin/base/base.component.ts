@@ -9,11 +9,7 @@ import {
   TrackByFunction,
   ViewChild,
 } from '@angular/core';
-import {
-  convertToBoolProperty,
-  startCase,
-  trackByFactory,
-} from '../../util/util';
+import { convertToBoolProperty, trackByFactory } from '../../util/util';
 import {
   AsyncValidatorFn,
   FormControl,
@@ -27,6 +23,7 @@ import { SuperService } from '../../shared/super/super-service';
 import { CommonColumns } from '../../model/common-history';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchHttpError } from '../../util/operators/catchError';
+import { startCase } from '../../shared/start-case/start-case.pipe';
 
 export interface FieldConfig<S = any> {
   type?: 'text' | 'number' | 'select' | 'checkbox';
@@ -39,6 +36,7 @@ export interface FieldConfig<S = any> {
   selectLabel?: keyof S;
   selectValue?: keyof S;
   selectTrackBy?: TrackByFunction<S>;
+  hint?: string;
 }
 
 export type FieldsConfig<T = any, S = any> = Partial<

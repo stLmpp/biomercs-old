@@ -11,7 +11,6 @@ export const DEFAULT_PIPE_TYPE = new InjectionToken<DefaultPipeType>(
   'DEFAULT_PIPE_TYPE'
 );
 
-
 @Pipe({ name: 'default' })
 export class DefaultPipe implements PipeTransform {
   constructor(
@@ -30,7 +29,7 @@ export class DefaultPipe implements PipeTransform {
       case 'strict':
         return value ?? defaultValue;
       case 'loose':
-        return !!value ? value : value;
+        return !!value ? value : defaultValue;
     }
   }
 }

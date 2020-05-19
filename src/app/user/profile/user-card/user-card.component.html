@@ -1,0 +1,216 @@
+<ng-container
+  *ngIf="{
+    user: user$ | async,
+    isSameLogged: isSameAsLogged$ | async,
+    isAdmin: isAdmin$ | async,
+    isEditable: (isAdmin$ | async) || (isSameAsLogged$ | async),
+    isFollowing: isFollowing$ | async
+  } as state"
+>
+  <mat-card class="user" #card>
+    <mat-progress-bar
+      mode="indeterminate"
+      class="top"
+      *ngIf="state.user.uploading || state.user.saving || followingLoading"
+    ></mat-progress-bar>
+    <mat-card-header>
+      <img
+        mat-card-avatar
+        [src]="state.user.idAvatar"
+        auth
+        [alt]="state.user.username"
+        [default]="idDefaultAvatar$ | async"
+        (loading)="changeDetectorRef.markForCheck()"
+        matTooltip="Change avatar"
+        [matTooltipDisabled]="!state.isEditable"
+        (click)="state.isEditable && inputAvataRef.click()"
+        [class.c-pointer]="state.isEditable"
+      />
+      <input
+        type="file"
+        [accept]="defaultQuery.imageExtensionsAccept$ | async"
+        (change)="uploadAvatar(state.user, $event)"
+        #inputAvataRef
+        hidden
+      />
+      <mat-card-title>{{ state.user.username }}</mat-card-title>
+      <mat-card-subtitle
+        class="editable"
+        #title
+        (click)="state.isEditable && openEdit(title, 'title')"
+      >
+        {{ state.user.title | default: 'No title':'loose' }}
+        <mat-icon>edit</mat-icon>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div
+        [class.editable]="state.isEditable"
+        class="editable"
+        #aboutMe
+        (click)="
+          state.isEditable && openEdit(aboutMe, 'aboutMe', 'textarea', 1000)
+        "
+      >
+        {{ state.user.aboutMe | default: 'No info':'loose' }}
+        <mat-icon>edit</mat-icon>
+      </div>
+      <mat-divider></mat-divider>
+      <mat-list dense>
+        <div mat-subheader class="justify-between" *ngIf="state.isEditable">
+          Links
+          <button mat-icon-button (click)="openLink(state.user)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <mat-list-item *ngIf="!state.user.userLinks?.length">
+          No links found
+        </mat-list-item>
+        <mat-list-item
+          *ngFor="
+            let userLink of state.user.userLinks;
+            trackBy: trackByUserLink
+          "
+        >
+          <mat-icon mat-list-icon [svgIcon]="userLink.site.icon"></mat-icon>
+          <span matLine>{{ userLink.name }}</span>
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            *ngIf="state.isEditable; else visit"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <ng-template #visit>
+            <button mat-icon-button (click)="redirectLink(userLink)">
+              <mat-icon>launch</mat-icon>
+            </button>
+          </ng-template>
+          <mat-menu #menu>
+            <button mat-menu-item (click)="openLink(state.user, userLink)">
+              <mat-icon>edit</mat-icon>
+              Edit
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
+            <button mat-menu-item (click)="redirectLink(userLink)">
+              <mat-icon>launch</mat-icon>
+              Visit
+            </button>
+          </mat-menu>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <div matSubheader>Followers</div>
+        <mat-list-item
+          *ngIf="!state.user.userFollowers?.length && !userFollowersLoading"
+        >
+          No followers found
+        </mat-list-item>
+        <mat-list-item *ngIf="userFollowersLoading">
+          <mat-spinner diameter="22"></mat-spinner>
+        </mat-list-item>
+        <mat-list-item
+          *ngFor="
+            let userFollower of state.user.userFollowers;
+            trackBy: trackByUserFollower
+          "
+        >
+          <img
+            mat-list-avatar
+            [src]="userFollower.follower.idAvatar"
+            auth
+            [alt]="userFollower.follower.username"
+            [default]="idDefaultAvatar$ | async"
+            (loading)="changeDetectorRef.markForCheck()"
+          />
+          <span matLine>{{ userFollower.follower.username }}</span>
+          <button
+            mat-icon-button
+            matSuffix
+            [routerLink]="['../../', userFollower.idFollower, 'profile']"
+          >
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <div matSubheader>Following</div>
+        <mat-list-item
+          *ngIf="!state.user.userFollowed?.length && !userFollowingLoading"
+        >
+          {{ state.user.username }} is following no one!
+        </mat-list-item>
+        <mat-list-item *ngIf="userFollowingLoading">
+          <mat-spinner diameter="22"></mat-spinner>
+        </mat-list-item>
+        <mat-list-item
+          *ngFor="
+            let userFollowed of state.user.userFollowed;
+            trackBy: trackByUserFollower
+          "
+        >
+          <img
+            mat-list-avatar
+            [src]="userFollowed.followed.idAvatar"
+            auth
+            [alt]="userFollowed.followed.username"
+            [default]="idDefaultAvatar$ | async"
+            (loading)="changeDetectorRef.markForCheck()"
+          />
+          <span matLine>{{ userFollowed.followed.username }}</span>
+          <button
+            mat-icon-button
+            matSuffix
+            [routerLink]="['../../', userFollowed.idFollowed, 'profile']"
+          >
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+      <mat-nav-list> </mat-nav-list>
+    </mat-card-content>
+    <mat-card-actions align="end" *ngIf="!state.isSameLogged">
+      <button
+        mat-button
+        color="accent"
+        (click)="onFollow(state.user, !state.isFollowing)"
+        [disabled]="followingLoading"
+      >
+        {{ state.isFollowing ? 'Unfollow' : 'Follow' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <ng-template
+    #editOverlayRef
+    let-type="type"
+    let-field="field"
+    let-maxlength="maxlength"
+  >
+    <mat-form-field #form cdkTrapFocus cdkTrapFocusAutoCapture>
+      <mat-label>{{ field | startCase }}</mat-label>
+      <input matInput *ngIf="type === 'input'" [ngModel]="state.user[field]" />
+      <textarea
+        matInput
+        [ngModel]="state.user[field]"
+        rows="5"
+        [maxLength]="maxlength"
+        *ngIf="type === 'textarea'"
+      ></textarea>
+      <mat-hint *ngIf="maxlength">
+        {{ form._control?.ngControl.value.length }}/{{ maxlength }}
+      </mat-hint>
+    </mat-form-field>
+    <div>
+      <button
+        mat-button
+        color="accent"
+        [disabled]="state.user.saving || form._control?.ngControl.pristine"
+        (click)="edit(state.user, field, form._control.ngControl.value)"
+      >
+        Save
+      </button>
+    </div>
+  </ng-template>
+</ng-container>

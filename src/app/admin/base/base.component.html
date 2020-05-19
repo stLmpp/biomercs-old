@@ -119,6 +119,9 @@
                 }}
               </mat-error>
             </mat-error>
+            <mat-hint *ngIf="fieldsConfig[key].hint as hint">
+              {{ hint }}
+            </mat-hint>
           </mat-form-field>
           <mat-checkbox
             *ngIf="fieldsConfig[key]?.type === 'checkbox'"

@@ -7,10 +7,16 @@ import { finalize, tap } from 'rxjs/operators';
 import { UpdateResult } from '../../model/update-result';
 import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
+import { UserQuery } from './user.query';
+import { arrayRemove } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  constructor(private userStore: UserStore, private http: HttpClient) {}
+  constructor(
+    private userStore: UserStore,
+    private http: HttpClient,
+    private userQuery: UserQuery
+  ) {}
 
   endPoint = 'user';
 
@@ -74,5 +80,17 @@ export class UserService {
           this.userStore.update(idUser, { uploading: false });
         })
       );
+  }
+
+  removeFollowersAndFollowing(ids: number[]): void {
+    this.userStore.set(
+      this.userQuery.getAll().map(user => {
+        return {
+          ...user,
+          userFollowed: arrayRemove(user?.userFollowed ?? [], ids),
+          userFollowers: arrayRemove(user?.userFollowers ?? [], ids),
+        };
+      })
+    );
   }
 }

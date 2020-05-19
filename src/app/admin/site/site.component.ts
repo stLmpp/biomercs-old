@@ -4,6 +4,7 @@ import { SiteQuery } from '../../state/site/site.query';
 import { FieldsConfig } from '../base/base.component';
 import { Site } from '../../model/site';
 import { Validators } from '@angular/forms';
+import { urlValidator } from '../../validators/url.directive';
 
 @Component({
   selector: 'app-site',
@@ -19,16 +20,15 @@ export class SiteComponent implements OnInit {
       validators: [Validators.required],
     },
     url: {
-      validators: [
-        Validators.required,
-        Validators.pattern(
-          '(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?'
-        ),
-      ],
+      validators: [Validators.required, urlValidator],
       validatorsMessages: {
         pattern: '{field} needs to be a valid url',
       },
       placeholder: 'URL',
+    },
+    replace: {
+      validators: [Validators.required],
+      hint: 'Example: {url}/{user}',
     },
   };
 

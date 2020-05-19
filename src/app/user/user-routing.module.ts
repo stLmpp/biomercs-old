@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { RouteParamEnum } from '../model/route-param.enum';
 import { ProfileComponent } from './profile/profile.component';
 import { SingleUserResolver } from '../state/user/user.resolver';
