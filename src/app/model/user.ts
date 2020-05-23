@@ -4,6 +4,7 @@ import { FileUpload } from './file-upload';
 import { CommonColumns } from './common-history';
 import { Region } from './region';
 import { UserFollower } from './user-follower';
+import { trackByFactory } from '../util/util';
 
 export interface User extends CommonColumns {
   username: string;
@@ -60,3 +61,5 @@ export interface UserConfirmForgotPasswordDto {
 export interface UserChangePasswordDto {
   password: string;
 }
+
+export const trackByUser = trackByFactory<User>('id');

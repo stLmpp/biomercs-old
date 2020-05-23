@@ -1,0 +1,28 @@
+@mixin bio-badge($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  .bio-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+
+    color: mat-color($primary, default-contrast);
+    background: mat-color($primary);
+
+    font-size: 0.6rem;
+
+    &.accent {
+      background: mat-color($accent);
+      color: mat-color($accent, default-contrast);
+    }
+    &.warn {
+      color: mat-color($warn, default-contrast);
+      background: mat-color($warn);
+    }
+
+    @include cdk-high-contrast(active, off) {
+      outline: solid 1px;
+      border-radius: 0;
+    }
+  }
+}

@@ -8,8 +8,8 @@ import {
   ModeParamsDto,
   ModeUpdateDto,
 } from '../../model/mode';
-import { SuperService } from '../../shared/super/super-service';
 import { ModeQuery } from './mode.query';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class ModeService extends SuperService<

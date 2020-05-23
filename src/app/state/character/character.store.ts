@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { Character } from '../../model/character';
-
-export interface CharacterState extends EntityState<Character> {}
+import { EntityStore } from 'st-store';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'character', cache: { ttl: 900_000 } })
-export class CharacterStore extends EntityStore<CharacterState> {
+export class CharacterStore extends EntityStore<Character> {
   constructor() {
-    super();
+    super({ name: 'character', cache: 900_000 });
   }
 }

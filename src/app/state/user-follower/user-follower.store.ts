@@ -1,22 +1,13 @@
 import { Injectable } from '@angular/core';
-import {
-  arrayUpsert,
-  EntityState,
-  EntityStore,
-  getEntityType,
-  StoreConfig,
-} from '@datorama/akita';
 import { UserFollower } from '../../model/user-follower';
 import { UserStore } from '../user/user.store';
-
-export interface UserFollowerState extends EntityState<UserFollower> {}
+import { EntityStore } from 'st-store';
+import { arrayRemove, arrayUpsert } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'user-follower' })
-export class UserFollowerStore extends EntityStore<UserFollowerState> {
+export class UserFollowerStore extends EntityStore<UserFollower> {
   constructor(private userStore: UserStore) {
-    super();
-    this.akitaPreAddEntity = this.akitaPreAddEntity.bind(this);
+    super({ name: 'user-follower' });
   }
 
   private updateUser(entity: UserFollower): void {
@@ -30,24 +21,27 @@ export class UserFollowerStore extends EntityStore<UserFollowerState> {
     }));
   }
 
-  akitaPreAddEntity(newEntity: any): getEntityType<UserFollowerState> {
-    const entity = super.akitaPreAddEntity(newEntity);
+  preAdd(entity: UserFollower): UserFollower {
     this.updateUser(entity);
-    return entity;
+    return super.preAdd(entity);
   }
 
-  akitaPreUpdateEntity(
-    _: Readonly<getEntityType<UserFollowerState>>,
-    nextEntity: any
-  ): getEntityType<UserFollowerState> {
-    const entity = super.akitaPreUpdateEntity(_, nextEntity);
+  preUpdate(entity: UserFollower): UserFollower {
     this.updateUser(entity);
-    return entity;
+    return super.preUpdate(entity);
   }
 
-  akitaPreCheckEntity(
-    newEntity: Readonly<getEntityType<UserFollowerState>>
-  ): getEntityType<UserFollowerState> {
-    return super.akitaPreCheckEntity(newEntity);
+  postRemove(entitiesRemoved: UserFollower[]): void {
+    for (const entity of entitiesRemoved) {
+      this.userStore.update(entity.idFollower, user => ({
+        ...user,
+        userFollowed: arrayRemove(user?.userFollowed ?? [], entity.id),
+      }));
+      this.userStore.update(entity.idFollowed, user => ({
+        ...user,
+        userFollowers: arrayRemove(user?.userFollowers ?? [], entity.id),
+      }));
+    }
+    super.postRemove(entitiesRemoved);
   }
 }

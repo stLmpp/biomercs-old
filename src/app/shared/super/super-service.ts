@@ -1,16 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {
-  cacheable,
-  EntityState,
-  EntityStore,
-  QueryEntity,
-} from '@datorama/akita';
 import { finalize, tap } from 'rxjs/operators';
 import { catchHttpError } from '../../util/operators/catchError';
 import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
 import { CommonColumns } from '../../model/common-history';
+import { EntityQuery, EntityStore, useCache } from 'st-store';
 
 export type SuperServiceMethod =
   | 'add'
@@ -23,6 +18,7 @@ export type SuperServiceMethod =
   | 'findByParams'
   | 'search'
   | 'deleteByParams';
+
 export type SuperServiceTime = 'after' | 'before';
 export type SuperServiceErrorAction = 'restore' | 'keep';
 
@@ -38,18 +34,6 @@ export interface SuperServiceOptions<Entity> {
     key?: keyof Entity;
   };
   cache?: boolean;
-  afterDelete?: (
-    result: Entity[],
-    store: EntityStore<EntityState<Entity>>,
-    query: QueryEntity<EntityState<Entity>>
-  ) => any;
-}
-
-export interface SuperServiceContructor<Entity extends CommonColumns> {
-  http: HttpClient;
-  options: SuperServiceOptions<Entity>;
-  store: EntityStore<EntityState<Entity>>;
-  query: QueryEntity<EntityState<Entity>>;
 }
 
 export class SuperService<
@@ -60,37 +44,10 @@ export class SuperService<
   ParamsDto = any,
   DeleteDto = any
 > {
-  /*constructor({ http, options, store, query }: SuperServiceContructor<Entity>) {
-    this.__http = http;
-    this.__store = store;
-    this.__query = query;
-    this.options = {
-      ...{
-        excludeMethods: [],
-        updateTime: 'after',
-        updateError: 'restore',
-        deleteTime: 'after',
-        deleteError: 'restore',
-        cache: true,
-      },
-      ...options,
-    };
-    if (!this.options.endPoint.startsWith('/')) {
-      this.options.endPoint = '/' + this.options.endPoint;
-    }
-  }
-  private __http: HttpClient;
-  private __store: EntityStore<EntityState<Entity>>;
-  private __query: QueryEntity<EntityState<Entity>>;
-
-  TODO NEXT
-
-  */
-
   constructor(
     private __http: HttpClient,
-    private __store: EntityStore<EntityState<Entity>>,
-    private __query: QueryEntity<EntityState<Entity>>,
+    private __store: EntityStore<Entity>,
+    private __query: EntityQuery<Entity>,
     options: SuperServiceOptions<Entity>
   ) {
     this.options = {
@@ -143,7 +100,7 @@ export class SuperService<
 
   update(id: number, dto: UpdateDto): Observable<Entity> {
     if (this.isAllowed('update')) {
-      this.__store.update(id, { saving: true } as any);
+      this.__store.update(id, { saving: true } as Partial<Entity>);
       let http = this.__http.patch<Entity>(
         `${this.options.endPoint}/${id}`,
         dto
@@ -211,9 +168,6 @@ export class SuperService<
         .pipe(
           tap(deleteds => {
             this.__store.remove(deleteds.map(entity => entity.id));
-            if (this.options.afterDelete) {
-              this.options.afterDelete(deleteds, this.__store, this.__query);
-            }
           })
         );
     }
@@ -233,7 +187,7 @@ export class SuperService<
         })
       );
       if (this.options.cache) {
-        return cacheable(this.__store, http$, { emitNext: true });
+        return http$.pipe(useCache(this.__store));
       } else {
         return http$;
       }
@@ -250,13 +204,14 @@ export class SuperService<
     }
   }
 
-  findByParams(dto: ParamsDto): Observable<Entity[]> {
+  findByParams(dto: ParamsDto, limit?: number): Observable<Entity[]> {
     if (this.isAllowed('findByParams')) {
+      const params = new HttpParams({ limit }, true);
       return this.__http
-        .post<Entity[]>(`${this.options.endPoint}/params`, dto)
+        .post<Entity[]>(`${this.options.endPoint}/params`, dto, { params })
         .pipe(
           tap(entities => {
-            this.__store.upsertMany(entities);
+            this.__store.upsert(entities);
           })
         );
     }
@@ -269,7 +224,7 @@ export class SuperService<
         .get<Entity[]>(`${this.options.endPoint}/search`, { params })
         .pipe(
           tap(entities => {
-            this.__store.upsertMany(entities);
+            this.__store.upsert(entities);
           })
         );
     }
@@ -279,7 +234,7 @@ export class SuperService<
     if (!this.options.file) {
       throw new Error('Method uploadFile is now allowed');
     }
-    this.__store.update(id, { uploading: true } as any);
+    this.__store.update(id, { uploading: true } as Partial<Entity>);
     const formData = new FormData();
     formData.append('file', file, file.name);
     const headers = new HttpHeaders({

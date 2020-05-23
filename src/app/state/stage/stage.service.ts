@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { StageStore } from './stage.store';
 import { StageQuery } from './stage.query';
-import { SuperService } from '../../shared/super/super-service';
 import { Stage, StageAddDto, StageUpdateDto } from '../../model/stage';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class StageService extends SuperService<

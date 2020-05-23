@@ -4,7 +4,7 @@
     isSameLogged: isSameAsLogged$ | async,
     isAdmin: isAdmin$ | async,
     isEditable: (isAdmin$ | async) || (isSameAsLogged$ | async),
-    isFollowing: isFollowing$ | async
+    isFollowing: user$ | async | isFollowing
   } as state"
 >
   <mat-card class="user" #card>
@@ -40,12 +40,11 @@
         (click)="state.isEditable && openEdit(title, 'title')"
       >
         {{ state.user.title | default: 'No title':'loose' }}
-        <mat-icon>edit</mat-icon>
+        <mat-icon *ngIf="state.isEditable">edit</mat-icon>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <div
-        [class.editable]="state.isEditable"
         class="editable"
         #aboutMe
         (click)="
@@ -53,7 +52,7 @@
         "
       >
         {{ state.user.aboutMe | default: 'No info':'loose' }}
-        <mat-icon>edit</mat-icon>
+        <mat-icon *ngIf="state.isEditable">edit</mat-icon>
       </div>
       <mat-divider></mat-divider>
       <mat-list dense>
@@ -101,8 +100,15 @@
             </button>
           </mat-menu>
         </mat-list-item>
-        <mat-divider></mat-divider>
-        <div matSubheader>Followers</div>
+      </mat-list>
+      <mat-divider></mat-divider>
+      <mat-nav-list dense>
+        <div matSubheader>
+          Followers
+          <app-badge>
+            {{ state.user.userFollowers?.length | default: 0 }}
+          </app-badge>
+        </div>
         <mat-list-item
           *ngIf="!state.user.userFollowers?.length && !userFollowersLoading"
         >
@@ -113,9 +119,10 @@
         </mat-list-item>
         <mat-list-item
           *ngFor="
-            let userFollower of state.user.userFollowers;
+            let userFollower of state.user.userFollowers | slice: 0:5;
             trackBy: trackByUserFollower
           "
+          [routerLink]="['../../', userFollower.idFollower, 'profile']"
         >
           <img
             mat-list-avatar
@@ -126,16 +133,23 @@
             (loading)="changeDetectorRef.markForCheck()"
           />
           <span matLine>{{ userFollower.follower.username }}</span>
-          <button
-            mat-icon-button
-            matSuffix
-            [routerLink]="['../../', userFollower.idFollower, 'profile']"
-          >
+          <button mat-icon-button matSuffix>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </mat-list-item>
+        <mat-list-item
+          *ngIf="state.user.userFollowers?.length > 5"
+          (click)="seeAllFollowers('follower')"
+        >
+          See all
+        </mat-list-item>
         <mat-divider></mat-divider>
-        <div matSubheader>Following</div>
+        <div matSubheader>
+          Following
+          <app-badge>
+            {{ state.user.userFollowed?.length | default: 0 }}
+          </app-badge>
+        </div>
         <mat-list-item
           *ngIf="!state.user.userFollowed?.length && !userFollowingLoading"
         >
@@ -146,9 +160,10 @@
         </mat-list-item>
         <mat-list-item
           *ngFor="
-            let userFollowed of state.user.userFollowed;
+            let userFollowed of state.user.userFollowed | slice: 0:5;
             trackBy: trackByUserFollower
           "
+          [routerLink]="['../../', userFollowed.idFollowed, 'profile']"
         >
           <img
             mat-list-avatar
@@ -159,16 +174,17 @@
             (loading)="changeDetectorRef.markForCheck()"
           />
           <span matLine>{{ userFollowed.followed.username }}</span>
-          <button
-            mat-icon-button
-            matSuffix
-            [routerLink]="['../../', userFollowed.idFollowed, 'profile']"
-          >
+          <button mat-icon-button matSuffix>
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </mat-list-item>
-      </mat-list>
-      <mat-nav-list> </mat-nav-list>
+        <mat-list-item
+          *ngIf="state.user.userFollowed?.length > 5"
+          (click)="seeAllFollowers('followed')"
+        >
+          See all
+        </mat-list-item>
+      </mat-nav-list>
     </mat-card-content>
     <mat-card-actions align="end" *ngIf="!state.isSameLogged">
       <button
@@ -199,7 +215,7 @@
         *ngIf="type === 'textarea'"
       ></textarea>
       <mat-hint *ngIf="maxlength">
-        {{ form._control?.ngControl.value.length }}/{{ maxlength }}
+        {{ form._control?.ngControl.value.length | default: 0 }}/{{ maxlength }}
       </mat-hint>
     </mat-form-field>
     <div>

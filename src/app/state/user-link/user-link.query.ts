@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { UserLinkStore, UserLinkState } from './user-link.store';
+import { UserLinkStore } from './user-link.store';
+import { EntityQuery } from 'st-store';
+import { UserLink } from '../../model/user-link';
 
 @Injectable({ providedIn: 'root' })
-export class UserLinkQuery extends QueryEntity<UserLinkState> {
-
+export class UserLinkQuery extends EntityQuery<UserLink> {
   constructor(protected store: UserLinkStore) {
     super(store);
   }
-
 }

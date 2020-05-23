@@ -26,7 +26,7 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
-import { combineLatest, forkJoin, Observable, Subject } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { User } from '../../../model/user';
 import { trackByUserLink, UserLink } from '../../../model/user-link';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,6 +44,10 @@ import {
   UserFollowerAddDto,
 } from '../../../model/user-follower';
 import { UserFollowerService } from '../../../state/user-follower/user-follower.service';
+import {
+  FollowersComponent,
+  UserFollowersData,
+} from './followers/followers.component';
 
 @Component({
   selector: 'app-user-card',
@@ -84,17 +88,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
   user$ = this.routerQuery.selectParams(RouteParamEnum.idUser).pipe(
     map(Number),
     switchMap(idUser => this.userQuery.selectEntity(idUser))
-  );
-
-  isFollowing$ = combineLatest([this.authQuery.user$, this.user$]).pipe(
-    map(([userLogged, user]) => {
-      return (
-        userLogged.id !== user.id &&
-        user.userFollowers?.some(
-          follower => follower.idFollower === userLogged.id
-        )
-      );
-    })
   );
 
   idDefaultAvatar$: Observable<number> = this.defaultQuery.idAvatar$;
@@ -172,7 +165,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
       });
   }
 
-  edit(user: User, field: keyof User, newValue: any): void {
+  edit(user: User, field: keyof User, newValue: User[keyof User]): void {
     this.userService.update(user.id, { [field]: newValue }).subscribe(() => {
       this.overlayRef.detach();
     });
@@ -195,6 +188,19 @@ export class UserCardComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  seeAllFollowers(
+    type: keyof Pick<UserFollower, 'follower' | 'followed'>
+  ): void {
+    const list = this.user$.pipe(
+      pluck(type === 'follower' ? 'userFollowers' : 'userFollowed'),
+      map(followers => followers.map(follower => follower[type]))
+    );
+    const title = type === 'follower' ? 'Followers' : 'Following';
+    this.matDialog.open(FollowersComponent, {
+      data: { title, list$: list, type } as UserFollowersData,
+    });
   }
 
   ngOnInit(): void {

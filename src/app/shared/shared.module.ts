@@ -18,7 +18,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialogActionsAlignDirective } from './custom-material/mat-dialog-actions-align.directive';
 import { MatListActiveDirective } from './custom-material/mat-list-active.directive';
-import { ImageComponent } from './file-upload/image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { IsTypePipe } from './is-type/is-type.pipe';
 import { ImageDirective } from './file-upload/image.directive';
@@ -27,6 +26,8 @@ import { DefaultImageDirective } from './default/default-image.directive';
 import { MatErrorControlDirective } from './custom-material/mat-error-control.directive';
 import { ReplaceParamsPipe } from './replace-params/replace-params.pipe';
 import { StartCasePipe } from './start-case/start-case.pipe';
+import { BadgeComponent } from './badge/badge.component';
+import { IsFollowingPipe } from './is-following/is-following.pipe';
 
 const PIPES = [
   DefaultPipe,
@@ -38,6 +39,7 @@ const PIPES = [
   IsTypePipe,
   ReplaceParamsPipe,
   StartCasePipe,
+  IsFollowingPipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,
@@ -63,7 +65,7 @@ const MODULES = [
   MatProgressSpinnerModule,
 ];
 
-const COMPONENTS = [ImageComponent, DialogComponent];
+const COMPONENTS = [DialogComponent, BadgeComponent];
 
 @NgModule({
   imports: [...MODULES],

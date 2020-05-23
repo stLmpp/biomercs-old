@@ -8,8 +8,8 @@ import {
   GameUpdateDto,
 } from '../../model/game';
 import { HttpClient } from '@angular/common/http';
-import { SuperService } from '../../shared/super/super-service';
 import { GameQuery } from './game.query';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class GameService extends SuperService<

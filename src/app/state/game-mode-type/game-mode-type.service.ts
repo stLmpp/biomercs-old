@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GameModeTypeStore } from './game-mode-type.store';
-import { SuperService } from '../../shared/super/super-service';
 import { GameModeType, GameModeTypeAddDto } from '../../model/game-mode-type';
 import { GameModeTypeQuery } from './game-mode-type.query';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class GameModeTypeService extends SuperService<

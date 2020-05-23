@@ -1,30 +1,39 @@
 import { Injectable } from '@angular/core';
-import {
-  arrayAdd,
-  EntityState,
-  EntityStore,
-  getEntityType,
-  StoreConfig,
-} from '@datorama/akita';
 import { UserLink } from '../../model/user-link';
 import { UserStore } from '../user/user.store';
-
-export interface UserLinkState extends EntityState<UserLink> {}
+import { EntityStore } from 'st-store';
+import { arrayRemove, arrayUpsert } from '@datorama/akita';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'user-link' })
-export class UserLinkStore extends EntityStore<UserLinkState> {
+export class UserLinkStore extends EntityStore<UserLink> {
   constructor(private userStore: UserStore) {
-    super();
-    this.akitaPreAddEntity = this.akitaPreAddEntity.bind(this);
+    super({ name: 'user-link' });
   }
 
-  akitaPreAddEntity(newEntity: any): getEntityType<UserLinkState> {
-    const userLink = super.akitaPreAddEntity(newEntity);
-    this.userStore.update(userLink.idUser, user => ({
+  private updateUser(entity: UserLink): void {
+    this.userStore.update(entity.idUser, user => ({
       ...user,
-      userLinks: arrayAdd(user.userLinks, userLink),
+      userLinks: arrayUpsert(user.userLinks, entity.id, entity),
     }));
-    return userLink;
+  }
+
+  preAdd(entity: UserLink): UserLink {
+    this.updateUser(entity);
+    return entity;
+  }
+
+  preUpdate(entity: UserLink): UserLink {
+    this.updateUser(entity);
+    return super.preUpdate(entity);
+  }
+
+  postRemove(entitiesRemoved: UserLink[]): void {
+    for (const entity of entitiesRemoved) {
+      this.userStore.update(entity.idUser, user => ({
+        ...user,
+        userLinks: arrayRemove(user.userLinks, entity.id),
+      }));
+    }
+    return super.postRemove(entitiesRemoved);
   }
 }

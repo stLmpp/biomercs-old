@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TypeStore } from './type.store';
 import { TypeQuery } from './type.query';
-import { SuperService } from '../../shared/super/super-service';
 import {
   Type,
   TypeAddDto,
@@ -10,6 +9,7 @@ import {
   TypeParamsDto,
   TypeUpdateDto,
 } from '../../model/type';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class TypeService extends SuperService<

@@ -25,7 +25,7 @@ export class DefaultImageDirective implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  @Input() default: number | string;
+  @Input() default: number | string | '';
 
   @HostListener('error')
   onError(): void {

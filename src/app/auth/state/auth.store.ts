@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Store, StoreConfig } from '@datorama/akita';
 import { Auth } from '../../model/user';
+import { Store } from 'st-store';
 
 export function createInitialState(): Auth {
   return {
@@ -9,9 +9,12 @@ export function createInitialState(): Auth {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'auth' })
 export class AuthStore extends Store<Auth> {
   constructor() {
-    super(createInitialState());
+    super({
+      name: 'auth',
+      initialState: createInitialState(),
+      persist: 'user.token',
+    });
   }
 }

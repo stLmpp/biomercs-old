@@ -29,9 +29,13 @@ export class UserService {
   }
 
   update(id: number, dto: UserUpdateDto): Observable<UpdateResult> {
+    this.userStore.update(id, { saving: true });
     return this.http.patch<UpdateResult>(`${this.endPoint}/${id}`, dto).pipe(
       tap(() => {
         this.userStore.update(id, dto);
+      }),
+      finalize(() => {
+        this.userStore.update(id, { saving: false });
       })
     );
   }
@@ -56,7 +60,7 @@ export class UserService {
       .get<User[]>(`${this.endPoint}/search`, { params })
       .pipe(
         tap(users => {
-          this.userStore.upsertMany(users);
+          this.userStore.upsert(users);
         })
       );
   }
@@ -80,17 +84,5 @@ export class UserService {
           this.userStore.update(idUser, { uploading: false });
         })
       );
-  }
-
-  removeFollowersAndFollowing(ids: number[]): void {
-    this.userStore.set(
-      this.userQuery.getAll().map(user => {
-        return {
-          ...user,
-          userFollowed: arrayRemove(user?.userFollowed ?? [], ids),
-          userFollowers: arrayRemove(user?.userFollowers ?? [], ids),
-        };
-      })
-    );
   }
 }

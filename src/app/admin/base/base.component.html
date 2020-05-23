@@ -177,6 +177,6 @@
 
 <ng-template #imageRef let-idImage>
   <mat-dialog-content>
-    <app-image [src]="idImage" alt=""></app-image>
+    <img [src]="idImage" auth [alt]="idImage" />
   </mat-dialog-content>
 </ng-template>

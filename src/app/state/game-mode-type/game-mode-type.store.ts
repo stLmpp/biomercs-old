@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { GameModeType } from '../../model/game-mode-type';
-
-export interface GameModeTypeState extends EntityState<GameModeType> {}
+import { EntityStore } from 'st-store';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'game-mode-type' })
-export class GameModeTypeStore extends EntityStore<GameModeTypeState> {
+export class GameModeTypeStore extends EntityStore<GameModeType> {
   constructor() {
-    super();
+    super({ name: 'game-mode-type', cache: 900_000 });
   }
 }

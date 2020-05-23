@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { ModeStore, ModeState } from './mode.store';
+import { ModeStore } from './mode.store';
+import { EntityQuery } from 'st-store';
+import { Mode } from '../../model/mode';
 
 @Injectable({ providedIn: 'root' })
-export class ModeQuery extends QueryEntity<ModeState> {
+export class ModeQuery extends EntityQuery<Mode> {
   constructor(protected store: ModeStore) {
     super(store);
   }
-
-  all$ = this.selectAll();
 }

@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { GameModePlatformStore } from './game-mode-platform.store';
 import { GameModePlatformQuery } from './game-mode-platform.query';
-import { SuperService } from '../../shared/super/super-service';
 import {
   GameModePlatform,
   GameModePlatformAddDto,
 } from '../../model/game-mode-platform';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class GameModePlatformService extends SuperService<

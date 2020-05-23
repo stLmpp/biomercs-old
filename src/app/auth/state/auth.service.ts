@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthStore } from './auth.store';
-import { catchError, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import {
   User,
   UserForgotPasswordDto,
   UserRegisterDto,
   UserRegisterResponse,
 } from '../../model/user';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthQuery } from './auth.query';
-import { setLoading } from '@datorama/akita';
 import { catchHttpError } from '../../util/operators/catchError';
 import { Params } from '@angular/router';
+import { setError, setLoading } from 'st-store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -50,12 +50,9 @@ export class AuthService {
       .post<User>(`${this.endPoint}/login`, { username, password, rememberMe })
       .pipe(
         setLoading(this.authStore),
+        setError(this.authStore),
         tap(user => {
           this.authStore.update({ user });
-        }),
-        catchError(error => {
-          this.authStore.setError(error.error);
-          return throwError(error);
         })
       );
   }

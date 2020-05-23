@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Store, StoreConfig } from '@datorama/akita';
 import { Default } from '../../model/default';
+import { Store } from 'st-store';
 
 export function createInitialState(): Default {
   return {
@@ -11,9 +11,12 @@ export function createInitialState(): Default {
 }
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'default', cache: { ttl: 900_000 } })
 export class DefaultStore extends Store<Default> {
   constructor() {
-    super(createInitialState());
+    super({
+      name: 'default',
+      initialState: createInitialState(),
+      cache: 900_000,
+    });
   }
 }

@@ -13,9 +13,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
+import { FollowersComponent } from './profile/user-card/followers/followers.component';
 
 @NgModule({
-  declarations: [ProfileComponent, UserCardComponent, UserLinkComponent],
+  declarations: [ProfileComponent, UserCardComponent, UserLinkComponent, FollowersComponent],
   imports: [
     SharedModule,
     UserRoutingModule,

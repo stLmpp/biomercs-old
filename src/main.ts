@@ -3,17 +3,16 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
-import { enableAkitaProdMode, persistState } from '@datorama/akita';
+import { enableAkitaProdMode } from '@datorama/akita';
+import { enableProd } from 'st-store';
 
 if (environment.production) {
   enableProdMode();
+  enableProd();
   enableAkitaProdMode();
 }
 
-persistState({
-  include: ['auth.user.token'],
-});
-
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
-  .catch((err) => console.error(err));
+  // tslint:disable-next-line:no-console
+  .catch(err => console.error(err));

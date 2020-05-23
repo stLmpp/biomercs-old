@@ -1,6 +1,7 @@
 {
   "extends": ["tslint:recommended", "tslint-angular", "tslint-config-prettier"],
   "rules": {
+    "unified-signatures": false,
     "array-bracket-spacing": [true, "always"],
     "semicolon": [true, "always", "ignore-bound-class-methods"],
     "no-trailing-whitespace": [
@@ -73,7 +74,7 @@
     "ordered-imports": false,
     "quotemark": [true, "single"],
     "no-conflicting-lifecycle": true,
-    "no-host-metadata-property": true,
+    "no-host-metadata-property": false,
     "no-input-rename": true,
     "no-inputs-metadata-property": true,
     "no-output-native": true,

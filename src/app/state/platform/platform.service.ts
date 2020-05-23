@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PlatformStore } from './platform.store';
 import { PlatformQuery } from './platform.query';
-import { SuperService } from '../../shared/super/super-service';
 import {
   Platform,
   PlatformAddDto,
   PlatformUpdateDto,
 } from '../../model/platform';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class PlatformService extends SuperService<

@@ -1,27 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Query } from '@datorama/akita';
 import { AuthStore } from './auth.store';
 import { Auth, User } from '../../model/user';
 import { filter, map } from 'rxjs/operators';
 import { RoleEnum } from '../../model/role';
 import { Observable } from 'rxjs';
+import { Query } from 'st-store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
-  constructor(protected store: AuthStore) {
-    super(store);
+  constructor(protected authStore: AuthStore) {
+    super(authStore);
   }
 
   isLogged$ = this.select(state => {
     return !!state?.user?.token;
   });
-  user$ = this.select('user');
+  user$ = this.select('user').pipe(filter(user => !!user));
   isAdmin$ = this.user$.pipe(map(this.isAdmin));
 
   isSameAsLogged(idUser: number): Observable<boolean> {
     return this.user$.pipe(
       filter(user => !!user),
       map(user => user.id === idUser)
+    );
+  }
+
+  isFollowing(idUser: number): boolean {
+    const authUser = this.getUserSnapshot();
+    return (
+      authUser?.id !== idUser &&
+      authUser?.userFollowed?.some(followed => followed.idFollowed === idUser)
     );
   }
 
@@ -36,11 +44,11 @@ export class AuthQuery extends Query<Auth> {
   }
 
   getTokenSnapshot(): string {
-    return this.getValue().user?.token;
+    return this.getState().user?.token;
   }
 
   getUserSnapshot(): User {
-    return this.getValue().user;
+    return this.getState().user;
   }
 
   isLogged(): boolean {

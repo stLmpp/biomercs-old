@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { GameStore, GameState } from './game.store';
+import { GameStore } from './game.store';
+import { EntityQuery } from 'st-store';
+import { Game } from '../../model/game';
 
 @Injectable({ providedIn: 'root' })
-export class GameQuery extends QueryEntity<GameState> {
+export class GameQuery extends EntityQuery<Game> {
   constructor(protected store: GameStore) {
     super(store);
   }
-
-  all$ = this.selectAll();
 }

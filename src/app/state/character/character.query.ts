@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { CharacterStore, CharacterState } from './character.store';
+import { Character } from '../../model/character';
+import { CharacterStore } from './character.store';
+import { EntityQuery } from 'st-store';
 
 @Injectable({ providedIn: 'root' })
-export class CharacterQuery extends QueryEntity<CharacterState> {
-  constructor(protected store: CharacterStore) {
-    super(store);
+export class CharacterQuery extends EntityQuery<Character> {
+  constructor(private characterStore: CharacterStore) {
+    super(characterStore);
   }
-
-  all$ = this.selectAll();
 }

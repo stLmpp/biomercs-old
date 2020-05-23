@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CharacterStore } from './character.store';
 import { CharacterQuery } from './character.query';
-import { SuperService } from '../../shared/super/super-service';
 import {
   Character,
   CharacterAddDto,
@@ -10,6 +9,7 @@ import {
   CharacterParamsDto,
   CharacterUpdateDto,
 } from '../../model/character';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class CharacterService extends SuperService<

@@ -13,10 +13,21 @@
 }
 
 .user {
+  .mat-subheader {
+    > .bio-badge {
+      margin-left: 0.5rem;
+    }
+  }
+
   .editable {
     &:hover {
       .mat-icon {
         opacity: 1;
+      }
+    }
+    &.non-editable {
+      .mat-icon {
+        display: none;
       }
     }
     .mat-icon {

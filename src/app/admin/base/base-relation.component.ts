@@ -10,11 +10,11 @@ import {
 import { Subject } from 'rxjs';
 import { CommonColumns } from '../../model/common-history';
 import { convertToBoolProperty, trackByFactory } from '../../util/util';
-import { SuperService } from '../../shared/super/super-service';
 import { finalize, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { HandleErrorService } from '../../core/error/handle-error.service';
+import { SuperService } from '../../shared/super/super-service';
 
 @Component({
   selector: 'app-base-relation',

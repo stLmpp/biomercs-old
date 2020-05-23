@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { SiteStore, SiteState } from './site.store';
+import { SiteStore } from './site.store';
+import { EntityQuery } from 'st-store';
+import { Site } from '../../model/site';
 
 @Injectable({ providedIn: 'root' })
-export class SiteQuery extends QueryEntity<SiteState> {
+export class SiteQuery extends EntityQuery<Site> {
   constructor(protected store: SiteStore) {
     super(store);
   }
-
-  all$ = this.selectAll();
 }

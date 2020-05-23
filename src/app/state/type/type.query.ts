@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { QueryEntity } from '@datorama/akita';
-import { TypeStore, TypeState } from './type.store';
+import { TypeStore } from './type.store';
+import { EntityQuery } from 'st-store';
+import { Type } from '../../model/type';
 
 @Injectable({ providedIn: 'root' })
-export class TypeQuery extends QueryEntity<TypeState> {
+export class TypeQuery extends EntityQuery<Type> {
   constructor(protected store: TypeStore) {
     super(store);
   }
-
-  all$ = this.selectAll();
 }

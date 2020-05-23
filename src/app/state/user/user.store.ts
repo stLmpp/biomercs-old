@@ -1,13 +1,25 @@
 import { Injectable } from '@angular/core';
-import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { User } from '../../model/user';
-
-export interface UserState extends EntityState<User> {}
+import { EntityStore } from 'st-store';
+import { AuthStore } from '../../auth/state/auth.store';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'user' })
-export class UserStore extends EntityStore<UserState> {
-  constructor() {
-    super();
+export class UserStore extends EntityStore<User> {
+  constructor(private authStore: AuthStore) {
+    super({ name: 'user' });
+  }
+
+  preAdd(entity: User): User {
+    if (entity.id === this.authStore.getState()?.user?.id) {
+      this.authStore.update({ user: entity });
+    }
+    return super.preAdd(entity);
+  }
+
+  preUpdate(entity: User): User {
+    if (entity.id === this.authStore.getState()?.user?.id) {
+      this.authStore.update({ user: entity });
+    }
+    return super.preUpdate(entity);
   }
 }

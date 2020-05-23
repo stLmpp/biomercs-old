@@ -19,11 +19,11 @@ import {
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';
-import { SuperService } from '../../shared/super/super-service';
 import { CommonColumns } from '../../model/common-history';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchHttpError } from '../../util/operators/catchError';
 import { startCase } from '../../shared/start-case/start-case.pipe';
+import { SuperService } from '../../shared/super/super-service';
 
 export interface FieldConfig<S = any> {
   type?: 'text' | 'number' | 'select' | 'checkbox';

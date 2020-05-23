@@ -11,9 +11,11 @@
 @import 'list';
 @import 'button';
 @import 'card';
+@import './src/app/shared/badge/badge.component';
 
 @include angular-material-theme($theme);
 @include mat-list-theme-custom($theme);
+@include bio-badge($theme);
 
 html,
 body {

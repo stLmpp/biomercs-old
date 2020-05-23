@@ -2,23 +2,22 @@ import {
   Directive,
   EventEmitter,
   HostBinding,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import { finalize, takeUntil, tap } from 'rxjs/operators';
-import { FileUploadService } from './file-upload.service';
 import { Subject } from 'rxjs';
 import { isString } from 'is-what';
-import { catchHttpError } from '../../util/operators/catchError';
 import { isNil } from '../../util/util';
+import { environment } from '../../../environments/environment';
 
 @Directive({
   selector: 'img[auth][src]',
 })
 export class ImageDirective implements OnInit, OnDestroy {
-  constructor(private fileUploadService: FileUploadService) {}
+  constructor() {}
 
   private _destroy$ = new Subject();
 
@@ -31,27 +30,9 @@ export class ImageDirective implements OnInit, OnDestroy {
       this.imgError.emit();
       this.hasError = true;
     } else {
-      this.loading.emit(true);
-      const http = isString(id)
-        ? this.fileUploadService.findByName(id)
-        : this.fileUploadService.findById(id);
-      http
-        .pipe(
-          takeUntil(this._destroy$),
-          tap(() => {
-            this.hasError = false;
-          }),
-          finalize(() => {
-            this.loading.emit(false);
-          }),
-          catchHttpError(() => {
-            this.imgError.emit();
-            this.hasError = true;
-          })
-        )
-        .subscribe(img => {
-          this._src = img;
-        });
+      this._src = `${environment.api}${
+        isString(id) ? environment.uploadName : environment.uploadId
+      }/${id}`;
     }
   }
 
@@ -59,6 +40,11 @@ export class ImageDirective implements OnInit, OnDestroy {
   @Output() imgError = new EventEmitter<void>();
 
   @HostBinding('src') _src: string;
+
+  @HostListener('error')
+  onError(): void {
+    this.imgError.emit();
+  }
 
   ngOnInit(): void {}
 

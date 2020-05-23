@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<mat-dialog-content>
+  <mat-nav-list>
+    <mat-list-item
+      *ngFor="let user of data.list$ | async; trackBy: trackBy"
+      (click)="navigateToUser(user.id)"
+    >
+      <img
+        matListAvatar
+        [src]="user.idAvatar"
+        auth
+        [default]="defaultQuery.idAvatar$ | async"
+        [alt]="user.username"
+      />
+      <span matLine>{{ user.username }}</span>
+      <button matSuffix mat-icon-button (click)="$event.stopPropagation()">
+        <mat-icon *ngIf="user | isFollowing; else add" svgIcon="account-minus">
+        </mat-icon>
+        <ng-template #add>
+          <mat-icon>person_add</mat-icon>
+        </ng-template>
+      </button>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button color="accent" mat-dialog-close>Close</button>
+</mat-dialog-actions>

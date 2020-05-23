@@ -2,13 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserFollowerStore } from './user-follower.store';
 import { UserFollowerQuery } from './user-follower.query';
-import { SuperService } from '../../shared/super/super-service';
 import {
   UserFollower,
   UserFollowerAddDto,
   UserFollowerExistsDto,
 } from '../../model/user-follower';
-import { UserService } from '../user/user.service';
+import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
 export class UserFollowerService extends SuperService<
@@ -22,16 +21,10 @@ export class UserFollowerService extends SuperService<
   constructor(
     private userFollowerStore: UserFollowerStore,
     private http: HttpClient,
-    private userFollowerQuery: UserFollowerQuery,
-    private userService: UserService
+    private userFollowerQuery: UserFollowerQuery
   ) {
     super(http, userFollowerStore, userFollowerQuery, {
       endPoint: 'user-follower',
-      afterDelete: result => {
-        this.userService.removeFollowersAndFollowing(
-          result.map(userFollower => userFollower.id)
-        );
-      },
     });
   }
 }
