@@ -12,7 +12,7 @@ import {
 } from '../register/register.component';
 import { interval, Subject } from 'rxjs';
 import { UserQuery } from '../../../state/user/user.query';
-import { RouterQuery } from '@datorama/akita-ng-router-store';
+import { RouterQuery } from '@stlmpp/router';
 import { RouteParamEnum } from '../../../model/route-param.enum';
 import { AuthService } from '../../state/auth.service';
 import { User } from '../../../model/user';
@@ -79,7 +79,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
       .changePassword(
         this.user.id,
         password,
-        this.routerQuery.getQueryParams<string>(RouteParamEnum.token)
+        this.routerQuery.getQueryParams(RouteParamEnum.token)
       )
       .pipe(
         catchHttpError(err => {

@@ -21,16 +21,19 @@ export class UserStore extends EntityStore<User> {
           key: 'userFollowers',
           store: userFollowerStore,
           relation: (relation: UserFollower) => relation.idFollowed,
+          isArray: true,
         },
         {
           key: 'userFollowed',
           store: userFollowerStore,
           relation: (relation: UserFollower) => relation.idFollower,
+          isArray: true,
         },
         {
           key: 'userLinks',
           store: userLinkStore,
           relation: (relation: UserLink) => relation.idUser,
+          isArray: true,
         },
       ],
     });

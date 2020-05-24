@@ -12,8 +12,8 @@ import { Subject } from 'rxjs';
 import { catchHttpError } from '../../../util/operators/catchError';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RouterQuery } from '@datorama/akita-ng-router-store';
 import { RouteParamEnum } from '../../../model/route-param.enum';
+import { RouterQuery } from '@stlmpp/router';
 
 @Component({
   selector: 'app-login',

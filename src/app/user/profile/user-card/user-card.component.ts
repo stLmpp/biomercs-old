@@ -11,7 +11,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { UserQuery } from '../../../state/user/user.query';
-import { RouterQuery } from '@datorama/akita-ng-router-store';
+import { RouterQuery } from '@stlmpp/router';
 import { DefaultQuery } from '../../../state/default/default.query';
 import { UserService } from '../../../state/user/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
