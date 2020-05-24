@@ -30,6 +30,7 @@ import { PlatformComponent } from './platform/platform.component';
 import { GameModePlatformComponent } from './game-mode-platform/game-mode-platform.component';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
+import { StUtilsModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { UserComponent } from './user/user.component';
     MatExpansionModule,
     MatBadgeModule,
     MatChipsModule,
+    StUtilsModule,
   ],
 })
 export class AdminModule {}

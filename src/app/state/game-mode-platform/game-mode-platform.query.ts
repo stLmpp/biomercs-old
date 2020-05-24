@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GameModePlatformStore } from './game-mode-platform.store';
-import { EntityQuery } from 'st-store';
+import { EntityQuery } from '@stlmpp/store';
 import { GameModePlatform } from '../../model/game-mode-platform';
 
 @Injectable({ providedIn: 'root' })

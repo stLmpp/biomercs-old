@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StageStore } from './stage.store';
-import { EntityQuery } from 'st-store';
+import { EntityQuery } from '@stlmpp/store';
 import { Stage } from '../../model/stage';
 
 @Injectable({ providedIn: 'root' })

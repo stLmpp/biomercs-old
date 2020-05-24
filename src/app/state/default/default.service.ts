@@ -4,7 +4,7 @@ import { DefaultStore } from './default.store';
 import { Observable } from 'rxjs';
 import { Default } from '../../model/default';
 import { tap } from 'rxjs/operators';
-import { setLoading, useCache } from 'st-store';
+import { setLoading, useCache } from '@stlmpp/store';
 
 @Injectable({ providedIn: 'root' })
 export class DefaultService {

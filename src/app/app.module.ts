@@ -13,6 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MainModule } from './main/main.module';
 import { MatIconRegistry } from '@angular/material/icon';
+import { StUtilsModule } from '@stlmpp/utils';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { MatIconRegistry } from '@angular/material/icon';
     HttpClientModule,
     environment.production ? [] : AkitaNgDevtools,
     AkitaNgRouterStoreModule,
+    StUtilsModule.forRoot(),
     CoreModule.forRoot(),
     SharedModule.forRoot(),
     AuthModule.forRoot(),

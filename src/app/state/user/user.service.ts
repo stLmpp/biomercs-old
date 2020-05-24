@@ -7,15 +7,16 @@ import { finalize, tap } from 'rxjs/operators';
 import { UpdateResult } from '../../model/update-result';
 import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
-import { UserQuery } from './user.query';
-import { arrayRemove } from '@datorama/akita';
+import { UserFollowerService } from '../user-follower/user-follower.service';
+import { UserLinkService } from '../user-link/user-link.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
   constructor(
     private userStore: UserStore,
     private http: HttpClient,
-    private userQuery: UserQuery
+    private userFollowerService: UserFollowerService,
+    private userLinkService: UserLinkService
   ) {}
 
   endPoint = 'user';
@@ -84,5 +85,19 @@ export class UserService {
           this.userStore.update(idUser, { uploading: false });
         })
       );
+  }
+
+  upsert(user: User): void {
+    this.userStore.upsert(user.id, user);
+    const followers = [
+      ...(user.userFollowers ?? []),
+      ...(user.userFollowed ?? []),
+    ];
+    if (followers.length) {
+      this.userFollowerService.upsert(followers);
+    }
+    if (user.userLinks?.length) {
+      this.userLinkService.upsert(user.userLinks);
+    }
   }
 }

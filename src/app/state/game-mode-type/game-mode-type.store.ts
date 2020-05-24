@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GameModeType } from '../../model/game-mode-type';
-import { EntityStore } from 'st-store';
+import { EntityStore } from '@stlmpp/store';
 
 @Injectable({ providedIn: 'root' })
 export class GameModeTypeStore extends EntityStore<GameModeType> {

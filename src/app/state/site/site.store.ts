@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Site } from '../../model/site';
-import { EntityStore } from 'st-store';
+import { EntityStore } from '@stlmpp/store';
 
 @Injectable({ providedIn: 'root' })
 export class SiteStore extends EntityStore<Site> {

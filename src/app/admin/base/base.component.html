@@ -35,7 +35,7 @@
           [ngTemplateOutletContext]="{ $implicit: entity }"
         ></ng-container>
         <span matLine *ngFor="let key of matLineLabels; trackBy: trackByLabel">
-          {{ entity | getDeep: key }}
+          {{ entity | stGetDeep: key }}
         </span>
         <button
           mat-icon-button
@@ -177,6 +177,6 @@
 
 <ng-template #imageRef let-idImage>
   <mat-dialog-content>
-    <img [src]="idImage" auth [alt]="idImage" />
+    <img class="dialog-img" [src]="idImage" auth [alt]="idImage" />
   </mat-dialog-content>
 </ng-template>

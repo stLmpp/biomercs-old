@@ -19,14 +19,14 @@
               let $last = last
             "
           >
-            {{ entityOne | getDeep: label }}
+            {{ entityOne | stGetDeep: label }}
             <ng-container *ngIf="!$last">
               -
             </ng-container>
           </ng-container>
         </ng-container>
         <ng-template #simpleLabel>
-          {{ entityOne | getDeep: oneLabel }}
+          {{ entityOne | stGetDeep: oneLabel }}
         </ng-template>
       </mat-expansion-panel-header>
       <ng-container *ngIf="openState[$indexOne]">
@@ -50,7 +50,7 @@
                 "
               >
                 <span matLine>
-                  {{ entityMany | getDeep: manyLabel }}
+                  {{ entityMany | stGetDeep: manyLabel }}
                 </span>
                 <ng-container *ngIf="!!entity">
                   <button
@@ -101,6 +101,6 @@
 
 <ng-template #imageRef let-idImage>
   <mat-dialog-content>
-    <img [src]="idImage" auth [alt]="idImage" />
+    <img class="dialog-img" [src]="idImage" auth [alt]="idImage" />
   </mat-dialog-content>
 </ng-template>

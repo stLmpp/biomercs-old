@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TypeStore } from './type.store';
-import { EntityQuery } from 'st-store';
+import { EntityQuery } from '@stlmpp/store';
 import { Type } from '../../model/type';
 
 @Injectable({ providedIn: 'root' })

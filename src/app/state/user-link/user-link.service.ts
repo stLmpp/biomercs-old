@@ -28,4 +28,8 @@ export class UserLinkService extends SuperService<
       excludeMethods: ['findAll'],
     });
   }
+
+  upsert(userLinks: UserLink[]): void {
+    this.userLinkStore.upsert(userLinks);
+  }
 }

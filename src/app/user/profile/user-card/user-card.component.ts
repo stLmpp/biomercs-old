@@ -41,13 +41,13 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import {
   trackByUserFollower,
   UserFollower,
-  UserFollowerAddDto,
 } from '../../../model/user-follower';
 import { UserFollowerService } from '../../../state/user-follower/user-follower.service';
 import {
   FollowersComponent,
   UserFollowersData,
 } from './followers/followers.component';
+import { UserLinkService } from '../../../state/user-link/user-link.service';
 
 @Component({
   selector: 'app-user-card',
@@ -70,7 +70,8 @@ export class UserCardComponent implements OnInit, OnDestroy {
     private overlay: Overlay,
     private scrollStrategyOptions: ScrollStrategyOptions,
     private viewContainerRef: ViewContainerRef,
-    private userFollowerService: UserFollowerService
+    private userFollowerService: UserFollowerService,
+    private userLinkService: UserLinkService
   ) {}
 
   private _destroy$ = new Subject();
@@ -94,7 +95,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
   isSameAsLogged$ = this.user$.pipe(
     filter(user => !!user),
     pluck('id'),
-    switchMap(idUser => this.authQuery.isSameAsLogged(idUser))
+    switchMap(idUser => this.authQuery.isSameAsLogged$(idUser))
   );
   isAdmin$ = this.authQuery.isAdmin$;
 
@@ -119,6 +120,10 @@ export class UserCardComponent implements OnInit, OnDestroy {
       this.site.handleUrl(userLink.site, userLink.url, 'user'),
       '_blank'
     );
+  }
+
+  deleteLink(userLink: UserLink): void {
+    this.userLinkService.delete(userLink.id).subscribe();
   }
 
   openEdit(
@@ -171,16 +176,10 @@ export class UserCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFollow(user: User, follow: boolean): void {
+  onFollow(user: User): void {
     this.followingLoading = true;
-    const dto: UserFollowerAddDto = {
-      idFollowed: user.id,
-      idFollower: this.authQuery.getUserSnapshot().id,
-    };
-    const http: Observable<UserFollower | UserFollower[]> = follow
-      ? this.userFollowerService.add(dto)
-      : this.userFollowerService.deleteByParams(dto);
-    http
+    this.userFollowerService
+      .followUnfollow(user)
       .pipe(
         finalize(() => {
           this.followingLoading = false;
@@ -210,6 +209,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
         filter(idUser => !!idUser),
         map(Number)
       )
+
       .pipe(
         switchMap(idUser =>
           forkJoin([

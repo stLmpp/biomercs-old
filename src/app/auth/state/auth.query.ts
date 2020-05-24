@@ -4,7 +4,7 @@ import { Auth, User } from '../../model/user';
 import { filter, map } from 'rxjs/operators';
 import { RoleEnum } from '../../model/role';
 import { Observable } from 'rxjs';
-import { Query } from 'st-store';
+import { Query } from '@stlmpp/store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
@@ -18,11 +18,15 @@ export class AuthQuery extends Query<Auth> {
   user$ = this.select('user').pipe(filter(user => !!user));
   isAdmin$ = this.user$.pipe(map(this.isAdmin));
 
-  isSameAsLogged(idUser: number): Observable<boolean> {
+  isSameAsLogged$(idUser: number): Observable<boolean> {
     return this.user$.pipe(
       filter(user => !!user),
       map(user => user.id === idUser)
     );
+  }
+
+  isSameAsLogged(idUser: number): boolean {
+    return this.getUserSnapshot()?.id === idUser;
   }
 
   isFollowing(idUser: number): boolean {

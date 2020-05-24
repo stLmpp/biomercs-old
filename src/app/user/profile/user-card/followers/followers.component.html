@@ -13,11 +13,24 @@
         [alt]="user.username"
       />
       <span matLine>{{ user.username }}</span>
-      <button matSuffix mat-icon-button (click)="$event.stopPropagation()">
-        <mat-icon *ngIf="user | isFollowing; else add" svgIcon="account-minus">
-        </mat-icon>
-        <ng-template #add>
-          <mat-icon>person_add</mat-icon>
+      <button
+        matSuffix
+        mat-icon-button
+        (click)="$event.stopPropagation(); onFollow(user)"
+        *ngIf="!(user | isSameAsLogged)"
+      >
+        <ng-container *ngIf="!loadingState[user.id]; else loading">
+          <mat-icon
+            *ngIf="user | isFollowing; else add"
+            svgIcon="account-minus"
+          >
+          </mat-icon>
+          <ng-template #add>
+            <mat-icon>person_add</mat-icon>
+          </ng-template>
+        </ng-container>
+        <ng-template #loading>
+          <mat-spinner diameter="20"></mat-spinner>
         </ng-template>
       </button>
     </mat-list-item>

@@ -4,7 +4,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 import { enableAkitaProdMode } from '@datorama/akita';
-import { enableProd } from 'st-store';
+import { enableProd } from '@stlmpp/store';
 
 if (environment.production) {
   enableProdMode();

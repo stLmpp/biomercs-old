@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Auth } from '../../model/user';
-import { Store } from 'st-store';
+import { Store } from '@stlmpp/store';
 
 export function createInitialState(): Auth {
   return {

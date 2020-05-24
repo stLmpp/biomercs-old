@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserLinkStore } from './user-link.store';
-import { EntityQuery } from 'st-store';
+import { EntityQuery } from '@stlmpp/store';
 import { UserLink } from '../../model/user-link';
 
 @Injectable({ providedIn: 'root' })

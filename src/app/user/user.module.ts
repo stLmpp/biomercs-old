@@ -14,9 +14,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
 import { FollowersComponent } from './profile/user-card/followers/followers.component';
+import { StUtilsModule } from '@stlmpp/utils';
 
 @NgModule({
-  declarations: [ProfileComponent, UserCardComponent, UserLinkComponent, FollowersComponent],
+  declarations: [
+    ProfileComponent,
+    UserCardComponent,
+    UserLinkComponent,
+    FollowersComponent,
+  ],
   imports: [
     SharedModule,
     UserRoutingModule,
@@ -28,6 +34,7 @@ import { FollowersComponent } from './profile/user-card/followers/followers.comp
     MatMenuModule,
     OverlayModule,
     A11yModule,
+    StUtilsModule,
   ],
 })
 export class UserModule {}

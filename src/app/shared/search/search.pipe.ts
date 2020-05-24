@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { isArray } from 'is-what';
-import { getDeep } from '../get-deep/get-deep.pipe';
+import { getDeep } from '@stlmpp/utils';
 
 export function search<T = any>(
   array: T[],

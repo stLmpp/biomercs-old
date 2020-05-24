@@ -12,14 +12,16 @@ import { Observable, of } from 'rxjs';
 import { AuthQuery } from './auth.query';
 import { catchHttpError } from '../../util/operators/catchError';
 import { Params } from '@angular/router';
-import { setError, setLoading } from 'st-store';
+import { setError, setLoading } from '@stlmpp/store';
+import { UserService } from '../../state/user/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(
     private authStore: AuthStore,
     private http: HttpClient,
-    private authQuery: AuthQuery
+    private authQuery: AuthQuery,
+    private userService: UserService
   ) {}
 
   endPoint = '/auth';
@@ -33,6 +35,7 @@ export class AuthService {
       setLoading(this.authStore),
       tap(user => {
         this.authStore.update({ user });
+        this.userService.upsert(user);
       }),
       catchHttpError(() => {
         this.authStore.update({ user: null });

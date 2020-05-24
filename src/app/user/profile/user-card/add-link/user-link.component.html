@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="save()">
   <h1 mat-dialog-title>{{ data.userLink?.id ? 'Add' : 'Edit' }} link</h1>
-  <mat-card-content>
+  <mat-dialog-content>
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput placeholder="Name" formControlName="name" />
@@ -30,8 +30,8 @@
         Site is required
       </mat-error>
     </mat-form-field>
-  </mat-card-content>
-  <mat-card-actions align="end">
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
     <button
       mat-button
       color="accent"
@@ -49,5 +49,5 @@
     >
       Cancel
     </button>
-  </mat-card-actions>
+  </mat-dialog-actions>
 </form>

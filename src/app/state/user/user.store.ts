@@ -1,25 +1,52 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../model/user';
-import { EntityStore } from 'st-store';
+import { EntityStore } from '@stlmpp/store';
 import { AuthStore } from '../../auth/state/auth.store';
+import { UserFollowerStore } from '../user-follower/user-follower.store';
+import { UserFollower } from '../../model/user-follower';
+import { UserLinkStore } from '../user-link/user-link.store';
+import { UserLink } from '../../model/user-link';
 
 @Injectable({ providedIn: 'root' })
 export class UserStore extends EntityStore<User> {
-  constructor(private authStore: AuthStore) {
-    super({ name: 'user' });
+  constructor(
+    private authStore: AuthStore,
+    private userFollowerStore: UserFollowerStore,
+    private userLinkStore: UserLinkStore
+  ) {
+    super({
+      name: 'user',
+      children: [
+        {
+          key: 'userFollowers',
+          store: userFollowerStore,
+          relation: (relation: UserFollower) => relation.idFollowed,
+        },
+        {
+          key: 'userFollowed',
+          store: userFollowerStore,
+          relation: (relation: UserFollower) => relation.idFollower,
+        },
+        {
+          key: 'userLinks',
+          store: userLinkStore,
+          relation: (relation: UserLink) => relation.idUser,
+        },
+      ],
+    });
   }
 
-  preAdd(entity: User): User {
-    if (entity.id === this.authStore.getState()?.user?.id) {
-      this.authStore.update({ user: entity });
+  preAdd(user: User): User {
+    if (user.id === this.authStore.getState()?.user?.id) {
+      this.authStore.update({ user });
     }
-    return super.preAdd(entity);
+    return super.preAdd(user);
   }
 
-  preUpdate(entity: User): User {
-    if (entity.id === this.authStore.getState()?.user?.id) {
-      this.authStore.update({ user: entity });
+  preUpdate(user: User): User {
+    if (user.id === this.authStore.getState()?.user?.id) {
+      this.authStore.update({ user });
     }
-    return super.preUpdate(entity);
+    return super.preUpdate(user);
   }
 }

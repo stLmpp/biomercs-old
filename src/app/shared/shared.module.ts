@@ -1,8 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { DefaultPipe } from './default/default.pipe';
 import { FilterPipe } from './filter/filter.pipe';
-import { GetDeepPipe } from './get-deep/get-deep.pipe';
-import { OrderByPipe } from './order-by/order-by.pipe';
 import { SearchPipe } from './search/search.pipe';
 import { SumByPipe } from './sum-by/sum-by.pipe';
 import { DisabledControlDirective } from './disabled-control/disabled-control.directive';
@@ -27,19 +25,19 @@ import { MatErrorControlDirective } from './custom-material/mat-error-control.di
 import { ReplaceParamsPipe } from './replace-params/replace-params.pipe';
 import { StartCasePipe } from './start-case/start-case.pipe';
 import { BadgeComponent } from './badge/badge.component';
-import { IsFollowingPipe } from './is-following/is-following.pipe';
+import { IsFollowingPipe } from './auth-pipes/is-following.pipe';
+import { IsSameAsLoggedPipe } from './auth-pipes/is-same-as-logged.pipe';
 
 const PIPES = [
   DefaultPipe,
   FilterPipe,
-  GetDeepPipe,
-  OrderByPipe,
   SearchPipe,
   SumByPipe,
   IsTypePipe,
   ReplaceParamsPipe,
   StartCasePipe,
   IsFollowingPipe,
+  IsSameAsLoggedPipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,

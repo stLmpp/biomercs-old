@@ -1,6 +1,7 @@
 button.mat-button-base.mat-icon-button {
   display: inline-flex;
   justify-content: center;
+  align-items: center;
   .mat-progress-spinner circle,
   .mat-spinner circle {
     stroke: white;

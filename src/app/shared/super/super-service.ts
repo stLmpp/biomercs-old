@@ -5,7 +5,7 @@ import { catchHttpError } from '../../util/operators/catchError';
 import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
 import { CommonColumns } from '../../model/common-history';
-import { EntityQuery, EntityStore, useCache } from 'st-store';
+import { EntityQuery, EntityStore, useCache } from '@stlmpp/store';
 
 export type SuperServiceMethod =
   | 'add'
