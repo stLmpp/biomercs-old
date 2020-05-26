@@ -15,6 +15,10 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
 import { FollowersComponent } from './profile/user-card/followers/followers.component';
 import { StUtilsModule } from '@stlmpp/utils';
+import { UserShowcaseComponent } from './profile/user-showcase/user-showcase.component';
+import { EditInfoComponent } from './profile/user-card/edit-info/edit-info.component';
+import { MatTableModule } from '@angular/material/table';
+import { ScoreModule } from '../score/score.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,8 @@ import { StUtilsModule } from '@stlmpp/utils';
     UserCardComponent,
     UserLinkComponent,
     FollowersComponent,
+    UserShowcaseComponent,
+    EditInfoComponent,
   ],
   imports: [
     SharedModule,
@@ -35,6 +41,8 @@ import { StUtilsModule } from '@stlmpp/utils';
     OverlayModule,
     A11yModule,
     StUtilsModule,
+    MatTableModule,
+    ScoreModule,
   ],
 })
 export class UserModule {}

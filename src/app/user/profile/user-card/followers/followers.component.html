@@ -2,7 +2,7 @@
 <mat-dialog-content>
   <mat-nav-list>
     <mat-list-item
-      *ngFor="let user of data.list$ | async; trackBy: trackBy"
+      *ngFor="let user of list$ | async; trackBy: trackBy"
       (click)="navigateToUser(user.id)"
     >
       <img

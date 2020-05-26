@@ -1,5 +1,6 @@
 import { CommonColumns } from './common-history';
 import { FileUpload } from './file-upload';
+import { trackByFactory } from '../util/util';
 
 export enum PlatformTypeEnum {
   console1 = 'console1',
@@ -22,3 +23,5 @@ export interface PlatformAddDto {
 }
 
 export type PlatformUpdateDto = Partial<PlatformAddDto>;
+
+export const trackByPlatform = trackByFactory<Platform>('id');

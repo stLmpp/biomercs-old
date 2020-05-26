@@ -1,14 +1,15 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Inject,
-  ViewChild,
-  TemplateRef,
-  ViewContainerRef,
-  OnDestroy,
+  Component,
   ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { UserQuery } from '../../../state/user/user.query';
 import { RouterQuery } from '@stlmpp/router';
@@ -22,9 +23,9 @@ import {
   filter,
   finalize,
   map,
-  pluck,
   switchMap,
   takeUntil,
+  tap,
 } from 'rxjs/operators';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { User } from '../../../model/user';
@@ -76,27 +77,20 @@ export class UserCardComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
+  @Input() user: User;
+  @Input() isSameAsLogged: boolean;
+
   @ViewChild('editOverlayRef', { read: TemplateRef })
   editTemplate: TemplateRef<any>;
 
   @ViewChild('card', { read: ElementRef }) cardRef: ElementRef;
 
   private overlayRef: OverlayRef;
-  userFollowersLoading = true;
-  userFollowingLoading = true;
-  followingLoading = false;
-
-  user$ = this.routerQuery.selectParams(RouteParamEnum.idUser).pipe(
-    map(Number),
-    switchMap(idUser => this.userQuery.selectEntity(idUser))
-  );
+  userFollowersLoading: boolean;
+  userFollowingLoading: boolean;
+  followingLoading: boolean;
 
   idDefaultAvatar$: Observable<number> = this.defaultQuery.idAvatar$;
-  isSameAsLogged$ = this.user$.pipe(
-    filter(user => !!user),
-    pluck('id'),
-    switchMap(idUser => this.authQuery.isSameAsLogged$(idUser))
-  );
   isAdmin$ = this.authQuery.isAdmin$;
 
   trackByUserLink = trackByUserLink;
@@ -111,7 +105,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  openLink(user: User, userLink?: UserLink): void {
+  addOrEditLink(user: User, userLink?: UserLink): void {
     this.matDialog.open(UserLinkComponent, { data: { user, userLink } });
   }
 
@@ -138,7 +132,8 @@ export class UserCardComponent implements OnInit, OnDestroy {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         scrollStrategy: this.scrollStrategyOptions.block(),
         panelClass: ['app-user-card', 'edit-overlay'],
-        width: this.cardRef.nativeElement.getBoundingClientRect().width,
+        minWidth: 400,
+        maxWidth: 600,
       });
     }
     this.overlayRef.updatePositionStrategy(
@@ -192,13 +187,9 @@ export class UserCardComponent implements OnInit, OnDestroy {
   seeAllFollowers(
     type: keyof Pick<UserFollower, 'follower' | 'followed'>
   ): void {
-    const list = this.user$.pipe(
-      pluck(type === 'follower' ? 'userFollowers' : 'userFollowed'),
-      map(followers => followers.map(follower => follower[type]))
-    );
     const title = type === 'follower' ? 'Followers' : 'Following';
     this.matDialog.open(FollowersComponent, {
-      data: { title, list$: list, type } as UserFollowersData,
+      data: { title, idUser: this.user.id, type } as UserFollowersData,
     });
   }
 
@@ -209,8 +200,11 @@ export class UserCardComponent implements OnInit, OnDestroy {
         filter(idUser => !!idUser),
         map(Number)
       )
-
       .pipe(
+        tap(() => {
+          this.userFollowersLoading = true;
+          this.userFollowingLoading = true;
+        }),
         switchMap(idUser =>
           forkJoin([
             this.userFollowerService.findByParams({ idFollower: idUser }).pipe(

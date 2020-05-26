@@ -8,9 +8,11 @@ import {
   UserFollowerExistsDto,
 } from '../../model/user-follower';
 import { SuperService } from '../../shared/super/super-service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../../model/user';
 import { AuthQuery } from '../../auth/state/auth.query';
+import { DialogService } from '../../shared/dialog/dialog.service';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserFollowerService extends SuperService<
@@ -25,7 +27,8 @@ export class UserFollowerService extends SuperService<
     private userFollowerStore: UserFollowerStore,
     private http: HttpClient,
     private userFollowerQuery: UserFollowerQuery,
-    private authQuery: AuthQuery
+    private authQuery: AuthQuery,
+    private dialogService: DialogService
   ) {
     super(http, userFollowerStore, userFollowerQuery, {
       endPoint: 'user-follower',
@@ -38,7 +41,21 @@ export class UserFollowerService extends SuperService<
       idFollowed: user.id,
       idFollower: this.authQuery.getUserSnapshot().id,
     };
-    return follow ? this.add(dto) : this.deleteByParams(dto);
+    if (follow) {
+      return this.add(dto);
+    } else {
+      return this.dialogService
+        .confirm({
+          btnNo: 'Cancel',
+          btnYes: 'Unfollow',
+          title: `Unfollow ${user.username}?`,
+        })
+        .pipe(
+          switchMap(confirmed => {
+            return confirmed ? this.deleteByParams(dto) : of(null);
+          })
+        );
+    }
   }
 
   upsert(userFollowers: UserFollower[]): void {

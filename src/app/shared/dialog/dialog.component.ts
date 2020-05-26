@@ -58,6 +58,8 @@ export class DialogComponent implements OnInit, OnDestroy {
           this.loading = false;
           this.matDialogRef.close(true);
         });
+    } else {
+      this.matDialogRef.close(true);
     }
   }
 

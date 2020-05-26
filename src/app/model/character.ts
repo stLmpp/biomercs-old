@@ -1,6 +1,7 @@
 import { CommonColumns } from './common-history';
 import { FileUpload } from './file-upload';
 import { SuperParamsDto } from '../shared/super/super-params.dto';
+import { trackByFactory } from '../util/util';
 
 export interface Character extends CommonColumns {
   name: string;
@@ -25,3 +26,5 @@ export interface CharacterParamsDto extends CharacterExistsDto {
   idGame?: number;
   idMode?: number;
 }
+
+export const trackByCharacter = trackByFactory<Character>('id');

@@ -1,5 +1,6 @@
 import { CommonColumns } from './common-history';
 import { SuperParamsDto } from '../shared/super/super-params.dto';
+import { trackByFactory } from '../util/util';
 
 export interface Mode extends CommonColumns {
   id: number;
@@ -20,3 +21,5 @@ export interface ModeParamsDto extends ModeExistsDto {
   idGame?: number;
   idPlatform?: number;
 }
+
+export const trackByMode = trackByFactory<Mode>('id');

@@ -35,19 +35,19 @@
     <button
       mat-button
       color="accent"
-      type="submit"
-      [disabled]="saving || form.invalid"
-    >
-      Save
-    </button>
-    <button
-      mat-button
-      color="accent"
       [disabled]="saving"
       type="button"
       mat-dialog-close
     >
       Cancel
+    </button>
+    <button
+      mat-button
+      color="accent"
+      type="submit"
+      [disabled]="saving || form.invalid"
+    >
+      Save
     </button>
   </mat-dialog-actions>
 </form>

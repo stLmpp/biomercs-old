@@ -9,3 +9,10 @@ $primary: mat-palette($mat-deep-orange);
 $accent: mat-palette($mat-yellow, A200, A100, A400);
 $warn: mat-palette($mat-red, 900, 700);
 $theme: mat-dark-theme($primary, $accent, $warn);
+
+// Breakpoints
+$mat-xs: 'max-width: 599px';
+$mat-sm: 'min-width: 600px';
+$mat-md: 'min-width: 960px';
+$mat-lg: 'min-width: 1280px';
+$mat-xl: 'min-width: 1920px';

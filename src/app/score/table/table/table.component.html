@@ -1,0 +1,136 @@
+<ng-container *ngIf="_params">
+  <ng-container
+    *ngIf="{ table: scores$ | async, columns: columns$ | async } as state"
+  >
+    <ng-container *ngIf="_params.type === scoreTableType.character">
+      <mat-table
+        *ngIf="state.table && state.columns"
+        [dataSource]="state.table"
+      >
+        <ng-container
+          *ngFor="
+            let column of state.columns;
+            let $colIndex = index;
+            let $first = first;
+            let $last = last
+          "
+          [matColumnDef]="column"
+        >
+          <mat-header-cell
+            *matHeaderCellDef
+            [ngClass]="{ last: $last, first: $first }"
+          >
+            {{ column }}
+          </mat-header-cell>
+          <mat-cell
+            *matCellDef="let element; let $rowIndex = index"
+            [ngClass]="{ last: $last, first: $first }"
+          >
+            <ng-container *ngIf="$first">
+              {{ state.table[$rowIndex][$colIndex].character.name }}
+            </ng-container>
+            <ng-container *ngIf="!$last && !$first">
+              <ng-container
+                *let="state.table[$rowIndex][$colIndex - 1]?.score as score"
+              >
+                <ng-container
+                  *ngTemplateOutlet="scoreRef; context: { $implicit: score }"
+                ></ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="$last">
+              {{
+                state.table[$rowIndex]
+                  | sumBy: ['score', 'score']
+                  | number: '1.0-0'
+              }}
+            </ng-container>
+          </mat-cell>
+          <mat-footer-cell
+            *matFooterCellDef
+            [ngClass]="{ last: $last, first: $first }"
+          >
+            <ng-container *ngIf="$first">
+              Best
+            </ng-container>
+            <ng-container *ngIf="!$first && !$last">
+              <ng-container
+                *let="state.table | bestScore: $colIndex - 1 as score"
+              >
+                <ng-container
+                  *ngTemplateOutlet="scoreRef; context: { $implicit: score }"
+                ></ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="$last">
+              {{
+                state.table
+                  | bestScoreTotal: state.columns.length - 2
+                  | default: 0
+                  | number: '1.0-0'
+              }}
+            </ng-container>
+          </mat-footer-cell>
+        </ng-container>
+        <ng-template #scoreRef let-score>
+          <a
+            [disabled]="!score"
+            mat-button
+            [routerLink]="['/score', score?.id | default: 0]"
+          >
+            {{ score?.score | default: 0 | number: '1.0-0' }}
+          </a>
+        </ng-template>
+        <mat-header-row *matHeaderRowDef="state.columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: state.columns"></mat-row>
+        <mat-footer-row *matFooterRowDef="state.columns"></mat-footer-row>
+      </mat-table>
+    </ng-container>
+    <!-- TOP -->
+    <ng-container *ngIf="_params.type === scoreTableType.top">
+      <mat-table
+        *ngIf="state.table && state.columns"
+        [dataSource]="state.table"
+      >
+        <ng-container
+          *ngFor="
+            let column of state.columns;
+            let $colIndex = index;
+            let $first = first;
+            let $last = last
+          "
+          [matColumnDef]="column"
+        >
+          <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
+          <mat-cell *matCellDef="let element; let $rowIndex = index">
+            <ng-container *ngIf="$first"> {{ $rowIndex + 1 }} </ng-container>
+            <ng-container *ngIf="$colIndex === 1">
+              {{
+                state.table[$rowIndex][$colIndex - 1].score.scorePlayers[0]
+                  .player.username
+              }}
+            </ng-container>
+            <ng-container *ngIf="$colIndex > 1 && !$last">
+              <ng-container *ngIf="!$last && !$first">
+                {{
+                  state.table[$rowIndex][$colIndex - 2]?.score?.score
+                    | default: 0
+                    | number: '1.0-0'
+                }}
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="$last">
+              {{
+                state.table[$rowIndex]
+                  | sumBy: ['score', 'score']
+                  | number: '1.0-0'
+              }}
+            </ng-container>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="state.columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: state.columns"></mat-row>
+      </mat-table>
+    </ng-container>
+  </ng-container>
+</ng-container>

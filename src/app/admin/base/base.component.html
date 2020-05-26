@@ -149,6 +149,9 @@
       </ng-container>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close [disabled]="loading" color="accent">
+        Cancel
+      </button>
       <button
         mat-button
         color="accent"
@@ -156,9 +159,6 @@
         [disabled]="loading || form.invalid || form.pending || form.pristine"
       >
         Save
-      </button>
-      <button mat-button mat-dialog-close [disabled]="loading" color="accent">
-        Cancel
       </button>
     </mat-dialog-actions>
   </form>
@@ -170,8 +170,8 @@
     This action can't be undone!
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button color="accent" [mat-dialog-close]="true">Yes</button>
-    <button mat-button color="accent" [mat-dialog-close]="false">No</button>
+    <button mat-button color="accent" [mat-dialog-close]="false">Cancel</button>
+    <button mat-button color="accent" [mat-dialog-close]="true">Delete</button>
   </mat-dialog-actions>
 </ng-template>
 

@@ -121,8 +121,7 @@
   },
   "defaultProject": "biomercs",
   "cli": {
-    "analytics": "ed2991d9-6179-4a12-85e9-4331934217bb",
-    "defaultCollection": "@datorama/akita"
+    "analytics": "ed2991d9-6179-4a12-85e9-4331934217bb"
   },
   "schematics": {
     "@schematics/angular": {

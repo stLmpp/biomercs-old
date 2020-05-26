@@ -1,0 +1,13 @@
+.mat-table {
+  > .mat-header-row > .mat-header-cell,
+  > .mat-row > .mat-cell,
+  > .mat-footer-row > .mat-footer-cell {
+    justify-content: center;
+    &.last {
+      justify-content: flex-end;
+    }
+    &.first {
+      justify-content: flex-start;
+    }
+  }
+}

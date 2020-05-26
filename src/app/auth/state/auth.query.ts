@@ -5,6 +5,7 @@ import { filter, map } from 'rxjs/operators';
 import { RoleEnum } from '../../model/role';
 import { Observable } from 'rxjs';
 import { Query } from '@stlmpp/store';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthQuery extends Query<Auth> {
@@ -56,6 +57,6 @@ export class AuthQuery extends Query<Auth> {
   }
 
   isLogged(): boolean {
-    return !!this.getTokenSnapshot();
+    return !environment.production || !!this.getTokenSnapshot();
   }
 }

@@ -11,13 +11,14 @@ import { DefaultQuery } from '../../../../state/default/default.query';
 import { UserFollower } from '../../../../model/user-follower';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, pluck } from 'rxjs/operators';
 import { AuthQuery } from '../../../../auth/state/auth.query';
 import { UserFollowerService } from '../../../../state/user-follower/user-follower.service';
+import { UserQuery } from '../../../../state/user/user.query';
 
 export interface UserFollowersData {
   title: string;
-  list$: Observable<User[]>;
+  idUser: number;
   type: keyof Pick<UserFollower, 'follower' | 'followed'>;
 }
 
@@ -35,12 +36,15 @@ export class FollowersComponent implements OnInit {
     private matDialogRef: MatDialogRef<FollowersComponent>,
     public authQuery: AuthQuery,
     private userFollowerService: UserFollowerService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private userQuery: UserQuery
   ) {}
 
   trackBy = trackByUser;
 
   loadingState: { [id: number]: boolean } = {};
+
+  list$: Observable<User[]>;
 
   onFollow(user: User): void {
     this.loadingState = { ...this.loadingState, [user.id]: true };
@@ -60,5 +64,10 @@ export class FollowersComponent implements OnInit {
     this.router.navigate(['/user', idUser, 'profile']);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.list$ = this.userQuery.selectEntity(this.data.idUser).pipe(
+      pluck(this.data.type === 'follower' ? 'userFollowers' : 'userFollowed'),
+      map(followers => followers.map(follower => follower[this.data.type]))
+    );
+  }
 }

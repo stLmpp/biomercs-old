@@ -1,0 +1,14 @@
+<app-table-control-panel
+  [(params)]="params"
+  [platforms]="platforms"
+  [tableType]="tableType"
+  [idPlayer]="idPlayer"
+  [idType]="idType"
+  [idCharacter]="idCharacter"
+  [characterDisabled]="characterDisabled"
+  [idGame]="idGame"
+  [idMode]="idMode"
+  [idPlatform]="idPlatform"
+  [loading]="_loading"
+></app-table-control-panel>
+<app-table [params]="params" (loading)="onLoading($event)"></app-table>

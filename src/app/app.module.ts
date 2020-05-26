@@ -12,6 +12,13 @@ import { MainModule } from './main/main.module';
 import { MatIconRegistry } from '@angular/material/icon';
 import { StUtilsModule } from '@stlmpp/utils';
 import { StRouterModule } from '@stlmpp/router';
+import { NgxMaskModule } from 'ngx-mask';
+
+import { registerLocaleData } from '@angular/common';
+import localeBr from '@angular/common/locales/pt';
+import localeBrExtra from '@angular/common/locales/extra/pt';
+
+registerLocaleData(localeBr, localeBrExtra);
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +32,7 @@ import { StRouterModule } from '@stlmpp/router';
     CoreModule.forRoot(),
     SharedModule.forRoot(),
     AuthModule.forRoot(),
+    NgxMaskModule.forRoot(),
     MainModule,
   ],
   providers: [],

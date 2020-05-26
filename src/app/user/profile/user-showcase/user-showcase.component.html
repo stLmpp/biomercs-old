@@ -1,0 +1,16 @@
+<mat-card class="other">
+  <mat-progress-bar
+    mode="indeterminate"
+    class="top"
+    *ngIf="loading$ | async"
+  ></mat-progress-bar>
+  <mat-card-content>
+    <app-score-table
+      (loading)="onLoading($event)"
+      [tableType]="scoreTableType.character"
+      [platforms]="platformQuery.all$ | async"
+      [idPlayer]="user.id"
+      [characterDisabled]="true"
+    ></app-score-table>
+  </mat-card-content>
+</mat-card>

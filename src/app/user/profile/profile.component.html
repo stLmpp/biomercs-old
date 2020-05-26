@@ -1,1 +1,5 @@
-<app-user-card></app-user-card>
+<app-user-card
+  [user]="user$ | async"
+  [isSameAsLogged]="isSameAsLogged$ | async"
+></app-user-card>
+<app-user-showcase [user]="user$ | async"></app-user-showcase>

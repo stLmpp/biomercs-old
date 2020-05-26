@@ -6,19 +6,19 @@
   <button
     mat-button
     color="primary"
-    *ngIf="data.btnYes"
-    [disabled]="loading"
-    (click)="yes()"
-  >
-    {{ data.btnYes }}
-  </button>
-  <button
-    mat-button
-    color="primary"
     *ngIf="data.btnNo"
     [disabled]="loading"
     [mat-dialog-close]="false"
   >
     {{ data.btnNo }}
+  </button>
+  <button
+    mat-button
+    color="primary"
+    *ngIf="data.btnYes"
+    [disabled]="loading"
+    (click)="yes()"
+  >
+    {{ data.btnYes }}
   </button>
 </mat-dialog-actions>

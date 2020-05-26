@@ -28,6 +28,11 @@ const routes: Routes = [
     canLoad: [AuthGuard],
     resolve: [DefaultResolver],
   },
+  {
+    path: 'score',
+    loadChildren: () => import('./score/score.module').then(m => m.ScoreModule),
+    resolve: [DefaultResolver],
+  },
 ];
 
 @NgModule({

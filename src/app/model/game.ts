@@ -1,6 +1,7 @@
 import { CommonColumns } from './common-history';
 import { FileUpload } from './file-upload';
 import { SuperParamsDto } from '../shared/super/super-params.dto';
+import { trackByFactory } from '../util/util';
 
 export interface Game extends CommonColumns {
   name: string;
@@ -24,3 +25,5 @@ export interface GameExistsDto extends SuperParamsDto {
 export interface GameParamsDto extends GameExistsDto {
   idPlatform?: number;
 }
+
+export const trackByGame = trackByFactory<Game>('id');

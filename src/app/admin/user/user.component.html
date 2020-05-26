@@ -32,7 +32,9 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu>
-        <button mat-menu-item>Profile</button>
+        <button mat-menu-item [routerLink]="['/user', user.id, 'profile']">
+          Profile
+        </button>
         <button mat-menu-item (click)="resetPassword(user)">
           Reset password
         </button>
