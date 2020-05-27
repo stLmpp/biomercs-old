@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { ScoreTableParamsDto, ScoreTableType } from '../../model/score';
 import { Platform } from '../../model/platform';
+import { ScoreTableParamsForm } from './control-panel/table-control-panel.component';
 
 @Component({
   selector: 'app-score-table',
@@ -29,6 +30,7 @@ export class ScoreTableComponent implements OnInit {
   @Input() idMode: number;
   @Input() idType: number;
   @Input() viewMode: boolean;
+  @Input() executeWhen: (params: ScoreTableParamsForm) => boolean;
 
   @Output() loading = new EventEmitter<boolean>();
 

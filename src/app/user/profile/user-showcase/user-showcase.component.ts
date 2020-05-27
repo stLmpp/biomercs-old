@@ -9,6 +9,7 @@ import { ScoreTableType } from '../../../model/score';
 import { BehaviorSubject } from 'rxjs';
 import { PlatformQuery } from '../../../state/platform/platform.query';
 import { User } from '../../../model/user';
+import { ScoreTableParamsForm } from '../../../score/table/control-panel/table-control-panel.component';
 
 @Component({
   selector: 'app-user-showcase',
@@ -27,6 +28,14 @@ export class UserShowcaseComponent implements OnInit {
   scoreTableType = ScoreTableType;
 
   loading$ = new BehaviorSubject<boolean>(false);
+
+  executeWhen: (params: ScoreTableParamsForm) => boolean = ({
+    idPlayer,
+    idType,
+    idPlatform,
+    idMode,
+    idGame,
+  }) => !!(idPlayer && idType && idPlatform && idMode && idGame);
 
   onLoading(loading: boolean): void {
     this.loading$.next(loading);

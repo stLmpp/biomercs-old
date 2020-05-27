@@ -72,15 +72,6 @@
             </ng-container>
           </mat-footer-cell>
         </ng-container>
-        <ng-template #scoreRef let-score>
-          <a
-            [disabled]="!score"
-            mat-button
-            [routerLink]="['/score', score?.id | default: 0]"
-          >
-            {{ score?.score | default: 0 | number: '1.0-0' }}
-          </a>
-        </ng-template>
         <mat-header-row *matHeaderRowDef="state.columns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: state.columns"></mat-row>
         <mat-footer-row *matFooterRowDef="state.columns"></mat-footer-row>
@@ -101,23 +92,29 @@
           "
           [matColumnDef]="column"
         >
-          <mat-header-cell *matHeaderCellDef>{{ column }}</mat-header-cell>
-          <mat-cell *matCellDef="let element; let $rowIndex = index">
+          <mat-header-cell
+            *matHeaderCellDef
+            [ngClass]="{ last: $last, first: $first }"
+          >
+            {{ column }}
+          </mat-header-cell>
+          <mat-cell
+            *matCellDef="let element; let $rowIndex = index"
+            [ngClass]="{ last: $last, first: $first }"
+          >
             <ng-container *ngIf="$first"> {{ $rowIndex + 1 }} </ng-container>
             <ng-container *ngIf="$colIndex === 1">
-              {{
-                state.table[$rowIndex][$colIndex - 1].score.scorePlayers[0]
-                  .player.username
-              }}
+              {{ state.table[$rowIndex][$colIndex - 1]?.player?.username }}
             </ng-container>
-            <ng-container *ngIf="$colIndex > 1 && !$last">
-              <ng-container *ngIf="!$last && !$first">
-                {{
-                  state.table[$rowIndex][$colIndex - 2]?.score?.score
-                    | default: 0
-                    | number: '1.0-0'
-                }}
-              </ng-container>
+            <ng-container *ngIf="$colIndex > 1 && !$last && !$first">
+              <ng-container
+                *ngTemplateOutlet="
+                  scoreRef;
+                  context: {
+                    $implicit: state.table[$rowIndex][$colIndex - 2]?.score
+                  }
+                "
+              ></ng-container>
             </ng-container>
             <ng-container *ngIf="$last">
               {{
@@ -133,4 +130,13 @@
       </mat-table>
     </ng-container>
   </ng-container>
+  <ng-template #scoreRef let-score>
+    <button
+      [disabled]="!score"
+      mat-button
+      [routerLink]="['/score', score?.id | default: 0]"
+    >
+      {{ score?.score | default: 0 | number: '1.0-0' }}
+    </button>
+  </ng-template>
 </ng-container>

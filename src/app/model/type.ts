@@ -2,6 +2,11 @@ import { CommonColumns } from './common-history';
 import { SuperParamsDto } from '../shared/super/super-params.dto';
 import { trackByFactory } from '../util/util';
 
+export enum TypeEnum {
+  solo = 1,
+  duo,
+}
+
 export interface Type extends CommonColumns {
   name: string;
   playerQuantity: number;

@@ -4,6 +4,7 @@ import { Stage } from './stage';
 import { Type } from './type';
 import { ScorePlayer, ScorePlayerAddDto } from './score-player';
 import { Character } from './character';
+import { User } from './user';
 
 export interface Score extends CommonColumns {
   idGameModePlatform: number;
@@ -35,6 +36,7 @@ export interface ScoreAddDto {
 export interface ScoreTable {
   stage: Stage;
   character?: Character;
+  player?: User;
   score?: Score;
 }
 

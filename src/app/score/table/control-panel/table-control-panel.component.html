@@ -1,4 +1,4 @@
-<form [disabledControl]="loading" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="panel">
     <mat-form-field>
       <mat-label>Platform</mat-label>
@@ -47,6 +47,7 @@
     <mat-form-field *ngIf="!characterDisabled">
       <mat-label>Character</mat-label>
       <mat-select placeholder="Character" formControlName="idCharacter">
+        <mat-option [value]="null">All</mat-option>
         <mat-option
           *ngFor="
             let character of characters$ | async;
@@ -59,7 +60,7 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="actions">
+  <div class="actions" *ngIf="!executeWhen">
     <button mat-button [disabled]="form.invalid || loading" type="submit">
       Apply
     </button>

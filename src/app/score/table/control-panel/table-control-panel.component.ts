@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
 import { ScoreTableParamsDto, ScoreTableType } from '../../../model/score';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import {
+  debounceTime,
   distinctUntilChanged,
   filter,
   switchMap,
@@ -26,8 +27,9 @@ import { trackByGame } from '../../../model/game';
 import { trackByMode } from '../../../model/mode';
 import { trackByType } from '../../../model/type';
 import { trackByCharacter } from '../../../model/character';
+import { isEqual } from 'underscore';
 
-type ScoreTableParamsForm = Omit<ScoreTableParamsDto, 'type'>;
+export type ScoreTableParamsForm = Omit<ScoreTableParamsDto, 'type'>;
 
 @Component({
   selector: 'app-table-control-panel',
@@ -49,14 +51,76 @@ export class TableControlPanelComponent
   @Input() platforms: Platform[] = [];
   @Input() tableType: ScoreTableType;
   @Input() params: ScoreTableParamsDto;
-  @Input() idPlayer: number;
-  @Input() idCharacter: number;
+  @Input()
+  get idPlayer(): number {
+    return this._idPlayer;
+  }
+  set idPlayer(idPlayer: number) {
+    this._idPlayer = idPlayer;
+    this.idPlayerControl.setValue(idPlayer);
+  }
+  private _idPlayer: number;
+
+  @Input()
+  get idCharacter(): number {
+    return this._idCharacter;
+  }
+  set idCharacter(idCharacter: number) {
+    this._idCharacter = idCharacter;
+    this.idCharacterControl.setValue(idCharacter);
+  }
+  private _idCharacter: number;
   @Input() characterDisabled: boolean;
-  @Input() idPlatform: number;
-  @Input() idGame: number;
-  @Input() idMode: number;
-  @Input() idType: number;
-  @Input() loading: boolean;
+
+  @Input()
+  get idPlatform(): number {
+    return this._idPlatform;
+  }
+  set idPlatform(idPlatform: number) {
+    this._idPlatform = idPlatform;
+    this.idPlatformControl.setValue(idPlatform);
+  }
+  private _idPlatform: number;
+
+  @Input()
+  get idGame(): number {
+    return this._idGame;
+  }
+  set idGame(idGame: number) {
+    this._idGame = idGame;
+    this.idGameControl.setValue(idGame);
+  }
+  private _idGame: number;
+
+  @Input()
+  get idMode(): number {
+    return this._idMode;
+  }
+  set idMode(idMode: number) {
+    this._idMode = idMode;
+    this.idModeControl.setValue(idMode);
+  }
+  private _idMode: number;
+
+  @Input()
+  get idType(): number {
+    return this._idType;
+  }
+  set idType(idType: number) {
+    this._idType = idType;
+    this.idTypeControl.setValue(idType);
+  }
+  private _idType: number;
+
+  @Input() executeWhen: (params: ScoreTableParamsForm) => boolean;
+
+  @Input('loading')
+  set _loading(loading: boolean) {
+    this.loading = loading;
+    this.form[loading ? 'disable' : 'enable']();
+  }
+  loading: boolean;
+
   @Output() paramsChange = new EventEmitter<ScoreTableParamsDto>();
 
   form = new FormGroup<ScoreTableParamsForm>({
@@ -74,6 +138,14 @@ export class TableControlPanelComponent
     idPlayer: new FormControl({ value: null, disabled: true }),
     limit: new FormControl(10),
   });
+
+  get idPlayerControl(): FormControl {
+    return this.form.get('idPlayer');
+  }
+
+  get idPlatformControl(): FormControl {
+    return this.form.get('idPlatform');
+  }
 
   get idGameControl(): FormControl {
     return this.form.get('idGame');
@@ -137,6 +209,7 @@ export class TableControlPanelComponent
   }
 
   onSubmit(): void {
+    if (this.form.invalid || this.loading) return;
     this.paramsChange.emit({ ...this.form.value, type: this.tableType });
   }
 
@@ -185,18 +258,29 @@ export class TableControlPanelComponent
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      if (this.idPlatform) {
+      if (this._idPlatform) {
         this.form.patchValue({ idPlatform: this.idPlatform });
       }
-      if (this.idGame) {
+      if (this._idGame) {
         this.form.patchValue({ idGame: this.idGame });
       }
-      if (this.idMode) {
+      if (this._idMode) {
         this.form.patchValue({ idMode: this.idMode });
       }
-      if (this.idType) {
+      if (this._idType) {
         this.form.patchValue({ idType: this.idType });
       }
+      this.form.valueChanges
+        .pipe(
+          takeUntil(this._destroy$),
+          distinctUntilChanged(isEqual),
+          debounceTime(200)
+        )
+        .subscribe(params => {
+          if (this.executeWhen?.(params)) {
+            this.onSubmit();
+          }
+        });
     });
   }
 

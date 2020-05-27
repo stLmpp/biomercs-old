@@ -12,8 +12,18 @@ import {
   ScoreTableType,
 } from '../../../model/score';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
+import {
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  shareReplay,
+  switchMap,
+} from 'rxjs/operators';
 import { ScoreService } from '../../../state/score/score.service';
+import { isEqual } from 'underscore';
+import { isNil } from '../../../util/util';
+import { TypeEnum } from '../../../model/type';
 
 @Component({
   selector: 'app-table',
@@ -35,8 +45,15 @@ export class TableComponent implements OnInit {
 
   scoreTableType = ScoreTableType;
 
+  typeEnum = TypeEnum;
+
   scores$ = this.params$.pipe(
     filter(params => !!params),
+    filter(
+      ({ idType, idPlatform, idMode, idGame, type }) =>
+        !isNil(idType && idPlatform && idMode && idGame && type)
+    ),
+    distinctUntilChanged(isEqual),
     switchMap(
       ({
         type,
@@ -88,9 +105,6 @@ export class TableComponent implements OnInit {
         columns.push('Total');
         return columns;
       } else {
-        if (this._params.idType === 4) {
-          columns.unshift('Player two');
-        }
         columns.unshift('Player');
         columns.unshift('#');
         columns.push('Total');
