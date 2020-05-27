@@ -17,7 +17,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { registerLocaleData } from '@angular/common';
 import localeBr from '@angular/common/locales/pt';
 import localeBrExtra from '@angular/common/locales/extra/pt';
-import { regular, squared } from '../assets/flags/config.json';
+import { flagIcons } from '../assets/flags/config.js';
 
 registerLocaleData(localeBr, localeBrExtra);
 
@@ -44,7 +44,11 @@ export class AppModule {
     matIconRegistry.addSvgIconSet(
       domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg')
     );
-    for (const { name, path } of [...regular, ...squared]) {
+    matIconRegistry.addSvgIcon(
+      'flag-unknown',
+      domSanitizer.bypassSecurityTrustResourceUrl('./assets/flag-unknown.svg')
+    );
+    for (const { name, path } of flagIcons) {
       matIconRegistry.addSvgIcon(
         name,
         domSanitizer.bypassSecurityTrustResourceUrl(path)

@@ -19,6 +19,8 @@ import { UserShowcaseComponent } from './profile/user-showcase/user-showcase.com
 import { EditInfoComponent } from './profile/user-card/edit-info/edit-info.component';
 import { MatTableModule } from '@angular/material/table';
 import { ScoreModule } from '../score/score.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { ScoreModule } from '../score/score.module';
     StUtilsModule,
     MatTableModule,
     ScoreModule,
+    MatAutocompleteModule,
+    ScrollingModule,
   ],
 })
 export class UserModule {}

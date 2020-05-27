@@ -47,6 +47,10 @@ export interface UserRegisterResponse {
 
 export interface UserUpdateDto {
   email?: string;
+  idRegion?: number;
+  title?: string;
+  aboutMe?: string;
+  region?: Region;
 }
 
 export interface UserForgotPasswordDto {

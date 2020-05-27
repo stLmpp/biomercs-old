@@ -32,8 +32,17 @@
         hidden
       />
       <mat-card-title class="editable">
+        <mat-icon
+          *ngIf="user.region"
+          svgIcon
+          [region]="user.region"
+          size="lg"
+          [class.c-pointer]="state.isEditable"
+          (click)="state.isEditable && openRegion()"
+        >
+        </mat-icon>
         {{ user.username }}
-        <mat-icon *ngIf="state.isEditable">edit</mat-icon>
+        <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
       </mat-card-title>
       <mat-card-subtitle
         class="editable"
@@ -41,7 +50,7 @@
         (click)="state.isEditable && openEdit(title, 'title')"
       >
         {{ user.title | default: 'No title':'loose' }}
-        <mat-icon *ngIf="state.isEditable">edit</mat-icon>
+        <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
@@ -53,7 +62,7 @@
         "
       >
         {{ user.aboutMe | default: 'No info':'loose' }}
-        <mat-icon *ngIf="state.isEditable">edit</mat-icon>
+        <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
       </div>
       <mat-divider></mat-divider>
       <mat-list dense class="link-list">
@@ -227,10 +236,49 @@
         mat-button
         color="accent"
         [disabled]="user.saving || form._control?.ngControl.pristine"
-        (click)="edit(user, field, form._control.ngControl.value)"
+        (click)="edit(field, form._control.ngControl.value)"
       >
         Save
       </button>
     </div>
+  </ng-template>
+
+  <ng-template #regionOverlayRef>
+    <h1>Choose your region</h1>
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input
+        matInput
+        [formControl]="regionSearchControl"
+        placeholder="Search"
+      />
+    </mat-form-field>
+    <mat-dialog-content
+      *let="
+        regionQuery.all$
+          | async
+          | search: ['name', 'shortName']:(regionSearch$ | async) as regions
+      "
+    >
+      <cdk-virtual-scroll-viewport itemSize="56" [style.height.px]="426">
+        <mat-nav-list>
+          <mat-list-item
+            *cdkVirtualFor="let region of regions; trackBy: trackByRegion"
+            [active]="region.id === user.region?.id"
+            (click)="edit('region', region)"
+          >
+            <mat-icon mat-list-icon svgIcon [region]="region"></mat-icon>
+            <span matLine>
+              {{ region.name }}
+            </span>
+          </mat-list-item>
+        </mat-nav-list>
+      </cdk-virtual-scroll-viewport>
+      <mat-list *ngIf="!regions?.length">
+        <mat-list-item>
+          No region found
+        </mat-list-item>
+      </mat-list>
+    </mat-dialog-content>
   </ng-template>
 </ng-container>

@@ -4,7 +4,6 @@ import { UserStore } from './user.store';
 import { Observable } from 'rxjs';
 import { User, UserUpdateDto } from '../../model/user';
 import { finalize, tap } from 'rxjs/operators';
-import { UpdateResult } from '../../model/update-result';
 import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
 import { UserFollowerService } from '../user-follower/user-follower.service';
@@ -29,11 +28,15 @@ export class UserService {
     );
   }
 
-  update(id: number, dto: UserUpdateDto): Observable<UpdateResult> {
+  update(id: number, dto: UserUpdateDto): Observable<User> {
     this.userStore.update(id, { saving: true });
-    return this.http.patch<UpdateResult>(`${this.endPoint}/${id}`, dto).pipe(
-      tap(() => {
-        this.userStore.update(id, dto);
+    if (dto.region) {
+      dto.idRegion = dto.region.id;
+      delete dto.region;
+    }
+    return this.http.patch<User>(`${this.endPoint}/${id}`, dto).pipe(
+      tap(userUpdated => {
+        this.userStore.update(id, userUpdated);
       }),
       finalize(() => {
         this.userStore.update(id, { saving: false });
