@@ -27,6 +27,7 @@ import { StartCasePipe } from './start-case/start-case.pipe';
 import { BadgeComponent } from './badge/badge.component';
 import { IsFollowingPipe } from './auth-pipes/is-following.pipe';
 import { IsSameAsLoggedPipe } from './auth-pipes/is-same-as-logged.pipe';
+import { MatSvgSizeDirective } from './custom-material/mat-svg-size.directive';
 
 const PIPES = [
   DefaultPipe,
@@ -47,6 +48,7 @@ const DIRECTIVES = [
   DefaultImageDirective,
   MatErrorControlDirective,
   ImageDirective,
+  MatSvgSizeDirective,
 ];
 
 const MODULES = [

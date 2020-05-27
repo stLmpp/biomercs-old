@@ -56,7 +56,7 @@
         <mat-icon *ngIf="state.isEditable">edit</mat-icon>
       </div>
       <mat-divider></mat-divider>
-      <mat-list dense>
+      <mat-list dense class="link-list">
         <div mat-subheader class="justify-between" *ngIf="state.isEditable">
           Links
           <button mat-icon-button (click)="addOrEditLink(user)">
@@ -69,7 +69,11 @@
         <mat-list-item
           *ngFor="let userLink of user.userLinks; trackBy: trackByUserLink"
         >
-          <mat-icon mat-list-icon [svgIcon]="userLink.site.icon"></mat-icon>
+          <mat-icon
+            mat-list-icon
+            [svgIcon]="userLink.site.icon"
+            class="svg"
+          ></mat-icon>
           <span matLine>{{ userLink.name }}</span>
           <button
             mat-icon-button
