@@ -8,6 +8,7 @@ import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
 import { UserFollowerService } from '../user-follower/user-follower.service';
 import { UserLinkService } from '../user-link/user-link.service';
+import { DeepPartial } from '@stlmpp/utils';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -102,5 +103,9 @@ export class UserService {
     if (user.userLinks?.length) {
       this.userLinkService.upsert(user.userLinks);
     }
+  }
+
+  updateStore(idUser: number, partial: DeepPartial<User>): void {
+    this.userStore.update(idUser, partial);
   }
 }

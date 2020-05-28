@@ -113,9 +113,10 @@
                 let error of fieldsConfig[key].validatorsMessages | keyvalue
               "
             >
-              <mat-error *ngIf="control.hasError(error.key)">
+              <mat-error *error="error.key">
                 {{
-                  error.value.replace('{field}', fieldsConfig[key].placeholder)
+                  error.value
+                    | replaceParams: { field: fieldsConfig[key].placeholder }
                 }}
               </mat-error>
             </mat-error>

@@ -5,6 +5,7 @@ import { CommonColumns } from './common-history';
 import { Region } from './region';
 import { UserFollower } from './user-follower';
 import { trackByFactory } from '../util/util';
+import { UserShowcase } from './user-showcase';
 
 export interface User extends CommonColumns {
   username: string;
@@ -28,6 +29,8 @@ export interface User extends CommonColumns {
 
   aboutMe?: string;
   title?: string;
+
+  userShowcase?: UserShowcase;
 }
 
 export interface Auth {

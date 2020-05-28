@@ -11,7 +11,7 @@ import {
   ScoreTableParamsDto,
   ScoreTableType,
 } from '../../../model/score';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -23,7 +23,7 @@ import {
 import { ScoreService } from '../../../state/score/score.service';
 import { isEqual } from 'underscore';
 import { isNil } from '../../../util/util';
-import { TypeEnum } from '../../../model/type';
+import { ScoreTableParamsForm } from '../control-panel/table-control-panel.component';
 
 @Component({
   selector: 'app-table',
@@ -43,56 +43,57 @@ export class TableComponent implements OnInit {
   }
   _params: ScoreTableParamsDto;
 
-  scoreTableType = ScoreTableType;
+  @Input() executeWhen: (params: ScoreTableParamsForm) => boolean;
 
-  typeEnum = TypeEnum;
+  scoreTableType = ScoreTableType;
 
   scores$ = this.params$.pipe(
     filter(params => !!params),
-    filter(
-      ({ idType, idPlatform, idMode, idGame, type }) =>
-        !isNil(idType && idPlatform && idMode && idGame && type)
-    ),
-    distinctUntilChanged(isEqual),
-    switchMap(
-      ({
+    distinctUntilChanged<ScoreTableParamsDto>(isEqual),
+    switchMap(dto => {
+      const {
+        idPlatform,
         type,
         idCharacter,
         idGame,
         idMode,
-        idPlatform,
         idPlayer,
         idType,
         limit,
-      }) => {
-        this.loading.emit(true);
-        let http: Observable<ScoreTable[][]>;
-        if (type === ScoreTableType.character) {
-          http = this.scoreService.getTableScorePlayer(
-            idGame,
-            idMode,
-            idPlatform,
-            idType,
-            idPlayer
-          );
-        } else {
-          http = this.scoreService.getManyTopScore(
-            idPlatform,
-            idGame,
-            idMode,
-            idType,
-            limit,
-            idCharacter,
-            idPlayer
-          );
-        }
-        return http.pipe(
-          finalize(() => {
-            this.loading.emit(false);
-          })
+      } = dto;
+      if (
+        !this.executeWhen(dto) ||
+        isNil(idType && idPlatform && idMode && idGame && type)
+      ) {
+        return of(null);
+      }
+      this.loading.emit(true);
+      let http: Observable<ScoreTable[][]>;
+      if (type === ScoreTableType.character) {
+        http = this.scoreService.getTableScorePlayer(
+          idGame,
+          idMode,
+          idPlatform,
+          idType,
+          idPlayer
+        );
+      } else {
+        http = this.scoreService.getManyTopScore(
+          idPlatform,
+          idGame,
+          idMode,
+          idType,
+          limit,
+          idCharacter,
+          idPlayer
         );
       }
-    ),
+      return http.pipe(
+        finalize(() => {
+          this.loading.emit(false);
+        })
+      );
+    }),
     shareReplay()
   );
 

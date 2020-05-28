@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -15,6 +14,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
+  skip,
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
@@ -37,8 +37,7 @@ export type ScoreTableParamsForm = Omit<ScoreTableParamsDto, 'type'>;
   styleUrls: ['./table-control-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableControlPanelComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+export class TableControlPanelComponent implements OnInit, OnDestroy {
   constructor(
     private gameService: GameService,
     private modeService: ModeService,
@@ -47,6 +46,7 @@ export class TableControlPanelComponent
   ) {}
 
   private _destroy$ = new Subject();
+  private _destroyParams$ = new Subject();
 
   @Input() platforms: Platform[] = [];
   @Input() tableType: ScoreTableType;
@@ -78,6 +78,7 @@ export class TableControlPanelComponent
   }
   set idPlatform(idPlatform: number) {
     this._idPlatform = idPlatform;
+    this.resubToChangesIfNeeded();
     this.idPlatformControl.setValue(idPlatform);
   }
   private _idPlatform: number;
@@ -88,6 +89,7 @@ export class TableControlPanelComponent
   }
   set idGame(idGame: number) {
     this._idGame = idGame;
+    this.resubToChangesIfNeeded();
     this.idGameControl.setValue(idGame);
   }
   private _idGame: number;
@@ -98,6 +100,7 @@ export class TableControlPanelComponent
   }
   set idMode(idMode: number) {
     this._idMode = idMode;
+    this.resubToChangesIfNeeded();
     this.idModeControl.setValue(idMode);
   }
   private _idMode: number;
@@ -112,7 +115,7 @@ export class TableControlPanelComponent
   }
   private _idType: number;
 
-  @Input() executeWhen: (params: ScoreTableParamsForm) => boolean;
+  @Input() autoExecute: boolean;
 
   @Input('loading')
   set _loading(loading: boolean) {
@@ -209,13 +212,20 @@ export class TableControlPanelComponent
   }
 
   onSubmit(): void {
-    if (this.form.invalid || this.loading) return;
+    if (this.loading) return;
     this.paramsChange.emit({ ...this.form.value, type: this.tableType });
   }
 
-  initSub(): void {
+  resubToChangesIfNeeded(): void {
+    if (this.autoExecute) {
+      this._destroyParams$.next();
+      this.subToChanges();
+    }
+  }
+
+  subToChanges(): void {
     this.valueChanges('idPlatform')
-      .pipe(takeUntil(this._destroy$))
+      .pipe(takeUntil(this._destroyParams$), skip(1))
       .subscribe(idPlatform => {
         if (!idPlatform) {
           this.idGameControl.disable();
@@ -225,7 +235,7 @@ export class TableControlPanelComponent
         this.idGameControl.setValue(null);
       });
     this.valueChanges('idGame')
-      .pipe(takeUntil(this._destroy$))
+      .pipe(takeUntil(this._destroyParams$), skip(1))
       .subscribe(idGame => {
         if (!idGame) {
           this.idModeControl.disable();
@@ -235,7 +245,7 @@ export class TableControlPanelComponent
         this.idModeControl.setValue(null);
       });
     this.valueChanges('idMode')
-      .pipe(takeUntil(this._destroy$))
+      .pipe(takeUntil(this._destroyParams$), skip(1))
       .subscribe(idMode => {
         if (!idMode) {
           this.idCharacterControl.disable();
@@ -250,42 +260,23 @@ export class TableControlPanelComponent
   }
 
   ngOnInit(): void {
-    this.initSub();
-    if (this.idPlayer) {
-      this.form.patchValue({ idPlayer: this.idPlayer });
-    }
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      if (this._idPlatform) {
-        this.form.patchValue({ idPlatform: this.idPlatform });
-      }
-      if (this._idGame) {
-        this.form.patchValue({ idGame: this.idGame });
-      }
-      if (this._idMode) {
-        this.form.patchValue({ idMode: this.idMode });
-      }
-      if (this._idType) {
-        this.form.patchValue({ idType: this.idType });
-      }
-      this.form.valueChanges
-        .pipe(
-          takeUntil(this._destroy$),
-          distinctUntilChanged(isEqual),
-          debounceTime(200)
-        )
-        .subscribe(params => {
-          if (this.executeWhen?.(params)) {
-            this.onSubmit();
-          }
-        });
-    });
+    this.subToChanges();
+    this.form.valueChanges
+      .pipe(
+        takeUntil(this._destroy$),
+        distinctUntilChanged(isEqual),
+        debounceTime(200),
+        filter(() => this.autoExecute)
+      )
+      .subscribe(() => {
+        this.onSubmit();
+      });
   }
 
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
+    this._destroyParams$.next();
+    this._destroyParams$.complete();
   }
 }

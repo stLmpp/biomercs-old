@@ -1,5 +1,15 @@
-<app-user-card
-  [user]="user$ | async"
-  [isSameAsLogged]="isSameAsLogged$ | async"
-></app-user-card>
-<app-user-showcase [user]="user$ | async"></app-user-showcase>
+<ng-container
+  *ngIf="{
+    user: user$ | async,
+    isSameAsLogged: isSameAsLogged$ | async
+  } as state"
+>
+  <app-user-card
+    [user]="state.user"
+    [isSameAsLogged]="state.isSameAsLogged"
+  ></app-user-card>
+  <app-user-showcase
+    [user]="state.user"
+    [isSameAsLogged]="state.isSameAsLogged"
+  ></app-user-showcase>
+</ng-container>

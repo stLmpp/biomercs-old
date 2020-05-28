@@ -237,10 +237,9 @@ export class UserCardComponent implements OnInit, OnDestroy {
     this.routerQuery
       .selectParams<string>(RouteParamEnum.idUser)
       .pipe(
+        takeUntil(this._destroy$),
         filter(idUser => !!idUser),
-        map(Number)
-      )
-      .pipe(
+        map(Number),
         tap(() => {
           this.userFollowersLoading = true;
           this.userFollowingLoading = true;
@@ -264,7 +263,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
           )
         )
       )
-      .pipe(takeUntil(this._destroy$))
       .subscribe();
   }
 
