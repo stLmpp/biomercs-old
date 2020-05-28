@@ -46,6 +46,9 @@ export class EditInfoComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
+  hide = true;
+  hideConfirm = true;
+
   saving = false;
 
   form: FormGroup<UserUpdateForm>;
@@ -95,9 +98,11 @@ export class EditInfoComponent implements OnInit, OnDestroy {
       ),
       password: new FormControl(null, [
         confirmPasswordValidator('confirmPassword'),
+        Validators.minLength(4),
       ]),
       confirmPassword: new FormControl(null, [
         confirmPasswordValidator('password'),
+        Validators.minLength(4),
       ]),
     });
     watchPasswords(

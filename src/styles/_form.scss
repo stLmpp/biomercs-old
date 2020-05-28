@@ -1,5 +1,8 @@
 .mat-form-field {
   width: 100%;
+  .mat-form-field-suffix {
+    align-self: center;
+  }
 }
 
 form {

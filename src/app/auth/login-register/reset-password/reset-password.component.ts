@@ -56,6 +56,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   loading = false;
   hide = true;
+  hideConfirm = true;
   user: User;
   err: string;
   msg: string;

@@ -11,6 +11,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
+import { isAnyObject, isArray, isString } from 'is-what';
 
 @Directive({
   selector: '[error]',
@@ -28,7 +29,8 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  @Input() error: string;
+  @Input() error: string | string[] | { [key: string]: boolean };
+  @Input() condition: 'and' | 'or' = 'and';
 
   private isShow = false;
 
@@ -46,15 +48,27 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
     }
   }
 
+  checkErrors(): boolean {
+    if (isString(this.error)) {
+      return this.matFormField._control.ngControl.hasError(this.error);
+    } else if (isArray(this.error)) {
+      return this.error[this.condition === 'or' ? 'some' : 'every'](err =>
+        this.matFormField._control.ngControl.hasError(err)
+      );
+    } else if (isAnyObject(this.error)) {
+      return Object.entries(this.error).every(
+        ([key, value]) =>
+          this.matFormField._control.ngControl.hasError(key) === value
+      );
+    }
+  }
+
   ngOnInit(): void {
     this.viewContainerRef.clear();
     this.matFormField?._control.stateChanges
       .pipe(takeUntil(this._destroy$))
       .subscribe(() => {
-        if (
-          this.matFormField._control.errorState &&
-          this.matFormField._control.ngControl.hasError(this.error)
-        ) {
+        if (this.matFormField._control.errorState && this.checkErrors()) {
           this.showError();
         } else {
           this.hideError();

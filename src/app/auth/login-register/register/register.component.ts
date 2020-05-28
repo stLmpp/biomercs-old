@@ -84,6 +84,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
+  hide = true;
+  hideConfirm = true;
+
   @ViewChild('successRef', { read: TemplateRef })
   successTemplateRef: TemplateRef<any>;
 
@@ -101,10 +104,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     password: new FormControl(null, [
       Validators.required,
       confirmPasswordValidator('confirmPassword'),
+      Validators.minLength(4),
     ]),
     confirmPassword: new FormControl(null, [
       Validators.required,
       confirmPasswordValidator('password'),
+      Validators.minLength(4),
     ]),
   });
 

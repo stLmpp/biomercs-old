@@ -48,6 +48,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
+  hide = true;
+
   form = new FormGroup<LoginForm>({
     username: new FormControl(null, [Validators.required]),
     password: new FormControl<string, LoginFormValidators>(null, [
