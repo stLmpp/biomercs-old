@@ -3,7 +3,7 @@ import { CharacterService } from '../../state/character/character.service';
 import { CharacterQuery } from '../../state/character/character.query';
 import { FieldsConfig } from '../base/base.component';
 import { Game } from '../../model/game';
-import { Validators } from '@angular/forms';
+import { Validators } from '@ng-stack/forms';
 
 @Component({
   selector: 'app-character',

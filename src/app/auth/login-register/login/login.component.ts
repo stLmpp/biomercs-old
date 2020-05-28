@@ -5,7 +5,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ValidatorsModel,
+} from '@ng-stack/forms';
 import { AuthService } from '../../state/auth.service';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -14,6 +19,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteParamEnum } from '../../../model/route-param.enum';
 import { RouterQuery } from '@stlmpp/router';
+
+interface LoginForm {
+  username: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+interface LoginFormValidators extends ValidatorsModel {
+  loginError: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -33,18 +48,16 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  form = new FormGroup({
+  form = new FormGroup<LoginForm>({
     username: new FormControl(null, [Validators.required]),
-    password: new FormControl(null, [Validators.required]),
+    password: new FormControl<string, LoginFormValidators>(null, [
+      Validators.required,
+    ]),
     rememberMe: new FormControl(false),
   });
 
-  get passwordControl(): FormControl {
-    return this.form.get('password') as FormControl;
-  }
-
-  get usernameControl(): FormControl {
-    return this.form.get('username') as FormControl;
+  get passwordControl(): FormControl<string, LoginFormValidators> {
+    return this.form.get('password');
   }
 
   login(): void {

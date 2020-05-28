@@ -15,7 +15,7 @@ import {
   FormControl,
   FormGroup,
   ValidatorFn,
-} from '@angular/forms';
+} from '@ng-stack/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';

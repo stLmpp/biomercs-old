@@ -3,7 +3,7 @@ import { ModeQuery } from '../../state/mode/mode.query';
 import { ModeService } from '../../state/mode/mode.service';
 import { Mode } from '../../model/mode';
 import { FieldsConfig } from '../base/base.component';
-import { Validators } from '@angular/forms';
+import { Validators } from '@ng-stack/forms';
 
 @Component({
   selector: 'app-mode',

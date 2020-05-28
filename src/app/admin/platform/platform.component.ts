@@ -3,7 +3,7 @@ import { PlatformQuery } from '../../state/platform/platform.query';
 import { PlatformService } from '../../state/platform/platform.service';
 import { FieldsConfig } from '../base/base.component';
 import { Platform, PlatformTypeEnum } from '../../model/platform';
-import { Validators } from '@angular/forms';
+import { Validators } from '@ng-stack/forms';
 import { LabelValue, trackByValue } from '../../model/label-value';
 import { of } from 'rxjs';
 

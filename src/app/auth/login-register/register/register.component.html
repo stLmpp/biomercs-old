@@ -11,10 +11,10 @@
             formControlName="username"
             autocomplete="username"
           />
-          <mat-error *ngIf="usernameControl.hasError('required')">
+          <mat-error *error="'required'">
             Username is required
           </mat-error>
-          <mat-error *ngIf="usernameControl.hasError('uniqueUsername')">
+          <mat-error *error="'uniqueUsername'">
             Username already exists
           </mat-error>
         </mat-form-field>
@@ -26,13 +26,13 @@
             formControlName="email"
             autocomplete="email"
           />
-          <mat-error *ngIf="emailControl.hasError('required')">
+          <mat-error *error="'required'">
             E-mail is required
           </mat-error>
-          <mat-error *ngIf="emailControl.hasError('email')">
+          <mat-error *error="'email'">
             Invalid e-mail
           </mat-error>
-          <mat-error *ngIf="emailControl.hasError('uniqueEmail')">
+          <mat-error *error="'uniqueEmail'">
             E-mail already exists
           </mat-error>
         </mat-form-field>
@@ -45,10 +45,10 @@
             formControlName="password"
             autocomplete="current-password"
           />
-          <mat-error *ngIf="passwordControl.hasError('required')">
+          <mat-error *error="'required'">
             Password is required
           </mat-error>
-          <mat-error *ngIf="passwordControl.hasError('unequalPasswords')">
+          <mat-error *error="'unequalPasswords'">
             Passwords doesn't match
           </mat-error>
         </mat-form-field>
@@ -61,12 +61,10 @@
             formControlName="confirmPassword"
             autocomplete="current-password"
           />
-          <mat-error *ngIf="confirmPasswordControl.hasError('required')">
+          <mat-error *error="'required'">
             Confirm password is required
           </mat-error>
-          <mat-error
-            *ngIf="confirmPasswordControl.hasError('unequalPasswords')"
-          >
+          <mat-error *error="'unequalPasswords'">
             Passwords doesn't match
           </mat-error>
         </mat-form-field>

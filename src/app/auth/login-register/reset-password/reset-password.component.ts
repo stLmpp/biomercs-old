@@ -5,7 +5,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ValidatorsModel,
+} from '@ng-stack/forms';
 import {
   confirmPasswordValidator,
   watchPasswords,
@@ -19,6 +24,17 @@ import { User } from '../../../model/user';
 import { takeUntil, takeWhile } from 'rxjs/operators';
 import { catchHttpError } from '../../../util/operators/catchError';
 import { ActivatedRoute, Router } from '@angular/router';
+
+interface ResetPasswordForm {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface PasswordValidator extends ValidatorsModel {
+  unequalPasswords: boolean;
+}
 
 @Component({
   selector: 'app-reset-password',
@@ -45,27 +61,27 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   msg: string;
   time = 5;
 
-  form = new FormGroup({
+  form = new FormGroup<ResetPasswordForm>({
     username: new FormControl({ value: null, disabled: true }),
     email: new FormControl({ value: null, disabled: true }),
-    password: new FormControl(null, [
+    password: new FormControl<string, PasswordValidator>(null, [
       Validators.required,
       Validators.minLength(4),
       confirmPasswordValidator('confirmPassword'),
     ]),
-    confirmPassword: new FormControl(null, [
+    confirmPassword: new FormControl<string, PasswordValidator>(null, [
       Validators.required,
       Validators.minLength(4),
       confirmPasswordValidator('password'),
     ]),
   });
 
-  get passwordControl(): FormControl {
-    return this.form.get('password') as FormControl;
+  get passwordControl(): FormControl<string, PasswordValidator> {
+    return this.form.get('password');
   }
 
-  get confirmPasswordControl(): FormControl {
-    return this.form.get('confirmPassword') as FormControl;
+  get confirmPasswordControl(): FormControl<string, PasswordValidator> {
+    return this.form.get('confirmPassword');
   }
 
   confirm(): void {

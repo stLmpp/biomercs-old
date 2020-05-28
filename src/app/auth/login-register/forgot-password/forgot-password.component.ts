@@ -4,9 +4,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
 import { AuthService } from '../../state/auth.service';
 import { finalize } from 'rxjs/operators';
+
+interface ForgotPasswordForm {
+  email: string;
+}
 
 @Component({
   selector: 'app-forgot-password',
@@ -23,13 +27,9 @@ export class ForgotPasswordComponent implements OnInit {
   responseMessage: string;
   sending = false;
 
-  form = new FormGroup({
+  form = new FormGroup<ForgotPasswordForm>({
     email: new FormControl(null, [Validators.required, Validators.email]),
   });
-
-  get emailControl(): FormControl {
-    return this.form.get('email') as FormControl;
-  }
 
   submit(): void {
     if (this.form.invalid) return;

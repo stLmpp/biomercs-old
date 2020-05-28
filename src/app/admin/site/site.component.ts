@@ -3,7 +3,7 @@ import { SiteService } from '../../state/site/site.service';
 import { SiteQuery } from '../../state/site/site.query';
 import { FieldsConfig } from '../base/base.component';
 import { Site } from '../../model/site';
-import { Validators } from '@angular/forms';
+import { Validators } from '@ng-stack/forms';
 import { urlValidator } from '../../validators/url.directive';
 
 @Component({

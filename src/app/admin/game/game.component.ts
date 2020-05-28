@@ -3,7 +3,7 @@ import { GameQuery } from '../../state/game/game.query';
 import { Game } from '../../model/game';
 import { GameService } from '../../state/game/game.service';
 import { FieldsConfig } from '../base/base.component';
-import { Validators } from '@angular/forms';
+import { Validators } from '@ng-stack/forms';
 
 @Component({
   selector: 'app-game',

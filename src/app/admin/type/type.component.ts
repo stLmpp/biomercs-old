@@ -3,7 +3,7 @@ import { TypeQuery } from '../../state/type/type.query';
 import { TypeService } from '../../state/type/type.service';
 import { FieldsConfig } from '../base/base.component';
 import { Type } from '../../model/type';
-import { Validators } from '@angular/forms';
+import { Validators } from '@ng-stack/forms';
 
 @Component({
   selector: 'app-type',

@@ -54,7 +54,7 @@ export interface UserUpdateDto {
 }
 
 export interface UserForgotPasswordDto {
-  usernameOrEmail: string;
+  email: string;
 }
 
 export interface UserConfirmForgotPasswordDto {

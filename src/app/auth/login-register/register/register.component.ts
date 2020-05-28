@@ -12,7 +12,7 @@ import {
   FormGroup,
   ValidatorFn,
   Validators,
-} from '@angular/forms';
+} from '@ng-stack/forms';
 import { AuthService } from '../../state/auth.service';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { catchHttpError } from '../../../util/operators/catchError';
@@ -23,6 +23,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserService } from '../../../state/user/user.service';
+
+interface RegisterForm {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 export const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
   parent,
@@ -80,7 +87,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild('successRef', { read: TemplateRef })
   successTemplateRef: TemplateRef<any>;
 
-  form = new FormGroup({
+  form = new FormGroup<RegisterForm>({
     username: new FormControl(
       null,
       [Validators.required],
@@ -100,14 +107,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       confirmPasswordValidator('password'),
     ]),
   });
-
-  get usernameControl(): FormControl {
-    return this.form.get('username') as FormControl;
-  }
-
-  get emailControl(): FormControl {
-    return this.form.get('email') as FormControl;
-  }
 
   get passwordControl(): FormControl {
     return this.form.get('password') as FormControl;
