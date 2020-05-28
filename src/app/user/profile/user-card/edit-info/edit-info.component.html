@@ -1,1 +1,69 @@
-<h1>{{ data.user.username }}</h1>
+<form [formGroup]="form" (ngSubmit)="save()">
+  <h1>{{ user.username }}</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>E-mail</mat-label>
+      <input matInput formControlName="email" />
+      <mat-error *error="'email'">
+        Invalid e-mail
+      </mat-error>
+      <mat-error *error="'required'">
+        E-mail is required
+      </mat-error>
+      <mat-error *error="'uniqueEmail'">
+        E-mail already exists
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        placeholder="Password"
+        formControlName="password"
+        autocomplete="new-password"
+      />
+      <mat-error *error="'required'">
+        Password is required
+      </mat-error>
+      <mat-error *error="'unequalPasswords'">
+        Passwords doesn't match
+      </mat-error>
+      <mat-error *error="'minlength'">
+        Password must be at least 4 characters long
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Confirm password</mat-label>
+      <input
+        matInput
+        type="password"
+        placeholder="Confirm password"
+        formControlName="confirmPassword"
+        autocomplete="new-password"
+      />
+      <mat-error *error="'required'">
+        Confirm password is required
+      </mat-error>
+      <mat-error *error="'unequalPasswords'">
+        Passwords doesn't match
+      </mat-error>
+      <mat-error *error="'minlength'">
+        Password must be at least 4 characters long
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button color="accent" mat-dialog-close type="button">
+      Cancel
+    </button>
+    <button
+      mat-button
+      color="accent"
+      type="submit"
+      [disabled]="form.invalid || saving || form.pending || form.pristine"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

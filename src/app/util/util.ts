@@ -66,5 +66,5 @@ export function removeNullObject<T = any>(
 }
 
 export function isAllNull<T = any>(obj: T): boolean {
-  return !obj || Object.values(obj).every(o => isNil(o));
+  return !obj || Object.values(obj).every(isNil);
 }

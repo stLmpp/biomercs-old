@@ -86,7 +86,7 @@ export class AuthService {
 
   changePassword(
     idUser: number,
-    newPassword: number,
+    newPassword: string,
     token?: string
   ): Observable<User> {
     const params: Params = {};

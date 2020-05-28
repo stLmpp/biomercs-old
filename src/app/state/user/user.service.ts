@@ -44,8 +44,8 @@ export class UserService {
     );
   }
 
-  existsByEmail(email: string): Observable<boolean> {
-    const params = new HttpParams({ email });
+  existsByEmail(email: string, idUser?: number): Observable<boolean> {
+    const params = new HttpParams({ email, idUser });
     return this.http.get<boolean>(`${this.endPoint}/exists/email`, {
       params,
     });

@@ -31,7 +31,7 @@ export const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
 }) => {
   if (!value || pristine) return null;
   const password = parent.get(sibling).value;
-  if (!!password && value !== password) {
+  if (value !== password) {
     return { unequalPasswords: true };
   }
   return null;

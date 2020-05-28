@@ -1,7 +1,7 @@
 import { Directive, forwardRef } from '@angular/core';
 import {
   AbstractControl,
-  NG_ASYNC_VALIDATORS,
+  NG_VALIDATORS,
   ValidationErrors,
   Validator,
   ValidatorFn,
@@ -12,7 +12,7 @@ import {
   selector: '[formControl][url], [formControlName][url], [ngModel][url]',
   providers: [
     {
-      provide: NG_ASYNC_VALIDATORS,
+      provide: NG_VALIDATORS,
       useExisting: forwardRef(() => UrlDirective),
       multi: true,
     },

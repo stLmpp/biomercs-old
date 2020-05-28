@@ -42,7 +42,12 @@
         >
         </mat-icon>
         {{ user.username }}
-        <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
+        <mat-icon
+          class="edit"
+          *ngIf="state.isEditable"
+          (click)="openEditOther()"
+          >edit</mat-icon
+        >
       </mat-card-title>
       <mat-card-subtitle
         class="editable"

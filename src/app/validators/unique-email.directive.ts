@@ -33,13 +33,16 @@ export class UniqueEmailDirective implements AsyncValidator {
 }
 
 export const uniqueEmailValidator = (
-  userService: UserService
+  userService: UserService,
+  idUser?: number
 ): AsyncValidatorFn => ({ value, pristine }) => {
   if (!value || pristine) return of(null);
   return timer(400).pipe(
     distinctUntilChanged(),
     switchMap(() => {
-      return userService.existsByEmail(value).pipe(mapToError('uniqueEmail'));
+      return userService
+        .existsByEmail(value, idUser)
+        .pipe(mapToError('uniqueEmail'));
     })
   );
 };

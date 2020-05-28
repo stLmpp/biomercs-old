@@ -54,6 +54,7 @@ import { UserLinkService } from '../../../state/user-link/user-link.service';
 import { RegionQuery } from '../../../state/region/region.query';
 import { trackByRegion } from '../../../model/region';
 import { FormControl } from '@ng-stack/forms';
+import { EditInfoComponent } from './edit-info/edit-info.component';
 
 @Component({
   selector: 'app-user-card',
@@ -147,6 +148,10 @@ export class UserCardComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe(() => this.regionSearchControl.setValue(null));
+  }
+
+  openEditOther(): void {
+    this.matDialog.open(EditInfoComponent, { data: this.user });
   }
 
   openEdit(
