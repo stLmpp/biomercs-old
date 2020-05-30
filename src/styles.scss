@@ -12,6 +12,7 @@
 @import 'button';
 @import 'card';
 @import 'icon';
+@import 'mixins';
 @import './src/app/shared/badge/badge.component';
 
 @include angular-material-theme($theme);

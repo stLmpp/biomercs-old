@@ -1,6 +1,7 @@
 import { CommonColumns } from './common-history';
 import { User } from './user';
 import { Character } from './character';
+import { ScorePlayerProof } from './score-player-proof';
 
 export interface ScorePlayer extends CommonColumns {
   idScore: number;
@@ -9,7 +10,9 @@ export interface ScorePlayer extends CommonColumns {
   idCharacter: number;
   character: Character;
   host: boolean;
-  bulletKils: number;
+  bulletKills: number;
+  scorePlayerProofs?: ScorePlayerProof[];
+  description?: string;
 }
 
 export interface ScorePlayerAddDto {

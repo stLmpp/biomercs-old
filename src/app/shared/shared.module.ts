@@ -28,6 +28,8 @@ import { BadgeComponent } from './badge/badge.component';
 import { IsFollowingPipe } from './auth-pipes/is-following.pipe';
 import { IsSameAsLoggedPipe } from './auth-pipes/is-same-as-logged.pipe';
 import { MatIconSvgDirective } from './custom-material/mat-icon-svg.directive';
+import { ImgBackgroundDirective } from './img-background/img-background.directive';
+import { ScorePipe } from './custom-angular/score.pipe';
 
 const PIPES = [
   DefaultPipe,
@@ -39,6 +41,7 @@ const PIPES = [
   StartCasePipe,
   IsFollowingPipe,
   IsSameAsLoggedPipe,
+  ScorePipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,
@@ -49,6 +52,7 @@ const DIRECTIVES = [
   MatErrorControlDirective,
   ImageDirective,
   MatIconSvgDirective,
+  ImgBackgroundDirective,
 ];
 
 const MODULES = [

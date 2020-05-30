@@ -7,6 +7,12 @@ import { PlatformResolver } from '../state/platform/platform.resolver';
 import { TypeResolver } from '../state/type/type.resolver';
 import { StageResolver } from '../state/stage/stage.resolver';
 import { CharacterResolver } from '../state/character/character.resolver';
+import { RouteParamEnum } from '../model/route-param.enum';
+import { ScoreComponent } from './score/score.component';
+import {
+  RandomScoreResolver,
+  SingleScoreResolver,
+} from '../state/score/score.resolver';
 
 const routes: Routes = [
   {
@@ -20,6 +26,15 @@ const routes: Routes = [
       StageResolver,
       CharacterResolver,
     ],
+  },
+  {
+    path: 'random',
+    resolve: [RandomScoreResolver],
+  },
+  {
+    path: `:${RouteParamEnum.idScore}`,
+    component: ScoreComponent,
+    resolve: [SingleScoreResolver],
   },
 ];
 

@@ -3,15 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Score, ScoreAddDto, ScoreTable } from '../../model/score';
 import { HttpParams } from '../../util/http-params';
+import { ScoreStore } from './score.store';
+import { tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private scoreStore: ScoreStore) {}
 
   endPoint = 'score';
 
   add(dto: ScoreAddDto): Observable<Score> {
-    return this.http.post<Score>(this.endPoint, dto);
+    return this.http.post<Score>(this.endPoint, dto).pipe(
+      tap(score => {
+        this.scoreStore.add(score);
+      })
+    );
   }
 
   getTableScorePlayer(
@@ -54,5 +60,17 @@ export class ScoreService {
     return this.http.get<ScoreTable[][]>(`${this.endPoint}/table-top`, {
       params,
     });
+  }
+
+  findById(idScore: number): Observable<Score> {
+    return this.http.get<Score>(`${this.endPoint}/${idScore}`).pipe(
+      tap(score => {
+        this.scoreStore.upsert(idScore, score);
+      })
+    );
+  }
+
+  findRandom(): Observable<number> {
+    return this.http.get<number>(`${this.endPoint}/random`);
   }
 }

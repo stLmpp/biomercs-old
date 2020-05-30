@@ -5,8 +5,8 @@ $header-height-plus-padding: 80px;
 $header-z-index: 500;
 $background-list-active: rgba(0, 0, 0, 0.04);
 
-$primary: mat-palette($mat-deep-orange);
-$accent: mat-palette($mat-yellow, A200, A100, A400);
+$primary: mat-palette($mat-gray, 900, 100, 900, 50);
+$accent: mat-palette($mat-blue);
 $warn: mat-palette($mat-red, 900, 700);
 $theme: mat-dark-theme($primary, $accent, $warn);
 
