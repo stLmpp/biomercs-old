@@ -1,6 +1,9 @@
 <ng-container *ngIf="_params">
   <ng-container
-    *ngIf="{ table: scores$ | async, columns: columns$ | async } as state"
+    *ngIf="{
+      table: scores$ | async,
+      columns: columns$ | async
+    } as state"
   >
     <ng-container *ngIf="_params.type === scoreTableType.character">
       <mat-table
@@ -31,7 +34,7 @@
             </ng-container>
             <ng-container *ngIf="!$last && !$first">
               <ng-container
-                *let="state.table[$rowIndex][$colIndex - 1]?.score as score"
+                *let="state.table[$rowIndex][$colIndex - 1] as score"
               >
                 <ng-container
                   *ngTemplateOutlet="scoreRef; context: { $implicit: score }"
@@ -111,7 +114,7 @@
                 *ngTemplateOutlet="
                   scoreRef;
                   context: {
-                    $implicit: state.table[$rowIndex][$colIndex - 2]?.score
+                    $implicit: state.table[$rowIndex][$colIndex - 2]
                   }
                 "
               ></ng-container>
@@ -130,13 +133,20 @@
       </mat-table>
     </ng-container>
   </ng-container>
-  <ng-template #scoreRef let-score>
+  <ng-template #scoreRef let-scoreTable>
     <button
+      *let="scoreTable?.score as score"
       [disabled]="!score"
       mat-button
+      [color]="scoreTable?.isWr ? 'accent' : undefined"
+      matTooltip="World Record"
+      matTooltipPosition="right"
+      matTooltipShowDelay="200"
+      matTooltipHideDelay="200"
+      [matTooltipDisabled]="!scoreTable?.isWr"
       [routerLink]="['/score', score?.id | default: 0]"
     >
-      {{ score?.score | default: 0 | number: '1.0-0' }}
+      {{ score?.score | default: 0 | score }}
     </button>
   </ng-template>
 </ng-container>

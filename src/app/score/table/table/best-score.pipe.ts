@@ -1,19 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Score, ScoreTable } from '../../../model/score';
+import { ScoreTable } from '../../../model/score';
 
-export function bestScore(table: ScoreTable[][], colIndex: number): Score {
+export function bestScore(table: ScoreTable[][], colIndex: number): ScoreTable {
   return table
-    .map(tab => tab.find((_, index) => index === colIndex))
-    .map(o => o.score)
+    .map(tab => tab[colIndex])
     .reduce(
-      (acc, score) => ((score?.score ?? 0) > (acc?.score ?? 0) ? score : acc),
+      (acc, score) =>
+        (score?.score?.score ?? 0) > (acc?.score?.score ?? 0) ? score : acc,
       null
     );
 }
 
 @Pipe({ name: 'bestScore' })
 export class BestScorePipe implements PipeTransform {
-  transform(table: ScoreTable[][], colIndex: number): Score {
+  transform(table: ScoreTable[][], colIndex: number): ScoreTable {
     return bestScore(table, colIndex);
   }
 }

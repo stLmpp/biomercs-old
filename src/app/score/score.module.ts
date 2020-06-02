@@ -19,6 +19,7 @@ import { ScoreComponent } from './score/score.component';
 import { ClipPathDirective } from './score/clip-path.directive';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScorePlayerComponent } from './score/score-player/score-player.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ScorePlayerComponent } from './score/score-player/score-player.componen
     MatDividerModule,
     MatTableModule,
     MatTooltipModule,
+    MatBadgeModule,
   ],
   exports: [ScoreTableComponent, ScoreComponent],
 })

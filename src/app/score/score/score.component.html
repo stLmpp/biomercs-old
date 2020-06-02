@@ -15,19 +15,23 @@
       <div class="item">
         {{ score.stage.name | uppercase }}
       </div>
-      <div class="item number">
+      <div class="item">
         {{ score.score | score }}
       </div>
-      <div class="item number">
+      <div class="item">
         {{ score.time }}
       </div>
-      <div class="item number">{{ score.maxCombo }}c</div>
+      <div class="item">{{ score.maxCombo }}c</div>
+      <div class="item" *ngIf="score.isWr">
+        World Record
+        <mat-icon svgIcon="trophy"></mat-icon>
+      </div>
     </div>
     <div
       class="char-1"
       *ngIf="score.scorePlayers[0] as player1"
       [imgBackground]="player1.character.idImage"
-      options="left bottom / 75% no-repeat"
+      options="left bottom / 85% no-repeat"
       bypassSecurity
     >
       <app-score-player
@@ -39,7 +43,7 @@
       class="char-2"
       *ngIf="score.scorePlayers[1] as player2"
       [imgBackground]="player2.character.idImage"
-      options="right bottom / 75% no-repeat"
+      options="right bottom / 85% no-repeat"
       bypassSecurity
     >
       <app-score-player

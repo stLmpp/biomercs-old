@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Directive,
   ElementRef,
   Inject,
@@ -10,12 +11,12 @@ import {
 } from '@angular/core';
 import { WINDOW } from '../../core/window.service';
 import { fromEvent, Subject } from 'rxjs';
-import { sampleTime, takeUntil } from 'rxjs/operators';
+import { auditTime, takeUntil } from 'rxjs/operators';
 
 @Directive({
   selector: '[clipPath]',
 })
-export class ClipPathDirective implements OnInit, OnDestroy {
+export class ClipPathDirective implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private elementRef: ElementRef,
     private renderer2: Renderer2,
@@ -43,16 +44,21 @@ export class ClipPathDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setStyle();
     if (+this.clipPath === 2) {
       this.ngZone.runOutsideAngular(() => {
         fromEvent(this.window, 'resize', { passive: true })
-          .pipe(takeUntil(this._destroy$), sampleTime(50))
+          .pipe(takeUntil(this._destroy$), auditTime(50))
           .subscribe(() => {
             this.setStyle();
           });
       });
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.setStyle();
+    });
   }
 
   ngOnDestroy(): void {

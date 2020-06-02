@@ -25,15 +25,18 @@ export class ScoreService {
     idMode: number,
     idPlatform: number,
     idType: number,
-    idPlayer: number
+    idPlayer?: number
   ): Observable<ScoreTable[][]> {
-    const params = new HttpParams({
-      idGame,
-      idMode,
-      idPlatform,
-      idType,
-      idPlayer,
-    });
+    const params = new HttpParams(
+      {
+        idGame,
+        idMode,
+        idPlatform,
+        idType,
+        idPlayer,
+      },
+      true
+    );
     return this.http.get<ScoreTable[][]>(`${this.endPoint}/table-player`, {
       params,
     });

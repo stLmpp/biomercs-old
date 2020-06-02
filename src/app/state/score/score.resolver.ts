@@ -26,13 +26,13 @@ export class SingleScoreResolver implements Resolve<Score> {
 }
 
 @Injectable({ providedIn: 'root' })
-export class RandomScoreResolver implements Resolve<Score> {
+export class RandomScoreResolver implements Resolve<number> {
   constructor(private scoreService: ScoreService, private router: Router) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<Score> | Promise<Score> | Score {
+  ): Observable<number> | Promise<number> | number {
     return this.scoreService.findRandom().pipe(
       tap(idScore => {
         this.router.navigate(['/score', idScore]);

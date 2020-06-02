@@ -17,6 +17,7 @@ export class AuthQuery extends Query<Auth> {
   });
   user$ = this.select('user').pipe(filter(user => !!user));
   isAdmin$ = this.user$.pipe(map(this.isAdmin));
+  isOwner$ = this.user$.pipe(map(this.isOwner));
 
   isSameAsLogged$(idUser: number): Observable<boolean> {
     return this.user$.pipe(
@@ -41,6 +42,16 @@ export class AuthQuery extends Query<Auth> {
     return user?.userRoles?.some(
       userRole => userRole.role.name === RoleEnum.admin
     );
+  }
+
+  private isOwner(user: User): boolean {
+    return user?.userRoles?.some(
+      userRole => userRole.role.name === RoleEnum.owner
+    );
+  }
+
+  getIsOwner(): boolean {
+    return this.isOwner(this.getUserSnapshot());
   }
 
   getIsAdmin(): boolean {

@@ -17,6 +17,8 @@ export interface Score extends CommonColumns {
   score: number;
   maxCombo?: number;
   time?: string;
+  isWr?: boolean;
+  wr?: Score;
 }
 
 export interface ScoreAddDto {

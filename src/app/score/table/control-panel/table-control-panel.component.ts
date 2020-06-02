@@ -48,6 +48,8 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject();
   private _destroyParams$ = new Subject();
 
+  scoreTableType = ScoreTableType;
+
   @Input() platforms: Platform[] = [];
   @Input() tableType: ScoreTableType;
   @Input() params: ScoreTableParamsDto;
@@ -200,11 +202,13 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   trackByType = trackByType;
   trackByCharacter = trackByCharacter;
 
-  private valueChanges(
-    key: keyof ScoreTableParamsForm,
+  private valueChanges<K extends keyof ScoreTableParamsForm>(
+    key: K,
     filterNil?: boolean
-  ): Observable<ScoreTableParamsForm[keyof ScoreTableParamsForm]> {
-    let changes$ = this.form.get(key).valueChanges.pipe(distinctUntilChanged());
+  ): Observable<ScoreTableParamsForm[K]> {
+    let changes$ = (this.form.get(key).valueChanges as Observable<
+      ScoreTableParamsForm[K]
+    >).pipe(distinctUntilChanged());
     if (filterNil) {
       changes$ = changes$.pipe(filter(value => !!value));
     }
@@ -214,6 +218,7 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.loading) return;
     this.paramsChange.emit({ ...this.form.value, type: this.tableType });
+    this.params = { ...this.form.value, type: this.tableType };
   }
 
   resubToChangesIfNeeded(): void {
