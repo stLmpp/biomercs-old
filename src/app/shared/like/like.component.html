@@ -1,44 +1,31 @@
-<ng-container *ngIf="{ currentLike: currentLike$ | async } as state">
+<ng-container
+  *ngIf="{
+    currentLike: currentLike$ | async,
+    count: likeCount$ | async
+  } as state"
+>
   <button
-    [disabled]="loading"
+    [disabled]="loading || readonly"
     mat-icon-button
     (click)="addOrRemove(likeStyleEnum.like, state?.currentLike)"
     [color]="
       state.currentLike?.style === likeStyleEnum.like ? 'accent' : undefined
     "
-    matTooltip="I liked this {{ type }}"
-    matTooltipPosition="above"
-    matTooltipShowDelay="200"
-    matTooltipHideDelay="200"
+    [matBadge]="'' + (state?.count?.like | default: 0)"
+    matBadgeSize="small"
   >
     <mat-icon>thumb_up</mat-icon>
   </button>
   <button
-    [disabled]="loading"
+    [disabled]="loading || readonly"
     mat-icon-button
     (click)="addOrRemove(likeStyleEnum.love, state?.currentLike)"
     [color]="
       state.currentLike?.style === likeStyleEnum.love ? 'accent' : undefined
     "
-    matTooltip="I loved this {{ type }}"
-    matTooltipPosition="above"
-    matTooltipShowDelay="200"
-    matTooltipHideDelay="200"
+    [matBadge]="'' + (state?.count?.love | default: 0)"
+    matBadgeSize="small"
   >
     <mat-icon>favorite</mat-icon>
-  </button>
-  <button
-    [disabled]="loading"
-    mat-icon-button
-    (click)="addOrRemove(likeStyleEnum.dislike, state?.currentLike)"
-    [color]="
-      state.currentLike?.style === likeStyleEnum.dislike ? 'warn' : undefined
-    "
-    matTooltip="I disliked this {{ type }}"
-    matTooltipPosition="above"
-    matTooltipShowDelay="200"
-    matTooltipHideDelay="200"
-  >
-    <mat-icon>thumb_down</mat-icon>
   </button>
 </ng-container>

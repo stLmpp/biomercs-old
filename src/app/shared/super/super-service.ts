@@ -68,7 +68,7 @@ export class SuperService<
     }
   }
 
-  private options: SuperServiceOptions<Entity>;
+  options: SuperServiceOptions<Entity>;
 
   private isAllowed(method: SuperServiceMethod): boolean {
     const notAllowed = this.options.excludeMethods.includes(method);

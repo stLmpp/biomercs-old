@@ -13,6 +13,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, finalize, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AuthQuery } from '../../auth/state/auth.query';
 import { Like, LikeStyleEnum } from '../../model/like';
+import { convertToBoolProperty } from '../../util/util';
 
 interface LikeParams {
   type: ReferenceTypeEnum;
@@ -40,9 +41,17 @@ export class LikeComponent implements OnInit, OnChanges {
   @Input() type: ReferenceTypeEnum;
   @Input() idReference: number;
 
+  @Input('readonly')
+  set _readonly(value: '' | boolean) {
+    this.readonly = convertToBoolProperty(value);
+  }
+  readonly: boolean;
+
   likeCount$ = this.params$.asObservable().pipe(
     filter(params => !!(params?.idReference && params?.type)),
-    switchMap(params => this.likeService.countByParams(params))
+    switchMap(params =>
+      this.likeService.findCountForAll(params.type, params.idReference)
+    )
   );
 
   currentLike$ = this.params$.asObservable().pipe(
@@ -58,6 +67,7 @@ export class LikeComponent implements OnInit, OnChanges {
   );
 
   addOrRemove(style: LikeStyleEnum, currentLike?: Like): void {
+    if (this.readonly) return;
     this.loading = true;
     let http$: Observable<any>;
     if (currentLike) {

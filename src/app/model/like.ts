@@ -7,7 +7,6 @@ import { SuperParamsDto } from '../shared/super/super-params.dto';
 export enum LikeStyleEnum {
   like = 'like',
   love = 'love',
-  dislike = 'dislike',
 }
 
 export interface Like extends CommonColumns {
@@ -38,4 +37,9 @@ export interface LikeDeleteDto {
   type: ReferenceTypeEnum;
   idReference: number;
   style?: LikeStyleEnum;
+}
+
+export interface LikeCount {
+  like: number;
+  love: number;
 }

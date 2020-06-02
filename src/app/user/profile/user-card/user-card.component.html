@@ -204,16 +204,18 @@
       </mat-nav-list>
       <mat-divider></mat-divider>
     </mat-card-content>
-    <mat-card-actions align="end" *ngIf="!isSameAsLogged">
+    <mat-card-actions align="end">
       <app-like
         [idReference]="user.id"
         [type]="referenceTypeEnum.user"
+        [readonly]="isSameAsLogged"
       ></app-like>
       <button
         mat-button
         [color]="state.isFollowing ? 'warn' : 'accent'"
         (click)="onFollow(user)"
         [disabled]="followingLoading"
+        *ngIf="!isSameAsLogged"
       >
         {{ state.isFollowing ? 'Unfollow' : 'Follow' }}
       </button>
