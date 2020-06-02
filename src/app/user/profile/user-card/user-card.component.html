@@ -205,9 +205,13 @@
       <mat-divider></mat-divider>
     </mat-card-content>
     <mat-card-actions align="end" *ngIf="!isSameAsLogged">
+      <app-like
+        [idReference]="user.id"
+        [type]="referenceTypeEnum.user"
+      ></app-like>
       <button
         mat-button
-        color="accent"
+        [color]="state.isFollowing ? 'warn' : 'accent'"
         (click)="onFollow(user)"
         [disabled]="followingLoading"
       >

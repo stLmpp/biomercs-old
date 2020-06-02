@@ -6,11 +6,9 @@
       (afterCollapse)="setOpenState($indexOne, false)"
     >
       <mat-expansion-panel-header>
-        <mat-chip-list *ngIf="showCount">
-          <mat-chip>
-            {{ entities | countRelation: [entityOne.id, oneIdKey] }}
-          </mat-chip>
-        </mat-chip-list>
+        <app-badge *ngIf="showCount">{{
+          entities | countRelation: [entityOne.id, oneIdKey]
+        }}</app-badge>
         <ng-container *ngIf="oneLabel | isType: 'Array'; else simpleLabel">
           <ng-container
             *ngFor="

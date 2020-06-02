@@ -17,9 +17,8 @@ import { BestScorePipe } from './table/table/best-score.pipe';
 import { BestScoreTotalPipe } from './table/table/best-score-total.pipe';
 import { ScoreComponent } from './score/score.component';
 import { ClipPathDirective } from './score/clip-path.directive';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScorePlayerComponent } from './score/score-player/score-player.component';
-import { MatBadgeModule } from '@angular/material/badge';
+import { ScoreFooterComponent } from './score/score-footer/score-footer.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +31,7 @@ import { MatBadgeModule } from '@angular/material/badge';
     ScoreComponent,
     ClipPathDirective,
     ScorePlayerComponent,
+    ScoreFooterComponent,
   ],
   imports: [
     CommonModule,
@@ -43,8 +43,6 @@ import { MatBadgeModule } from '@angular/material/badge';
     NgxMaskModule.forChild(),
     MatDividerModule,
     MatTableModule,
-    MatTooltipModule,
-    MatBadgeModule,
   ],
   exports: [ScoreTableComponent, ScoreComponent],
 })

@@ -55,6 +55,7 @@ import { RegionQuery } from '../../../state/region/region.query';
 import { trackByRegion } from '../../../model/region';
 import { FormControl } from '@ng-stack/forms';
 import { EditInfoComponent } from './edit-info/edit-info.component';
+import { ReferenceTypeEnum } from '../../../model/reference-type.enum';
 
 @Component({
   selector: 'app-user-card',
@@ -83,6 +84,8 @@ export class UserCardComponent implements OnInit, OnDestroy {
   ) {}
 
   private _destroy$ = new Subject();
+
+  referenceTypeEnum = ReferenceTypeEnum;
 
   @Input() user: User;
   @Input() isSameAsLogged: boolean;

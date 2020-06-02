@@ -13,7 +13,6 @@ import { BaseComponent } from './base/base.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { BaseRelationComponent } from './base/base-relation.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MapRelationPipe } from './base/map-relation.pipe';
@@ -21,8 +20,6 @@ import { StageComponent } from './stage/stage.component';
 import { SiteComponent } from './site/site.component';
 import { CharacterComponent } from './character/character.component';
 import { GameModeCharacterComponent } from './game-mode-character/game-mode-character.component';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatChipsModule } from '@angular/material/chips';
 import { CountRelationPipe } from './base/count-relation.pipe';
 import { TypeComponent } from './type/type.component';
 import { GameModeTypeComponent } from './game-mode-type/game-mode-type.component';
@@ -62,10 +59,7 @@ import { StUtilsModule } from '@stlmpp/utils';
     MatSelectModule,
     MatMenuModule,
     MatProgressSpinnerModule,
-    MatTooltipModule,
     MatExpansionModule,
-    MatBadgeModule,
-    MatChipsModule,
     StUtilsModule,
   ],
 })

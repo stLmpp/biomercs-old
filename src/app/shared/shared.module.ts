@@ -30,6 +30,9 @@ import { IsSameAsLoggedPipe } from './auth-pipes/is-same-as-logged.pipe';
 import { MatIconSvgDirective } from './custom-material/mat-icon-svg.directive';
 import { ImgBackgroundDirective } from './img-background/img-background.directive';
 import { ScorePipe } from './custom-angular/score.pipe';
+import { LikeComponent } from './like/like.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const PIPES = [
   DefaultPipe,
@@ -67,9 +70,11 @@ const MODULES = [
   MatRadioModule,
   MatDialogModule,
   MatProgressSpinnerModule,
+  MatBadgeModule,
+  MatTooltipModule,
 ];
 
-const COMPONENTS = [DialogComponent, BadgeComponent];
+const COMPONENTS = [DialogComponent, BadgeComponent, LikeComponent];
 
 @NgModule({
   imports: [...MODULES],

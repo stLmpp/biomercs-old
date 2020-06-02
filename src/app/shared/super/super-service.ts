@@ -17,7 +17,8 @@ export type SuperServiceMethod =
   | 'exists'
   | 'findByParams'
   | 'search'
-  | 'deleteByParams';
+  | 'deleteByParams'
+  | 'count';
 
 export type SuperServiceTime = 'after' | 'before';
 export type SuperServiceErrorAction = 'restore' | 'keep';
@@ -42,7 +43,8 @@ export class SuperService<
   UpdateDto = any,
   ExistsDto = any,
   ParamsDto = any,
-  DeleteDto = any
+  DeleteDto = any,
+  CountDto = any
 > {
   constructor(
     private __http: HttpClient,
@@ -214,6 +216,24 @@ export class SuperService<
             this.__store.upsert(entities);
           })
         );
+    }
+  }
+
+  findOneByParams(dto: ParamsDto): Observable<Entity> {
+    return this.__http
+      .post<Entity>(`${this.options.endPoint}/one-params`, dto)
+      .pipe(
+        tap(entity => {
+          if (entity?.id) {
+            this.__store.upsert(entity.id, entity);
+          }
+        })
+      );
+  }
+
+  countByParams(dto: CountDto): Observable<number> {
+    if (this.isAllowed('count')) {
+      return this.__http.post<number>(`${this.options.endPoint}/count`, dto);
     }
   }
 

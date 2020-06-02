@@ -4,7 +4,6 @@ import { UserRoutingModule } from './user-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatListModule } from '@angular/material/list';
 import { UserCardComponent } from './profile/user-card/user-card.component';
@@ -35,7 +34,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     SharedModule,
     UserRoutingModule,
     MatCardModule,
-    MatTooltipModule,
     MatProgressBarModule,
     MatListModule,
     MatSelectModule,

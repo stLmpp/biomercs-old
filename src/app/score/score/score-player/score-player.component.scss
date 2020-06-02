@@ -7,7 +7,7 @@
   justify-content: flex-end;
   > .item {
     display: flex;
-    padding: 0.5rem 2.5rem;
+    padding: 0.5rem 0 0.5rem 2.5rem;
     align-items: center;
     background: linear-gradient(
       90deg,
@@ -64,7 +64,7 @@
     padding-left: 0;
     padding-right: 10%;
     > .item {
-      padding: 0.5rem 2.5rem;
+      padding: 0.5rem 2.5rem 0.5rem 0;
       justify-content: flex-end;
       background: linear-gradient(
         90deg,

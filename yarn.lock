@@ -1045,10 +1045,10 @@
     semver "7.1.3"
     semver-intersect "1.4.0"
 
-"@stlmpp/router@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-0.1.1.tgz#f41248aaed1ef2bf7d15fde38b2b7ba4d559ae74"
-  integrity sha512-zn7xBBOCwnywkDpdVFyhZu/J1qg3kL98B25FjPjHnHfATxoTLhkNs1fDkC2Mip1edm5BCgBeKhaERPM/pLPeMA==
+"@stlmpp/router@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@stlmpp/router/-/router-0.1.2.tgz#28c096099d81987fb3fd1df6b4799c7ec198e18f"
+  integrity sha512-Wvcj/LRLg6jyRVofjTZ5Q9X8h1pc6Hl/FN8drSAQ2YDlUremgNezu3NeKduG+VBI8oCf5okvUob7EyQeP4cjNQ==
   dependencies:
     is-what "^3.8.0"
     tslib ">= 1 < 2"

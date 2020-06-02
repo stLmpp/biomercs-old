@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
     "@ng-stack/forms": "^2.0.0",
-    "@stlmpp/router": "^0.1.1",
+    "@stlmpp/router": "^0.1.2",
     "@stlmpp/store": "^0.2.2",
     "@stlmpp/utils": "^0.1.0",
     "date-fns": "^2.14.0",
