@@ -17,7 +17,7 @@ export class UserFollowerResolver implements Resolve<UserFollower[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<UserFollower[]> | Promise<UserFollower[]> | UserFollower[] {
-    const idFollowed = +route.params[RouteParamEnum.idUser];
+    const idFollowed = +route.paramMap.get(RouteParamEnum.idUser);
     return this.userFollowerService.findByParams({ idFollowed });
   }
 }
@@ -30,7 +30,7 @@ export class UserFollowedResolver implements Resolve<UserFollower[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<UserFollower[]> | Promise<UserFollower[]> | UserFollower[] {
-    const idFollower = +route.params[RouteParamEnum.idUser];
+    const idFollower = +route.paramMap.get(RouteParamEnum.idUser);
     return this.userFollowerService.findByParams({ idFollower });
   }
 }

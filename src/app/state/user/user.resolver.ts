@@ -12,6 +12,8 @@ export class SingleUserResolver implements Resolve<User> {
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<User> | Promise<User> | User {
-    return this.userService.findById(+route.params[RouteParamEnum.idUser]);
+    return this.userService.findById(
+      +route.paramMap.get(RouteParamEnum.idUser)
+    );
   }
 }

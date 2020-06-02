@@ -21,8 +21,8 @@ export class ResetPasswordGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const idUser = +route.params[RouteParamEnum.idUser];
-    const token = route.queryParams[RouteParamEnum.token];
+    const idUser = +route.paramMap.get(RouteParamEnum.idUser);
+    const token = route.queryParamMap.get(RouteParamEnum.token);
     if (!idUser || !token) {
       return false;
     }

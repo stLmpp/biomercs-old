@@ -18,7 +18,7 @@ export class UserShowcaseResolver implements Resolve<UserShowcase> {
     state: RouterStateSnapshot
   ): Observable<UserShowcase> | Promise<UserShowcase> | UserShowcase {
     return this.userShowcaseService.findByIdUser(
-      route.params[RouteParamEnum.idUser]
+      +route.paramMap.get(RouteParamEnum.idUser)
     );
   }
 }

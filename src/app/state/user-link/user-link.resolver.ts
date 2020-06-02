@@ -18,7 +18,7 @@ export class UserLinkResolver implements Resolve<UserLink[]> {
     state: RouterStateSnapshot
   ): Observable<UserLink[]> | Promise<UserLink[]> | UserLink[] {
     return this.userLinkService.findByParams({
-      idUser: +route.params[RouteParamEnum.idUser],
+      idUser: +route.paramMap.get(RouteParamEnum.idUser),
     });
   }
 }
