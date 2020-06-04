@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Score, ScoreAddDto, ScoreTable } from '../../model/score';
+import {
+  Score,
+  ScoreAddDto,
+  ScoreRandomDto,
+  ScoreTable,
+} from '../../model/score';
 import { HttpParams } from '../../util/http-params';
 import { ScoreStore } from './score.store';
 import { tap } from 'rxjs/operators';
@@ -73,7 +78,8 @@ export class ScoreService {
     );
   }
 
-  findRandom(): Observable<number> {
-    return this.http.get<number>(`${this.endPoint}/random`);
+  findRandom(dto: ScoreRandomDto = {}): Observable<number> {
+    const params = new HttpParams(dto, true);
+    return this.http.get<number>(`${this.endPoint}/random`, { params });
   }
 }

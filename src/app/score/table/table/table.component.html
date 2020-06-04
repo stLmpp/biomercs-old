@@ -138,12 +138,6 @@
       *let="scoreTable?.score as score"
       [disabled]="!score"
       mat-button
-      [color]="scoreTable?.isWr ? 'accent' : undefined"
-      matTooltip="World Record"
-      matTooltipPosition="right"
-      matTooltipShowDelay="200"
-      matTooltipHideDelay="200"
-      [matTooltipDisabled]="!scoreTable?.isWr"
       [routerLink]="['/score', score?.id | default: 0]"
     >
       {{ score?.score | default: 0 | score }}

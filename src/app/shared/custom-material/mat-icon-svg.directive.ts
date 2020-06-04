@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, Input } from '@angular/core';
 import { Region } from '../../model/region';
 import { MatIcon } from '@angular/material/icon';
 import { isString } from 'is-what';
@@ -30,24 +30,6 @@ export class MatIconSvgDirective {
   }
 
   private _regionIcon: string;
-
-  @Input() size: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-
-  @HostBinding('class.xs') get xs(): boolean {
-    return this.size === 'xs';
-  }
-  @HostBinding('class.sm') get sm(): boolean {
-    return this.size === 'sm';
-  }
-  @HostBinding('class.md') get md(): boolean {
-    return this.size === 'md';
-  }
-  @HostBinding('class.lg') get lg(): boolean {
-    return this.size === 'lg';
-  }
-  @HostBinding('class.xl') get xl(): boolean {
-    return this.size === 'xl';
-  }
 
   private flagExists(flag: string): boolean {
     return flagIcons.some(({ name }) => name.replace('.svg') === flag);

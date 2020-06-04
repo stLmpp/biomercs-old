@@ -5,6 +5,7 @@ import { Type } from './type';
 import { ScorePlayer, ScorePlayerAddDto } from './score-player';
 import { Character } from './character';
 import { User } from './user';
+import { trackByFactory } from '../util/util';
 
 export interface Score extends CommonColumns {
   idGameModePlatform: number;
@@ -17,8 +18,14 @@ export interface Score extends CommonColumns {
   score: number;
   maxCombo?: number;
   time?: string;
-  isWr?: boolean;
-  wr?: Score;
+
+  isWorldRecord?: boolean;
+  wordRecord?: Score;
+  isCharacterWorldRecords?: boolean;
+  isCharacterWorldRecord?: { [idCharacter: number]: boolean };
+  characterWorldRecords?: Score[];
+  isCombinationWorldRecord?: boolean;
+  combinationWorldRecord?: Score;
 }
 
 export interface ScoreAddDto {
@@ -56,3 +63,15 @@ export interface ScoreTableParamsDto {
   limit?: number;
   type: ScoreTableType;
 }
+
+export interface ScoreRandomDto {
+  idGame?: number;
+  idMode?: number;
+  idType?: number;
+  idPlatform?: number;
+  idCharacter?: number;
+  idStage?: number;
+  idPlayer?: number;
+}
+
+export const trackByScore = trackByFactory<Score>('id');

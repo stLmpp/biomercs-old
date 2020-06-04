@@ -33,6 +33,7 @@ import { ScorePipe } from './custom-angular/score.pipe';
 import { LikeComponent } from './like/like.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconSizeDirective } from './custom-material/mat-icon-size.directive';
 
 const PIPES = [
   DefaultPipe,
@@ -55,6 +56,7 @@ const DIRECTIVES = [
   MatErrorControlDirective,
   ImageDirective,
   MatIconSvgDirective,
+  MatIconSizeDirective,
   ImgBackgroundDirective,
 ];
 

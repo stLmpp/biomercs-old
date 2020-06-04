@@ -1,5 +1,9 @@
 @import 'variables';
 @import 'mixins';
+@import 'functions';
+
+$max-size: 15rem;
+$min-size: 4rem;
 
 :host {
   display: flex;
@@ -8,6 +12,7 @@
     flex-grow: 1;
     max-width: 1920px;
     > .score {
+      position: relative;
       max-height: 1080px;
       min-height: 600px;
       @media (min-height: 900px) {
@@ -19,6 +24,104 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       grid-gap: 1rem;
+      > .world-record,
+      > .combination-world-record,
+      > .character-world-record {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: $min-size;
+        width: $min-size;
+        clip-path: polygon(100% 0, 0 0, 100% 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding-left: 2rem;
+        padding-bottom: 2rem;
+        transition: padding 0.5s ease, height 0.5s ease, width 0.5s;
+        opacity: 0.8;
+        > .label {
+          display: none;
+          opacity: 0;
+          white-space: nowrap;
+          transform: rotate(45deg);
+        }
+        > .mat-icon {
+          opacity: 1;
+          transition: opacity 0.5s ease;
+        }
+        &:hover {
+          padding-left: 2rem;
+          padding-bottom: 2rem;
+          height: $max-size !important;
+          width: $max-size !important;
+          > .label {
+            display: block;
+            opacity: 1;
+            animation: fadeInFromNone 0.5s ease;
+          }
+          > .mat-icon {
+            opacity: 0;
+          }
+        }
+      }
+      > .world-record {
+        z-index: 3;
+        background-color: get-color($mat-gray, 900);
+      }
+      > .combination-world-record {
+        z-index: 2;
+        height: $min-size * 2;
+        width: $min-size * 2;
+        background-color: get-color($mat-gray, 700);
+      }
+      > .character-world-record {
+        z-index: 1;
+        height: $min-size * 3;
+        width: $min-size * 3;
+        background-color: get-color($mat-gray, 500);
+      }
+      > .combination-world-record,
+      > .character-world-record {
+        > .label {
+          text-align: center;
+        }
+        &:hover {
+          padding-left: 3rem;
+          padding-bottom: 3rem;
+        }
+      }
+      &:not(.is-wr).is-combination-wr {
+        > .combination-world-record {
+          height: $min-size;
+          width: $min-size;
+        }
+        > .character-world-record {
+          height: $min-size * 2;
+          width: $min-size * 2;
+        }
+      }
+      &:not(.is-wr.combination-world-record).is-character-wr {
+        > .character-world-record {
+          height: $min-size;
+          width: $min-size;
+        }
+      }
+      &.solo {
+        &:not(.is-wr) {
+          > .character-world-record {
+            height: $min-size;
+            width: $min-size;
+          }
+        }
+        &.is-wr {
+          > .character-world-record {
+            height: $min-size * 2;
+            width: $min-size * 2;
+          }
+        }
+      }
       > .score-info {
         position: absolute;
         left: 50%;
@@ -45,6 +148,16 @@
           > .mat-icon {
             margin-left: 0.5rem;
           }
+          > .random {
+            margin-left: 1rem;
+            opacity: 0;
+            transition: opacity 200ms ease;
+          }
+          &:hover {
+            > .random {
+              opacity: 1;
+            }
+          }
         }
       }
       > .char-1,
@@ -57,5 +170,22 @@
         }
       }
     }
+  }
+}
+
+@keyframes fadeInFromNone {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
   }
 }

@@ -8,6 +8,7 @@ import {
 import { ScorePlayer } from '../../../model/score-player';
 import { trackByScorePlayerProof } from '../../../model/score-player-proof';
 import { WINDOW } from '../../../core/window.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-score-player',
@@ -16,7 +17,10 @@ import { WINDOW } from '../../../core/window.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScorePlayerComponent implements OnInit {
-  constructor(@Inject(WINDOW) public window: Window) {}
+  constructor(
+    @Inject(WINDOW) public window: Window,
+    public matDialog: MatDialog
+  ) {}
 
   @Input() player: ScorePlayer;
   @Input() playerNumber: number;

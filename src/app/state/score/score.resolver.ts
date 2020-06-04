@@ -33,7 +33,11 @@ export class RandomScoreResolver implements Resolve<number> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<number> | Promise<number> | number {
-    return this.scoreService.findRandom().pipe(
+    const dto = route.queryParamMap.keys.reduce(
+      (acc, key) => ({ ...acc, [key]: route.queryParamMap.get(key) }),
+      {}
+    );
+    return this.scoreService.findRandom(dto).pipe(
       tap(idScore => {
         this.router.navigate(['/score', idScore]);
       })

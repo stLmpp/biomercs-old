@@ -2,19 +2,102 @@
   <div class="score-wrapper">
     <div
       class="score"
+      [ngClass]="{
+        'is-wr': score.isWorldRecord,
+        'is-combination-wr': score.isCombinationWorldRecord,
+        'is-character-wr': score.isCharacterWorldRecord,
+        solo: score.idType === 1
+      }"
       [imgBackground]="score.stage.idImage"
       options="center/cover no-repeat"
       bypassSecurity
     >
+      <div class="world-record" *ngIf="score.isWorldRecord">
+        <mat-icon svgIcon="trophy"></mat-icon>
+        <div class="label">World Record</div>
+      </div>
+      <div
+        class="combination-world-record"
+        *ngIf="score.isCombinationWorldRecord"
+      >
+        <mat-icon svgIcon="trophy-award"></mat-icon>
+        <div class="label">
+          <div>Team</div>
+          <ng-container *ngIf="score.idType === 2; else notDuo">
+            <ng-container
+              *ngIf="
+                (score.combinationWorldRecord?.scorePlayers)[0].idCharacter ===
+                  (score.combinationWorldRecord?.scorePlayers)[1].idCharacter;
+                else notEqual
+              "
+            >
+              {{ score.combinationWorldRecord.scorePlayers[0].character.name }}
+              x2
+            </ng-container>
+            <ng-template #notEqual>
+              {{ score.combinationWorldRecord.scorePlayers[0].character.name }}
+              /
+              {{ score.combinationWorldRecord.scorePlayers[1].character.name }}
+            </ng-template>
+          </ng-container>
+          <ng-template #notDuo>
+            {{ score.combinationWorldRecord.scorePlayers[0].character.name }}
+          </ng-template>
+          World Record
+        </div>
+      </div>
+      <div class="character-world-record" *ngIf="score.isCharacterWorldRecords">
+        <mat-icon svgIcon="account-star"></mat-icon>
+        <div class="label">
+          <div>Individual</div>
+          {{ charactersWrs$ | async }}
+          World Record
+        </div>
+      </div>
       <div class="score-info">
         <div class="item">
+          {{ score.gameModePlatform.platform.shortName }} -
           {{ score.gameModePlatform.gameMode.game.name | uppercase }}
+          <button
+            mat-icon-button
+            size="md"
+            class="random"
+            [routerLink]="['/score', 'random']"
+            [queryParams]="{
+              idGame: score.gameModePlatform.gameMode.idGame,
+              idPlatform: score.gameModePlatform.idPlatform
+            }"
+          >
+            <mat-icon>shuffle</mat-icon>
+          </button>
         </div>
         <div class="item">
           {{ score.gameModePlatform.gameMode.mode.name }}
+          <button
+            mat-icon-button
+            size="md"
+            class="random"
+            [routerLink]="['/score', 'random']"
+            [queryParams]="{
+              idMode: score.gameModePlatform.gameMode.idMode
+            }"
+          >
+            <mat-icon>shuffle</mat-icon>
+          </button>
         </div>
         <div class="item">
           {{ score.stage.name | uppercase }}
+          <button
+            mat-icon-button
+            size="md"
+            class="random"
+            [routerLink]="['/score', 'random']"
+            [queryParams]="{
+              idStage: score.idStage
+            }"
+          >
+            <mat-icon>shuffle</mat-icon>
+          </button>
         </div>
         <div class="item">
           {{ score.score | score }}
@@ -23,10 +106,6 @@
           {{ score.time }}
         </div>
         <div class="item">{{ score.maxCombo }}c</div>
-        <div class="item" *ngIf="score.isWr">
-          World Record
-          <mat-icon svgIcon="trophy"></mat-icon>
-        </div>
       </div>
       <div
         class="char-1"

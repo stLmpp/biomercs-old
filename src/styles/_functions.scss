@@ -1,0 +1,11 @@
+@import 'variables';
+
+@function get-color(
+  $color,
+  $default: 500,
+  $lighter: 100,
+  $darker: 700,
+  $text: $default
+) {
+  @return mat-color(mat-palette($color, $default, $lighter, $darker, $text));
+}
