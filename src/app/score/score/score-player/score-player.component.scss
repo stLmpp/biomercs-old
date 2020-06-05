@@ -1,3 +1,6 @@
+@import 'variables';
+@import 'functions';
+
 .info {
   padding-left: 10%;
   display: flex;
@@ -11,16 +14,19 @@
     align-items: center;
     background: linear-gradient(
       90deg,
-      #c0c0c0a8 0%,
-      #c0c0c04a 50%,
-      #c0c0c000 100%
+      transparentize(get-color($primary-color), 0.2) 0%,
+      transparentize(get-color($primary-color), 0.6) 50%,
+      transparentize(get-color($primary-color), 1) 100%
     );
     margin-top: 0.5rem;
     border-radius: 4px;
     text-shadow: 0 0 4px rgb(150, 150, 150);
-    .mat-icon-button,
-    .mat-icon {
+    .mat-icon-button:not(.region),
+    .mat-icon:not(.region) {
       margin-left: 0.5rem;
+    }
+    .mat-icon.region {
+      margin-right: 0.5rem;
     }
     > div {
       display: flex;
@@ -36,9 +42,9 @@
       left: 0;
       background: linear-gradient(
         90deg,
-        #c0c0c000 0%,
-        #c0c0c04a 50%,
-        #c0c0c0a8 100%
+        transparentize(get-color($primary-color), 1) 0%,
+        transparentize(get-color($primary-color), 0.6) 50%,
+        transparentize(get-color($primary-color), 0.2) 100%
       );
       z-index: -1;
       transition: opacity 0.2s ease-in;
@@ -64,16 +70,16 @@
       justify-content: flex-end;
       background: linear-gradient(
         90deg,
-        #c0c0c000 0%,
-        #c0c0c04a 50%,
-        #c0c0c0a8 100%
+        transparentize(get-color($primary-color), 1) 0%,
+        transparentize(get-color($primary-color), 0.6) 50%,
+        transparentize(get-color($primary-color), 0.2) 100%
       );
       &::before {
         background: linear-gradient(
           90deg,
-          #c0c0c0a8 0%,
-          #c0c0c04a 50%,
-          #c0c0c000 100%
+          transparentize(get-color($primary-color), 0.2) 0%,
+          transparentize(get-color($primary-color), 0.6) 50%,
+          transparentize(get-color($primary-color), 1) 100%
         );
       }
     }

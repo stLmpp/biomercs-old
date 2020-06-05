@@ -204,7 +204,7 @@
       </mat-nav-list>
       <mat-divider></mat-divider>
     </mat-card-content>
-    <mat-card-actions align="end">
+    <mat-card-actions align="end" [class.user-same-as-logged]="isSameAsLogged">
       <app-like
         [idReference]="user.id"
         [type]="referenceTypeEnum.user"

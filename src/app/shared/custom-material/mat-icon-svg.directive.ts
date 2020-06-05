@@ -1,4 +1,4 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, HostBinding, Input } from '@angular/core';
 import { Region } from '../../model/region';
 import { MatIcon } from '@angular/material/icon';
 import { isString } from 'is-what';
@@ -30,6 +30,11 @@ export class MatIconSvgDirective {
   }
 
   private _regionIcon: string;
+
+  @HostBinding('class.region')
+  get regionClass(): boolean {
+    return !!this._regionIcon;
+  }
 
   private flagExists(flag: string): boolean {
     return flagIcons.some(({ name }) => name.replace('.svg') === flag);

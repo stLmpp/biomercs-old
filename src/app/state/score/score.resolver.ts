@@ -10,6 +10,10 @@ import { Observable } from 'rxjs';
 import { ScoreService } from './score.service';
 import { RouteParamEnum } from '../../model/route-param.enum';
 import { tap } from 'rxjs/operators';
+import { Like } from '../../model/like';
+import { LikeService } from '../like/like.service';
+import { AuthQuery } from '../../auth/state/auth.query';
+import { ReferenceTypeEnum } from '../../model/reference-type.enum';
 
 @Injectable({ providedIn: 'root' })
 export class SingleScoreResolver implements Resolve<Score> {
@@ -42,5 +46,21 @@ export class RandomScoreResolver implements Resolve<number> {
         this.router.navigate(['/score', idScore]);
       })
     );
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class ScoreLikeResolver implements Resolve<Like> {
+  constructor(private likeService: LikeService, private authQuery: AuthQuery) {}
+
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<Like> | Promise<Like> | Like {
+    return this.likeService.findOneByParams({
+      createdBy: this.authQuery.getUserSnapshot().id,
+      idReference: +route.paramMap.get(RouteParamEnum.idScore),
+      type: ReferenceTypeEnum.score,
+    });
   }
 }

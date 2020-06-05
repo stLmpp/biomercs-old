@@ -5,7 +5,7 @@
   } as state"
 >
   <button
-    [disabled]="loading || readonly"
+    [disabled]="saving || readonly || loadingCount || loadingLike"
     mat-icon-button
     (click)="addOrRemove(likeStyleEnum.like, state?.currentLike)"
     [color]="
@@ -17,7 +17,7 @@
     <mat-icon>thumb_up</mat-icon>
   </button>
   <button
-    [disabled]="loading || readonly"
+    [disabled]="saving || readonly || loadingCount || loadingLike"
     mat-icon-button
     (click)="addOrRemove(likeStyleEnum.love, state?.currentLike)"
     [color]="

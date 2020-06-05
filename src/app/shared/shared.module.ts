@@ -29,7 +29,7 @@ import { IsFollowingPipe } from './auth-pipes/is-following.pipe';
 import { IsSameAsLoggedPipe } from './auth-pipes/is-same-as-logged.pipe';
 import { MatIconSvgDirective } from './custom-material/mat-icon-svg.directive';
 import { ImgBackgroundDirective } from './img-background/img-background.directive';
-import { ScorePipe } from './custom-angular/score.pipe';
+import { ScorePipe } from './pipes/score.pipe';
 import { LikeComponent } from './like/like.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';

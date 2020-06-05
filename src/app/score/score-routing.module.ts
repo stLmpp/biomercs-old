@@ -11,6 +11,7 @@ import { RouteParamEnum } from '../model/route-param.enum';
 import { ScoreComponent } from './score/score.component';
 import {
   RandomScoreResolver,
+  ScoreLikeResolver,
   SingleScoreResolver,
 } from '../state/score/score.resolver';
 
@@ -34,7 +35,7 @@ const routes: Routes = [
   {
     path: `:${RouteParamEnum.idScore}`,
     component: ScoreComponent,
-    resolve: [SingleScoreResolver],
+    resolve: [SingleScoreResolver, ScoreLikeResolver],
   },
 ];
 
