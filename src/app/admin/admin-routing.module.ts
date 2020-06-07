@@ -26,6 +26,9 @@ import { GameModePlatformComponent } from './game-mode-platform/game-mode-platfo
 import { GameModePlatformResolver } from '../state/game-mode-platform/game-mode-platform.resolver';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
+import { OwnerGuard } from './owner.guard';
+import { RoleResolver } from '../state/role/role.resolver';
+import { RoleComponent } from './role/role.component';
 
 const routes: Routes = [
   {
@@ -40,6 +43,14 @@ const routes: Routes = [
       {
         path: 'user',
         component: UserComponent,
+        canActivate: [OwnerGuard],
+        resolve: [RoleResolver],
+      },
+      {
+        path: 'role',
+        component: RoleComponent,
+        canActivate: [OwnerGuard],
+        resolve: [RoleResolver],
       },
       {
         path: 'game',

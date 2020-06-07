@@ -18,11 +18,16 @@ export class StageService extends SuperService<
     private stageStore: StageStore,
     private stageQuery: StageQuery
   ) {
-    super(http, stageStore, stageQuery, {
-      endPoint: 'stage',
-      file: {
-        idKey: 'idImage',
-        key: 'image',
+    super({
+      http,
+      store: stageStore,
+      query: stageQuery,
+      options: {
+        endPoint: 'stage',
+        file: {
+          idKey: 'idImage',
+          key: 'image',
+        },
       },
     });
   }

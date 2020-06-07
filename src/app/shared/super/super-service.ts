@@ -37,6 +37,13 @@ export interface SuperServiceOptions<Entity> {
   cache?: boolean;
 }
 
+export interface SuperServiceContructor<Entity extends CommonColumns> {
+  http: HttpClient;
+  store?: EntityStore<Entity>;
+  query?: EntityQuery<Entity>;
+  options?: SuperServiceOptions<Entity>;
+}
+
 export class SuperService<
   Entity extends CommonColumns,
   AddDto = any,
@@ -46,13 +53,35 @@ export class SuperService<
   DeleteDto = any,
   CountDto = any
 > {
+  constructor(http: HttpClient, options: SuperServiceOptions<Entity>);
+  constructor(paramaters: SuperServiceContructor<Entity>);
   constructor(
-    private __http: HttpClient,
-    private __store: EntityStore<Entity>,
-    private __query: EntityQuery<Entity>,
-    options: SuperServiceOptions<Entity>
+    parameters: SuperServiceContructor<Entity> | HttpClient,
+    options?: SuperServiceOptions<Entity>
   ) {
-    this.options = {
+    if (parameters instanceof HttpClient) {
+      this.__http = parameters;
+      this.setOptions(options);
+    } else {
+      this.__http = parameters.http;
+      this.__store = parameters.store;
+      this.__query = parameters.query;
+      this.setOptions(parameters.options);
+    }
+  }
+
+  private readonly __http: HttpClient;
+  private readonly __store: EntityStore<Entity>;
+  private readonly __query: EntityQuery<Entity>;
+
+  private __options: SuperServiceOptions<Entity>;
+
+  get endPoint(): string {
+    return this.__options.endPoint;
+  }
+
+  private setOptions(options: SuperServiceOptions<Entity>): void {
+    this.__options = {
       ...{
         excludeMethods: [],
         updateTime: 'after',
@@ -63,15 +92,13 @@ export class SuperService<
       },
       ...options,
     };
-    if (!this.options.endPoint.startsWith('/')) {
-      this.options.endPoint = '/' + this.options.endPoint;
+    if (!this.__options.endPoint.startsWith('/')) {
+      this.__options.endPoint = '/' + this.__options.endPoint;
     }
   }
 
-  options: SuperServiceOptions<Entity>;
-
   private isAllowed(method: SuperServiceMethod): boolean {
-    const notAllowed = this.options.excludeMethods.includes(method);
+    const notAllowed = this.__options.excludeMethods.includes(method);
     if (notAllowed) {
       throw new Error(`Method ${method} is not allowed`);
     }
@@ -80,9 +107,9 @@ export class SuperService<
 
   add(dto: AddDto): Observable<Entity> {
     if (this.isAllowed('add')) {
-      return this.__http.post<Entity>(this.options.endPoint, dto).pipe(
+      return this.__http.post<Entity>(this.__options.endPoint, dto).pipe(
         tap(entity => {
-          this.__store.add(entity);
+          this.__store?.add(entity);
         })
       );
     }
@@ -90,28 +117,23 @@ export class SuperService<
 
   addMany(dto: AddDto[]): Observable<Entity[]> {
     if (this.isAllowed('addMany')) {
-      return this.__http
-        .post<Entity[]>(`${this.options.endPoint}/batch`, dto)
-        .pipe(
-          tap(entities => {
-            this.__store.add(entities);
-          })
-        );
+      return this.__http.post<Entity[]>(`${this.__options.endPoint}/batch`, dto).pipe(
+        tap(entities => {
+          this.__store?.add(entities);
+        })
+      );
     }
   }
 
   update(id: number, dto: UpdateDto): Observable<Entity> {
     if (this.isAllowed('update')) {
-      this.__store.update(id, { saving: true } as Partial<Entity>);
-      let http = this.__http.patch<Entity>(
-        `${this.options.endPoint}/${id}`,
-        dto
-      );
-      if (this.options.updateTime === 'before') {
-        if (this.options.updateError === 'restore') {
+      this.__store?.update(id, { saving: true } as Partial<Entity>);
+      let http = this.__http.patch<Entity>(`${this.__options.endPoint}/${id}`, dto);
+      if (this.__options.updateTime === 'before' && !!this.__store && !!this.__query) {
+        if (this.__options.updateError === 'restore') {
           const originalEntity = this.__query.getEntity(id);
           http = http.pipe(
-            catchHttpError(err => {
+            catchHttpError(() => {
               this.__store.replace(id, { ...originalEntity, saving: false });
             })
           );
@@ -125,10 +147,10 @@ export class SuperService<
       } else {
         return http.pipe(
           tap(entity => {
-            this.__store.update(id, entity);
+            this.__store?.update(id, entity);
           }),
           finalize(() => {
-            this.__store.update(id, { saving: false } as any);
+            this.__store?.update(id, { saving: false } as any);
           })
         );
       }
@@ -137,13 +159,13 @@ export class SuperService<
 
   delete(id: number): Observable<Entity[]> {
     if (this.isAllowed('delete')) {
-      this.__store.update(id, { deleting: true } as any);
-      let http = this.__http.delete<Entity[]>(`${this.options.endPoint}/${id}`);
-      if (this.options.deleteTime === 'before') {
-        if (this.options.deleteError === 'restore') {
+      this.__store?.update(id, { deleting: true } as any);
+      let http = this.__http.delete<Entity[]>(`${this.__options.endPoint}/${id}`);
+      if (this.__options.deleteTime === 'before' && !!this.__store && !!this.__query) {
+        if (this.__options.deleteError === 'restore') {
           const originalEntity = this.__query.getEntity(id);
           http = http.pipe(
-            catchHttpError(err => {
+            catchHttpError(() => {
               this.__store.add({ ...originalEntity, deleting: false });
             })
           );
@@ -153,10 +175,10 @@ export class SuperService<
       } else {
         return http.pipe(
           tap(() => {
-            this.__store.remove(id);
+            this.__store?.remove(id);
           }),
-          catchHttpError(err => {
-            this.__store.update(id, { deleting: false } as any);
+          catchHttpError(() => {
+            this.__store?.update(id, { deleting: false } as any);
           })
         );
       }
@@ -166,10 +188,10 @@ export class SuperService<
   deleteByParams(dto: DeleteDto): Observable<Entity[]> {
     if (this.isAllowed('deleteByParams')) {
       return this.__http
-        .request<Entity[]>('delete', this.options.endPoint, { body: dto })
+        .request<Entity[]>('delete', this.__options.endPoint, { body: dto })
         .pipe(
           tap(deleteds => {
-            this.__store.remove(deleteds.map(entity => entity.id));
+            this.__store?.remove(deleteds.map(entity => entity.id));
           })
         );
     }
@@ -177,18 +199,18 @@ export class SuperService<
 
   exists(dto: ExistsDto): Observable<boolean> {
     if (this.isAllowed('exists')) {
-      return this.__http.post<boolean>(`${this.options.endPoint}/exists`, dto);
+      return this.__http.post<boolean>(`${this.__options.endPoint}/exists`, dto);
     }
   }
 
   findAll(): Observable<Entity[]> {
     if (this.isAllowed('findAll')) {
-      const http$ = this.__http.get<Entity[]>(this.options.endPoint).pipe(
+      const http$ = this.__http.get<Entity[]>(this.__options.endPoint).pipe(
         tap(entities => {
-          this.__store.set(entities);
+          this.__store?.set(entities);
         })
       );
-      if (this.options.cache) {
+      if (this.__options.cache && !!this.__store) {
         return http$.pipe(useCache(this.__store));
       } else {
         return http$;
@@ -198,9 +220,9 @@ export class SuperService<
 
   findById(id: number): Observable<Entity> {
     if (this.isAllowed('findById')) {
-      return this.__http.get<Entity>(`${this.options.endPoint}/${id}`).pipe(
+      return this.__http.get<Entity>(`${this.__options.endPoint}/${id}`).pipe(
         tap(entity => {
-          this.__store.update(id, entity);
+          this.__store?.upsert(id, entity);
         })
       );
     }
@@ -210,30 +232,28 @@ export class SuperService<
     if (this.isAllowed('findByParams')) {
       const params = new HttpParams({ limit }, true);
       return this.__http
-        .post<Entity[]>(`${this.options.endPoint}/params`, dto, { params })
+        .post<Entity[]>(`${this.__options.endPoint}/params`, dto, { params })
         .pipe(
           tap(entities => {
-            this.__store.upsert(entities);
+            this.__store?.upsert(entities);
           })
         );
     }
   }
 
   findOneByParams(dto: ParamsDto): Observable<Entity> {
-    return this.__http
-      .post<Entity>(`${this.options.endPoint}/one-params`, dto)
-      .pipe(
-        tap(entity => {
-          if (entity?.id) {
-            this.__store.upsert(entity.id, entity);
-          }
-        })
-      );
+    return this.__http.post<Entity>(`${this.__options.endPoint}/one-params`, dto).pipe(
+      tap(entity => {
+        if (entity?.id) {
+          this.__store?.upsert(entity.id, entity);
+        }
+      })
+    );
   }
 
   countByParams(dto: CountDto): Observable<number> {
     if (this.isAllowed('count')) {
-      return this.__http.post<number>(`${this.options.endPoint}/count`, dto);
+      return this.__http.post<number>(`${this.__options.endPoint}/count`, dto);
     }
   }
 
@@ -241,39 +261,39 @@ export class SuperService<
     if (this.isAllowed('search')) {
       const params = new HttpParams({ term });
       return this.__http
-        .get<Entity[]>(`${this.options.endPoint}/search`, { params })
+        .get<Entity[]>(`${this.__options.endPoint}/search`, { params })
         .pipe(
           tap(entities => {
-            this.__store.upsert(entities);
+            this.__store?.upsert(entities);
           })
         );
     }
   }
 
   uploadFile(id: number, file: File): Observable<FileUpload> {
-    if (!this.options.file) {
-      throw new Error('Method uploadFile is now allowed');
+    if (!this.__options.file) {
+      throw new Error('Method uploadFile is not allowed');
     }
-    this.__store.update(id, { uploading: true } as Partial<Entity>);
+    this.__store?.update(id, { uploading: true } as Partial<Entity>);
     const formData = new FormData();
     formData.append('file', file, file.name);
     const headers = new HttpHeaders({
       Accept: 'application/json',
     });
     return this.__http
-      .patch<FileUpload>(`${this.options.endPoint}/${id}/file`, formData, {
+      .patch<FileUpload>(`${this.__options.endPoint}/${id}/file`, formData, {
         headers,
       })
       .pipe(
         tap(fileUpload => {
-          this.__store.update(id, {
-            [this.options.file.idKey]: fileUpload.id,
-            [this.options.file.key]: fileUpload,
+          this.__store?.update(id, {
+            [this.__options.file.idKey]: fileUpload.id,
+            [this.__options.file.key]: fileUpload,
             uploading: false,
           } as any);
         }),
-        catchHttpError(err => {
-          this.__store.update(id, { uploading: false } as any);
+        catchHttpError(() => {
+          this.__store?.update(id, { uploading: false } as any);
         })
       );
   }

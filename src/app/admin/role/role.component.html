@@ -1,0 +1,8 @@
+<app-base
+  [entities]="roleQuery.all$ | async"
+  entityName="Role"
+  [fieldsConfig]="fieldsConfig"
+  [service]="roleService"
+  [matLineLabels]="['description']"
+  [updateFields]="['description']"
+></app-base>

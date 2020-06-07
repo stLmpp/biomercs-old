@@ -24,8 +24,13 @@ export class ModeService extends SuperService<
     private modeStore: ModeStore,
     private modeQuery: ModeQuery
   ) {
-    super(http, modeStore, modeQuery, {
-      endPoint: 'mode',
+    super({
+      http,
+      store: modeStore,
+      query: modeQuery,
+      options: {
+        endPoint: 'mode',
+      },
     });
   }
 }

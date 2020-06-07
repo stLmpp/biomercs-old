@@ -19,6 +19,12 @@ export class AuthQuery extends Query<Auth> {
   isAdmin$ = this.user$.pipe(map(this.isAdmin));
   isOwner$ = this.user$.pipe(map(this.isOwner));
 
+  hasRoles(roles: RoleEnum[]): boolean {
+    return this.getUserSnapshot()?.userRoles.some(userRole =>
+      roles.includes(userRole.role.name)
+    );
+  }
+
   isSameAsLogged$(idUser: number): Observable<boolean> {
     return this.user$.pipe(
       filter(user => !!user),

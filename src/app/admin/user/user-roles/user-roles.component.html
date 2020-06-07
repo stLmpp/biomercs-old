@@ -1,0 +1,30 @@
+<ng-container *ngIf="user$ | async as user">
+  <mat-progress-bar
+    mode="indeterminate"
+    class="top"
+    *ngIf="loading"
+  ></mat-progress-bar>
+  <h1 mat-dialog-title>{{ user.username }} roles</h1>
+  <mat-dialog-content>
+    <mat-nav-list *ngIf="user.userRoles">
+      <ng-container
+        *ngFor="
+          let role of roleQuery.all$ | async;
+          trackBy: trackByRole;
+          let $last = last
+        "
+      >
+        <mat-divider></mat-divider>
+        <mat-list-item
+          *let="user.userRoles | find: 'idRole':role.id as userRole"
+          [disabled]="role.name === roleEnum.user || saving[role.id]"
+          [active]="!!userRole"
+          (click)="addOrDelete(role, userRole)"
+        >
+          {{ role.description }}
+        </mat-list-item>
+        <mat-divider *ngIf="$last"></mat-divider>
+      </ng-container>
+    </mat-nav-list>
+  </mat-dialog-content>
+</ng-container>

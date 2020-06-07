@@ -15,8 +15,12 @@
       }
       &.active {
         font-weight: bold;
-        color: mat-color($accent, darker) !important;
+        color: mat-color($accent, darker);
         background: $background-list-active;
+        &.mat-list-item-disabled {
+          background-color: mat-color($background, disabled-list-option);
+          color: mat-color($accent, lighter);
+        }
       }
     }
   }

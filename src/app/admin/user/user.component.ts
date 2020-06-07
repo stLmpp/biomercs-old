@@ -13,6 +13,8 @@ import { AuthService } from '../../auth/state/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { FormControl, FormGroup } from '@ng-stack/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { UserRolesComponent } from './user-roles/user-roles.component';
 
 interface SearchUserForm {
   username?: string;
@@ -30,7 +32,8 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private dialogService: DialogService,
     private authService: AuthService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private matDialog: MatDialog
   ) {}
 
   search$ = new Subject<SearchUserForm>();
@@ -61,6 +64,10 @@ export class UserComponent implements OnInit {
 
   search(): void {
     this.search$.next(this.form.value);
+  }
+
+  manageRoles(idUser: number): void {
+    this.matDialog.open(UserRolesComponent, { data: idUser });
   }
 
   resetPassword(user: User): void {

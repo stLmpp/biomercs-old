@@ -23,9 +23,14 @@ export class UserLinkService extends SuperService<
     private http: HttpClient,
     private userLinkQuery: UserLinkQuery
   ) {
-    super(http, userLinkStore, userLinkQuery, {
-      endPoint: 'user-link',
-      excludeMethods: ['findAll'],
+    super({
+      http,
+      store: userLinkStore,
+      query: userLinkQuery,
+      options: {
+        endPoint: 'user-link',
+        excludeMethods: ['findAll'],
+      },
     });
   }
 

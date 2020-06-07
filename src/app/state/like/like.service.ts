@@ -30,9 +30,14 @@ export class LikeService extends SuperService<
     private likeStore: LikeStore,
     private likeQuery: LikeQuery
   ) {
-    super(http, likeStore, likeQuery, {
-      endPoint: 'like',
-      excludeMethods: ['findAll'],
+    super({
+      http,
+      store: likeStore,
+      query: likeQuery,
+      options: {
+        endPoint: 'like',
+        excludeMethods: ['findAll'],
+      },
     });
   }
 
@@ -41,7 +46,7 @@ export class LikeService extends SuperService<
     idReference: number
   ): Observable<LikeCount> {
     const params = new HttpParams({ type, idReference });
-    return this.http.get<LikeCount>(`${this.options.endPoint}/count-all`, {
+    return this.http.get<LikeCount>(`${this.endPoint}/count-all`, {
       params,
     });
   }

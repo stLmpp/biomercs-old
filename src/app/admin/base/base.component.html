@@ -1,5 +1,5 @@
 <div class="toolbar">
-  <button mat-icon-button color="accent" (click)="openAdd()">
+  <button mat-icon-button color="accent" (click)="openAdd()" *ngIf="addFields.length">
     <mat-icon>add</mat-icon>
   </button>
   <mat-form-field *ngIf="searchBy">
@@ -7,17 +7,9 @@
     <input matInput placeholder="Search" [formControl]="searchControl" />
   </mat-form-field>
 </div>
-<ng-container
-  *ngIf="entities | search: searchBy:(search$ | async) as entitiesFiltered"
->
+<ng-container *ngIf="entities | search: searchBy:(search$ | async) as entitiesFiltered">
   <mat-nav-list *ngIf="entitiesFiltered?.length; else noDataFound">
-    <ng-container
-      *ngFor="
-        let entity of entitiesFiltered;
-        trackBy: trackBy;
-        let $last = last
-      "
-    >
+    <ng-container *ngFor="let entity of entitiesFiltered; trackBy: trackBy; let $last = last">
       <mat-divider></mat-divider>
       <mat-list-item (click)="openEdit(entity)">
         <img
@@ -54,9 +46,7 @@
           *ngIf="uploadImage"
           (click)="$event.stopPropagation(); fileUploadInputRef.click()"
         >
-          <mat-icon *ngIf="!entity.uploading; else loadingImage"
-            >cloud_upload</mat-icon
-          >
+          <mat-icon *ngIf="!entity.uploading; else loadingImage">cloud_upload</mat-icon>
           <ng-template #loadingImage>
             <mat-spinner diameter="20"></mat-spinner>
           </ng-template>
@@ -82,25 +72,14 @@
 </ng-container>
 
 <ng-template #modalRef let-edit>
-  <form
-    *let="edit ? editForm : addForm as form"
-    [formGroup]="form"
-    (ngSubmit)="save(edit)"
-  >
+  <form *let="edit ? editForm : addForm as form" [formGroup]="form" (ngSubmit)="save(edit)">
     <h1 mat-dialog-title>
       {{ edit ? edit[updateLabel] : 'Add ' + (entityName | lowercase) }}
     </h1>
     <mat-dialog-content>
-      <ng-container
-        *ngFor="
-          let key of edit ? updateFields : addFields;
-          trackBy: trackByLabel
-        "
-      >
+      <ng-container *ngFor="let key of edit ? updateFields : addFields; trackBy: trackByLabel">
         <ng-container *let="form.get(key) as control">
-          <mat-form-field
-            *ngIf="['text', 'number'].includes(fieldsConfig[key]?.type)"
-          >
+          <mat-form-field *ngIf="['text', 'number'].includes(fieldsConfig[key]?.type)">
             <mat-label>{{ fieldsConfig[key].placeholder }}</mat-label>
             <input
               matInput
@@ -108,33 +87,21 @@
               [formControlName]="key"
               [placeholder]="fieldsConfig[key].placeholder"
             />
-            <mat-error
-              *ngFor="
-                let error of fieldsConfig[key].validatorsMessages | keyvalue
-              "
-            >
+            <mat-error *ngFor="let error of fieldsConfig[key].validatorsMessages | keyvalue">
               <mat-error *error="error.key">
-                {{
-                  error.value
-                    | replaceParams: { field: fieldsConfig[key].placeholder }
-                }}
+                {{ error.value | replaceParams: { field: fieldsConfig[key].placeholder } }}
               </mat-error>
             </mat-error>
             <mat-hint *ngIf="fieldsConfig[key].hint as hint">
               {{ hint }}
             </mat-hint>
           </mat-form-field>
-          <mat-checkbox
-            *ngIf="fieldsConfig[key]?.type === 'checkbox'"
-            [formControlName]="key"
-            >{{ fieldsConfig[key].placeholder }}</mat-checkbox
-          >
+          <mat-checkbox *ngIf="fieldsConfig[key]?.type === 'checkbox'" [formControlName]="key">
+            {{ fieldsConfig[key].placeholder }}
+          </mat-checkbox>
           <mat-form-field *ngIf="fieldsConfig[key]?.type === 'select'">
             <mat-label>{{ fieldsConfig[key].placeholder }}</mat-label>
-            <mat-select
-              [placeholder]="fieldsConfig[key].placeholder"
-              [formControlName]="key"
-            >
+            <mat-select [placeholder]="fieldsConfig[key].placeholder" [formControlName]="key">
               <mat-option
                 *ngFor="
                   let item of fieldsConfig[key].selectOptions | async;

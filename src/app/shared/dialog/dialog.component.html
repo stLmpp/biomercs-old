@@ -1,24 +1,10 @@
 <h1 mat-dialog-title *ngIf="data.title">{{ data.title }}</h1>
-<mat-dialog-content>
-  {{ data.content }}
-</mat-dialog-content>
+<mat-dialog-content [innerHTML]="data.content"> </mat-dialog-content>
 <mat-dialog-actions [align]="data.alignBtn">
-  <button
-    mat-button
-    color="primary"
-    *ngIf="data.btnNo"
-    [disabled]="loading"
-    [mat-dialog-close]="false"
-  >
+  <button mat-button color="primary" *ngIf="data.btnNo" [disabled]="loading" [mat-dialog-close]="false">
     {{ data.btnNo }}
   </button>
-  <button
-    mat-button
-    color="primary"
-    *ngIf="data.btnYes"
-    [disabled]="loading"
-    (click)="yes()"
-  >
+  <button mat-button color="primary" *ngIf="data.btnYes" [disabled]="loading" (click)="yes()">
     {{ data.btnYes }}
   </button>
 </mat-dialog-actions>

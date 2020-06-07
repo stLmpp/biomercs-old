@@ -24,11 +24,16 @@ export class GameService extends SuperService<
     private gameStore: GameStore,
     private gameQuery: GameQuery
   ) {
-    super(http, gameStore, gameQuery, {
-      endPoint: 'game',
-      file: {
-        idKey: 'idLogo',
-        key: 'logo',
+    super({
+      http,
+      store: gameStore,
+      query: gameQuery,
+      options: {
+        endPoint: 'game',
+        file: {
+          idKey: 'idLogo',
+          key: 'logo',
+        },
       },
     });
   }

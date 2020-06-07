@@ -24,8 +24,13 @@ export class TypeService extends SuperService<
     private http: HttpClient,
     private typeQuery: TypeQuery
   ) {
-    super(http, typeStore, typeQuery, {
-      endPoint: 'type',
+    super({
+      http,
+      store: typeStore,
+      query: typeQuery,
+      options: {
+        endPoint: 'type',
+      },
     });
   }
 }

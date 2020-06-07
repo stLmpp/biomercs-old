@@ -23,6 +23,11 @@ export class RegionService extends SuperService<
     private regionStore: RegionStore,
     private regionQuery: RegionQuery
   ) {
-    super(http, regionStore, regionQuery, { endPoint: 'region' });
+    super({
+      http,
+      store: regionStore,
+      query: regionQuery,
+      options: { endPoint: 'region' },
+    });
   }
 }

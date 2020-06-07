@@ -7,6 +7,8 @@ import { UserFollower } from '../../model/user-follower';
 import { UserLinkStore } from '../user-link/user-link.store';
 import { UserLink } from '../../model/user-link';
 import { RegionStore } from '../region/region.store';
+import { UserRoleStore } from '../user-role/user-role.store';
+import { UserRole } from '../../model/user-role';
 
 @Injectable({ providedIn: 'root' })
 export class UserStore extends EntityStore<User> {
@@ -14,7 +16,8 @@ export class UserStore extends EntityStore<User> {
     private authStore: AuthStore,
     private userFollowerStore: UserFollowerStore,
     private userLinkStore: UserLinkStore,
-    private regionStore: RegionStore
+    private regionStore: RegionStore,
+    private userRoleStore: UserRoleStore
   ) {
     super({
       name: 'user',
@@ -45,6 +48,12 @@ export class UserStore extends EntityStore<User> {
           store: regionStore,
           reverseRelation: user => user.idRegion,
           isArray: false,
+        },
+        {
+          key: 'userRoles',
+          store: userRoleStore,
+          relation: (relation: UserRole) => relation.idUser,
+          isArray: true,
         },
       ],
     });

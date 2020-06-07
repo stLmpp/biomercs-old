@@ -1,26 +1,16 @@
-import {
-  LOCALE_ID,
-  ModuleWithProviders,
-  NgModule,
-  Provider,
-} from '@angular/core';
+import { LOCALE_ID, ModuleWithProviders, NgModule, Provider } from '@angular/core';
 import { WINDOW_PROVIDERS } from './window.service';
 import { ApiInterceptor } from './api.interceptor';
 import { LoadingInterceptor } from './loading/loading.interceptor';
 import { DateInterceptor } from './date.interceptor';
 import { FormatErrorInterceptor } from './error/format-error.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatSnackBarConfig,
-} from '@angular/material/snack-bar';
-import {
-  MAT_FORM_FIELD_DEFAULT_OPTIONS,
-  MatFormFieldDefaultOptions,
-} from '@angular/material/form-field';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldDefaultOptions } from '@angular/material/form-field';
 import { ErrorComponent } from './error/error.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatListModule } from '@angular/material/list';
+import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -48,7 +38,8 @@ export class CoreModule {
           ApiInterceptor,
           LoadingInterceptor,
           DateInterceptor,
-          FormatErrorInterceptor
+          FormatErrorInterceptor,
+          AuthErrorInterceptor
         ),
         {
           provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

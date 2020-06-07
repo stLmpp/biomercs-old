@@ -19,8 +19,13 @@ export class SiteService extends SuperService<
     private http: HttpClient,
     private siteQuery: SiteQuery
   ) {
-    super(http, siteStore, siteQuery, {
-      endPoint: 'site',
+    super({
+      http,
+      store: siteStore,
+      query: siteQuery,
+      options: {
+        endPoint: 'site',
+      },
     });
   }
 

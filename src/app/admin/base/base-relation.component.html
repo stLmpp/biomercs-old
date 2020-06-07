@@ -29,8 +29,15 @@
       </mat-expansion-panel-header>
       <ng-container *ngIf="openState[$indexOne]">
         <ng-container *ngIf="many?.length; else noDataFound">
-          <mat-nav-list>
-            <ng-container *ngFor="let entityMany of many; trackBy: trackBy">
+          <mat-nav-list class="relative">
+            <ng-container
+              *ngFor="
+                let entityMany of many;
+                trackBy: trackBy;
+                let $last = last
+              "
+            >
+              <mat-divider></mat-divider>
               <mat-list-item
                 *let="
                   entities
@@ -86,6 +93,7 @@
                   </button>
                 </ng-container>
               </mat-list-item>
+              <mat-divider *ngIf="$last"></mat-divider>
             </ng-container>
           </mat-nav-list>
         </ng-container>

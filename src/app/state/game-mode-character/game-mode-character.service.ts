@@ -18,8 +18,13 @@ export class GameModeCharacterService extends SuperService<
     private http: HttpClient,
     private gameModeCharacterQuery: GameModeCharacterQuery
   ) {
-    super(http, gameModeCharacterStore, gameModeCharacterQuery, {
-      endPoint: 'game-mode-character',
+    super({
+      http,
+      store: gameModeCharacterStore,
+      query: gameModeCharacterQuery,
+      options: {
+        endPoint: 'game-mode-character',
+      },
     });
   }
 }

@@ -18,9 +18,14 @@ export class GameModePlatformService extends SuperService<
     private http: HttpClient,
     private gameModePlatformQuery: GameModePlatformQuery
   ) {
-    super(http, gameModePlatformStore, gameModePlatformQuery, {
-      endPoint: 'game-mode-platform',
-      excludeMethods: ['update', 'findByParams', 'exists', 'search'],
+    super({
+      http,
+      store: gameModePlatformStore,
+      query: gameModePlatformQuery,
+      options: {
+        endPoint: 'game-mode-platform',
+        excludeMethods: ['update', 'findByParams', 'exists', 'search'],
+      },
     });
   }
 }

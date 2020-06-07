@@ -1,8 +1,10 @@
 import { TrackByFunction } from '@angular/core';
 import { isArray, isNumber, isObject, isString } from 'is-what';
+import { ID } from '@stlmpp/utils';
 
 export type CompareFn<T = any> = (valueA: T, valueB: T) => boolean;
 export type Constructor<T = any> = new (...args: any[]) => T;
+export type Dictionary<T = any, K extends ID = number> = Record<K, T>;
 
 export const compareByFactory = <T = any>(key: keyof T): CompareFn<T> => (
   valueA,

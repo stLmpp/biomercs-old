@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   TemplateRef,
@@ -10,12 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { convertToBoolProperty, trackByFactory } from '../../util/util';
-import {
-  AsyncValidatorFn,
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-} from '@ng-stack/forms';
+import { AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@ng-stack/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';
@@ -39,9 +35,7 @@ export interface FieldConfig<S = any> {
   hint?: string;
 }
 
-export type FieldsConfig<T = any, S = any> = Partial<
-  Record<keyof T, FieldConfig<S>>
->;
+export type FieldsConfig<T = any, S = any> = Partial<Record<keyof T, FieldConfig<S>>>;
 
 const DEFAULT_VALIDATORS_MESSAGES: { [key: string]: string } = {
   required: '{field} is required',
@@ -53,7 +47,7 @@ const DEFAULT_VALIDATORS_MESSAGES: { [key: string]: string } = {
   styleUrls: ['./base.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BaseComponent implements OnInit, OnDestroy {
+export class BaseComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private matDialog: MatDialog,
     public changeDetectorRef: ChangeDetectorRef,
@@ -62,15 +56,9 @@ export class BaseComponent implements OnInit, OnDestroy {
 
   private _destroy$ = new Subject();
 
-  @ViewChild('modalRef', { read: TemplateRef }) modalTemplateRef: TemplateRef<
-    any
-  >;
-  @ViewChild('deleteRef', { read: TemplateRef }) deleteTemplateRef: TemplateRef<
-    any
-  >;
-  @ViewChild('imageRef', { read: TemplateRef }) imageTemplateRef: TemplateRef<
-    any
-  >;
+  @ViewChild('modalRef', { read: TemplateRef }) modalTemplateRef: TemplateRef<any>;
+  @ViewChild('deleteRef', { read: TemplateRef }) deleteTemplateRef: TemplateRef<any>;
+  @ViewChild('imageRef', { read: TemplateRef }) imageTemplateRef: TemplateRef<any>;
 
   addRef: MatDialogRef<any>;
   editRef: MatDialogRef<any>;
@@ -95,15 +83,13 @@ export class BaseComponent implements OnInit, OnDestroy {
     this.searchBy = fields;
   }
 
-  @Input() addFields: string[];
-  @Input() updateFields: string[];
+  @Input() addFields: string[] = [];
+  @Input() updateFields: string[] = [];
   @Input() searchBy: string[];
 
   @Input('fieldsConfig')
   set _fieldsConfig(config: FieldsConfig) {
-    this.fieldsConfig = [
-      ...new Set([...this.addFields, ...this.updateFields]),
-    ].reduce((acc, key) => {
+    this.fieldsConfig = [...new Set([...this.addFields, ...this.updateFields])].reduce((acc, key) => {
       return {
         ...acc,
         [key]: {
@@ -147,8 +133,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   @Input() imageKey: string;
   @Input() imageLabel: string;
 
-  @Input() trackBy: TrackByFunction<CommonColumns> = (index, element) =>
-    element.id;
+  @Input() trackBy: TrackByFunction<CommonColumns> = (index, element) => element.id;
 
   private setForm(fields: string[], data?: any): FormGroup {
     return fields.reduce((formGroup, key) => {
@@ -192,10 +177,7 @@ export class BaseComponent implements OnInit, OnDestroy {
     http
       .pipe(
         tap(() => {
-          this.matSnackBar.open(
-            `${this.entityName} saved successfully`,
-            'Close'
-          );
+          this.matSnackBar.open(`${this.entityName} saved successfully`, 'Close');
         }),
         finalize(() => {
           this.loading = false;
@@ -220,17 +202,11 @@ export class BaseComponent implements OnInit, OnDestroy {
             .delete(entity.id)
             .pipe(
               tap(() => {
-                this.matSnackBar.open(
-                  `${this.entityName} deleted successfully`,
-                  'Close'
-                );
+                this.matSnackBar.open(`${this.entityName} deleted successfully`, 'Close');
               }),
               catchHttpError(err => {
                 if (err.status === 409) {
-                  this.matSnackBar.open(
-                    `Can't delete because of relations`,
-                    'Close'
-                  );
+                  this.matSnackBar.open(`Can't delete because of relations`, 'Close');
                 } else {
                   this.matSnackBar.open(`Internal Error`, 'Close');
                 }
@@ -271,6 +247,10 @@ export class BaseComponent implements OnInit, OnDestroy {
       this.updateLabel = this.updateFields[0];
     }
     this.addForm = this.setForm(this.addFields);
+  }
+
+  ngOnChanges(): void {
+    this._fieldsConfig = this.fieldsConfig;
   }
 
   ngOnDestroy(): void {

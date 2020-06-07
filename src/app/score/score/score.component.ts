@@ -9,8 +9,6 @@ import {
   shareReplay,
   switchMap,
 } from 'rxjs/operators';
-import { trackByScore } from '../../model/score';
-import { trackByFactory } from '../../util/util';
 
 @Component({
   selector: 'app-score',

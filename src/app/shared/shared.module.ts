@@ -34,6 +34,7 @@ import { LikeComponent } from './like/like.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconSizeDirective } from './custom-material/mat-icon-size.directive';
+import { FindPipe } from './find/find.pipe';
 
 const PIPES = [
   DefaultPipe,
@@ -46,6 +47,7 @@ const PIPES = [
   IsFollowingPipe,
   IsSameAsLoggedPipe,
   ScorePipe,
+  FindPipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,

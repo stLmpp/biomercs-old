@@ -28,6 +28,9 @@ import { GameModePlatformComponent } from './game-mode-platform/game-mode-platfo
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { StUtilsModule } from '@stlmpp/utils';
+import { UserRolesComponent } from './user/user-roles/user-roles.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RoleComponent } from './role/role.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,8 @@ import { StUtilsModule } from '@stlmpp/utils';
     GameModePlatformComponent,
     HomeComponent,
     UserComponent,
+    UserRolesComponent,
+    RoleComponent,
   ],
   imports: [
     SharedModule,
@@ -61,6 +66,7 @@ import { StUtilsModule } from '@stlmpp/utils';
     MatProgressSpinnerModule,
     MatExpansionModule,
     StUtilsModule,
+    MatProgressBarModule,
   ],
 })
 export class AdminModule {}

@@ -24,11 +24,16 @@ export class CharacterService extends SuperService<
     private http: HttpClient,
     private characterQuery: CharacterQuery
   ) {
-    super(http, characterStore, characterQuery, {
-      endPoint: 'character',
-      file: {
-        key: 'image',
-        idKey: 'idImage',
+    super({
+      http,
+      store: characterStore,
+      query: characterQuery,
+      options: {
+        endPoint: 'character',
+        file: {
+          key: 'image',
+          idKey: 'idImage',
+        },
       },
     });
   }

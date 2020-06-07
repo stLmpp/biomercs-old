@@ -15,9 +15,14 @@ export class GameModeTypeService extends SuperService<
     private http: HttpClient,
     private gameModeTypeQuery: GameModeTypeQuery
   ) {
-    super(http, gameModeTypeStore, gameModeTypeQuery, {
-      endPoint: 'game-mode-type',
-      excludeMethods: ['search', 'exists', 'findByParams', 'update'],
+    super({
+      http,
+      store: gameModeTypeStore,
+      query: gameModeTypeQuery,
+      options: {
+        endPoint: 'game-mode-type',
+        excludeMethods: ['search', 'exists', 'findByParams', 'update'],
+      },
     });
   }
 }

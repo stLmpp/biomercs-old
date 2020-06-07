@@ -30,8 +30,13 @@ export class UserFollowerService extends SuperService<
     private authQuery: AuthQuery,
     private dialogService: DialogService
   ) {
-    super(http, userFollowerStore, userFollowerQuery, {
-      endPoint: 'user-follower',
+    super({
+      http,
+      store: userFollowerStore,
+      query: userFollowerQuery,
+      options: {
+        endPoint: 'user-follower',
+      },
     });
   }
 

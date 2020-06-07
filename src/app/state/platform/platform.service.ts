@@ -22,11 +22,16 @@ export class PlatformService extends SuperService<
     private http: HttpClient,
     private platformQuery: PlatformQuery
   ) {
-    super(http, platformStore, platformQuery, {
-      endPoint: 'platform',
-      file: {
-        idKey: 'idLogo',
-        key: 'logo',
+    super({
+      http,
+      store: platformStore,
+      query: platformQuery,
+      options: {
+        endPoint: 'platform',
+        file: {
+          idKey: 'idLogo',
+          key: 'logo',
+        },
       },
     });
   }

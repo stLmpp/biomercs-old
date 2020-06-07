@@ -1056,10 +1056,10 @@
     tslib ">= 1 < 2"
     underscore "^1.10.2"
 
-"@stlmpp/store@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-0.2.2.tgz#ccb99a8156774e433bd7571318b970fb2edd959d"
-  integrity sha512-O6VxZzQRB4PsJxCiAEsZKZNyLhwTzTLy/35ae5I033UoT55KcWdrY44F3RjlxeA7JptRTNx88oS0DxsJ17f9LQ==
+"@stlmpp/store@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@stlmpp/store/-/store-0.2.3.tgz#fc97efbf5d945a8c5e80e941f0478db6f9ad44fe"
+  integrity sha512-O39VlXcvX+tpPtcPwoIKxr0QIXGkVMDvc26r+uuutXIzXZRy4xR0ZOb5T5T6iE/LyGtTZPCdQolfyGB4z+EWVA==
   dependencies:
     "@stlmpp/utils" latest
     copy-anything "^2.0.1"

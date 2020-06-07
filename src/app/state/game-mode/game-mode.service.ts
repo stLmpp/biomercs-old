@@ -12,11 +12,16 @@ export class GameModeService extends SuperService<GameMode> {
     private gameModeStore: GameModeStore,
     private gameModeQuery: GameModeQuery
   ) {
-    super(http, gameModeStore, gameModeQuery, {
-      endPoint: 'game-mode',
-      file: {
-        key: 'image',
-        idKey: 'idImage',
+    super({
+      http,
+      store: gameModeStore,
+      query: gameModeQuery,
+      options: {
+        endPoint: 'game-mode',
+        file: {
+          key: 'image',
+          idKey: 'idImage',
+        },
       },
     });
   }

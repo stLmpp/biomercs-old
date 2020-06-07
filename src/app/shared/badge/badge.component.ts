@@ -3,7 +3,6 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
-  HostBinding,
   ElementRef,
   Renderer2,
 } from '@angular/core';
