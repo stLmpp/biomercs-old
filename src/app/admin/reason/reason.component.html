@@ -1,0 +1,7 @@
+<app-base
+  [fields]="['description']"
+  [service]="reasonService"
+  entityName="Reason"
+  [entities]="reasonQuery.all$ | async"
+  deleteAllowed
+></app-base>

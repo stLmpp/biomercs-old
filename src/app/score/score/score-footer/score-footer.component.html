@@ -1,6 +1,8 @@
 <div class="actions">
-  <app-like
-    [idReference]="score.id"
+  <app-like [idReference]="score.id" [type]="referenceTypeEnum.score"></app-like>
+  <app-report-button
     [type]="referenceTypeEnum.score"
-  ></app-like>
+    [idReference]="score.id"
+    [reasons]="reasonQuery.all$ | async"
+  ></app-report-button>
 </div>

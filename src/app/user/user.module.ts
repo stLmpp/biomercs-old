@@ -20,6 +20,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ScoreModule } from '../score/score.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ReportModule } from '../report/report.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ScoreModule,
     MatAutocompleteModule,
     ScrollingModule,
+    ReportModule,
   ],
 })
 export class UserModule {}

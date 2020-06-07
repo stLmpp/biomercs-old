@@ -13,6 +13,7 @@ export class SideMenuService {
     { title: 'Home', routerLink: 'home', padding: true },
     { title: 'User', routerLink: 'user', padding: true, auth: [RoleEnum.owner] },
     { title: 'Role', routerLink: 'role', auth: [RoleEnum.owner] },
+    { title: 'Reason', routerLink: 'reason' },
     { title: 'Game', routerLink: 'game' },
     { title: 'Mode', routerLink: 'mode' },
     { title: 'Game Mode', routerLink: 'game-mode' },

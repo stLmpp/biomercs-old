@@ -19,43 +19,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthQuery } from '../../../auth/state/auth.query';
 import { SiteService } from '../../../state/site/site.service';
 import { RouteParamEnum } from '../../../model/route-param.enum';
-import {
-  debounceTime,
-  filter,
-  finalize,
-  map,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { debounceTime, filter, finalize, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { User, UserUpdateDto } from '../../../model/user';
 import { trackByUserLink, UserLink } from '../../../model/user-link';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserLinkComponent } from './add-link/user-link.component';
 import { WINDOW } from '../../../core/window.service';
-import {
-  Overlay,
-  OverlayRef,
-  ScrollStrategyOptions,
-} from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, ScrollStrategyOptions } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import {
-  trackByUserFollower,
-  UserFollower,
-} from '../../../model/user-follower';
+import { trackByUserFollower, UserFollower } from '../../../model/user-follower';
 import { UserFollowerService } from '../../../state/user-follower/user-follower.service';
-import {
-  FollowersComponent,
-  UserFollowersData,
-} from './followers/followers.component';
+import { FollowersComponent, UserFollowersData } from './followers/followers.component';
 import { UserLinkService } from '../../../state/user-link/user-link.service';
 import { RegionQuery } from '../../../state/region/region.query';
 import { trackByRegion } from '../../../model/region';
 import { FormControl } from '@ng-stack/forms';
 import { EditInfoComponent } from './edit-info/edit-info.component';
 import { ReferenceTypeEnum } from '../../../model/reference-type.enum';
+import { ReasonQuery } from '../../../state/reason/reason.query';
 
 @Component({
   selector: 'app-user-card',
@@ -71,7 +53,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef,
     private userService: UserService,
     private matSnackBar: MatSnackBar,
-    private authQuery: AuthQuery,
+    public authQuery: AuthQuery,
     private matDialog: MatDialog,
     @Inject(WINDOW) public window: Window,
     private site: SiteService,
@@ -80,7 +62,8 @@ export class UserCardComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private userFollowerService: UserFollowerService,
     private userLinkService: UserLinkService,
-    public regionQuery: RegionQuery
+    public regionQuery: RegionQuery,
+    public reasonQuery: ReasonQuery
   ) {}
 
   private _destroy$ = new Subject();
@@ -109,7 +92,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
   regionSearch$ = this.regionSearchControl.valueChanges.pipe(debounceTime(400));
 
   idDefaultAvatar$: Observable<number> = this.defaultQuery.idAvatar$;
-  isAdmin$ = this.authQuery.isAdmin$;
 
   trackByUserLink = trackByUserLink;
   trackByUserFollower = trackByUserFollower;
@@ -131,10 +113,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
   }
 
   redirectLink(userLink: UserLink): void {
-    this.window.open(
-      this.site.handleUrl(userLink.site, userLink.url, 'user'),
-      '_blank'
-    );
+    this.window.open(this.site.handleUrl(userLink.site, userLink.url, 'user'), '_blank');
   }
 
   deleteLink(userLink: UserLink): void {
@@ -202,16 +181,11 @@ export class UserCardComponent implements OnInit, OnDestroy {
       });
   }
 
-  edit<K extends keyof UserUpdateDto>(
-    field: K,
-    newValue: UserUpdateDto[K]
-  ): void {
+  edit<K extends keyof UserUpdateDto>(field: K, newValue: UserUpdateDto[K]): void {
     this.regionModalRef?.close();
-    this.userService
-      .update(this.user.id, { [field]: newValue })
-      .subscribe(() => {
-        this.overlayRef?.detach();
-      });
+    this.userService.update(this.user.id, { [field]: newValue }).subscribe(() => {
+      this.overlayRef?.detach();
+    });
   }
 
   onFollow(user: User): void {
@@ -227,9 +201,7 @@ export class UserCardComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  seeAllFollowers(
-    type: keyof Pick<UserFollower, 'follower' | 'followed'>
-  ): void {
+  seeAllFollowers(type: keyof Pick<UserFollower, 'follower' | 'followed'>): void {
     const title = type === 'follower' ? 'Followers' : 'Following';
     this.matDialog.open(FollowersComponent, {
       data: { title, idUser: this.user.id, type } as UserFollowersData,

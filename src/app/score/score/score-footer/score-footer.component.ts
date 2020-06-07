@@ -1,11 +1,7 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Score } from '../../../model/score';
 import { ReferenceTypeEnum } from '../../../model/reference-type.enum';
+import { ReasonQuery } from '../../../state/reason/reason.query';
 
 @Component({
   selector: 'app-score-footer',
@@ -14,7 +10,7 @@ import { ReferenceTypeEnum } from '../../../model/reference-type.enum';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreFooterComponent implements OnInit {
-  constructor() {}
+  constructor(public reasonQuery: ReasonQuery) {}
 
   referenceTypeEnum = ReferenceTypeEnum;
 

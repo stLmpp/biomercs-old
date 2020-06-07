@@ -19,6 +19,7 @@ import { ScoreComponent } from './score/score.component';
 import { ClipPathDirective } from './score/clip-path.directive';
 import { ScorePlayerComponent } from './score/score-player/score-player.component';
 import { ScoreFooterComponent } from './score/score-footer/score-footer.component';
+import { ReportModule } from '../report/report.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ScoreFooterComponent } from './score/score-footer/score-footer.componen
     NgxMaskModule.forChild(),
     MatDividerModule,
     MatTableModule,
+    ReportModule,
   ],
   exports: [ScoreTableComponent, ScoreComponent],
 })

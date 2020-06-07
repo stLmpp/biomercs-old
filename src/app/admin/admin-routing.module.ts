@@ -29,6 +29,8 @@ import { UserComponent } from './user/user.component';
 import { OwnerGuard } from './owner.guard';
 import { RoleResolver } from '../state/role/role.resolver';
 import { RoleComponent } from './role/role.component';
+import { ReasonComponent } from './reason/reason.component';
+import { ReasonResolver } from '../state/reason/reason.resolver';
 
 const routes: Routes = [
   {
@@ -51,6 +53,11 @@ const routes: Routes = [
         component: RoleComponent,
         canActivate: [OwnerGuard],
         resolve: [RoleResolver],
+      },
+      {
+        path: 'reason',
+        component: ReasonComponent,
+        resolve: [ReasonResolver],
       },
       {
         path: 'game',
@@ -80,11 +87,7 @@ const routes: Routes = [
       {
         path: 'game-mode-character',
         component: GameModeCharacterComponent,
-        resolve: [
-          CharacterResolver,
-          GameModeResolver,
-          GameModeCharacterResolver,
-        ],
+        resolve: [CharacterResolver, GameModeResolver, GameModeCharacterResolver],
       },
       {
         path: 'type',

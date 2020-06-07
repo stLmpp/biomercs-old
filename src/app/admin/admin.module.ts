@@ -31,6 +31,7 @@ import { StUtilsModule } from '@stlmpp/utils';
 import { UserRolesComponent } from './user/user-roles/user-roles.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RoleComponent } from './role/role.component';
+import { ReasonComponent } from './reason/reason.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { RoleComponent } from './role/role.component';
     UserComponent,
     UserRolesComponent,
     RoleComponent,
+    ReasonComponent,
   ],
   imports: [
     SharedModule,

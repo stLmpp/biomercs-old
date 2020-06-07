@@ -9,24 +9,14 @@ import { StageResolver } from '../state/stage/stage.resolver';
 import { CharacterResolver } from '../state/character/character.resolver';
 import { RouteParamEnum } from '../model/route-param.enum';
 import { ScoreComponent } from './score/score.component';
-import {
-  RandomScoreResolver,
-  ScoreLikeResolver,
-  SingleScoreResolver,
-} from '../state/score/score.resolver';
+import { RandomScoreResolver, ScoreLikeResolver, SingleScoreResolver } from '../state/score/score.resolver';
+import { ReasonResolver } from '../state/reason/reason.resolver';
 
 const routes: Routes = [
   {
     path: 'submit',
     component: SubmitScoreAlphaComponent,
-    resolve: [
-      GameResolver,
-      ModeResolver,
-      PlatformResolver,
-      TypeResolver,
-      StageResolver,
-      CharacterResolver,
-    ],
+    resolve: [GameResolver, ModeResolver, PlatformResolver, TypeResolver, StageResolver, CharacterResolver],
   },
   {
     path: 'random',
@@ -35,7 +25,7 @@ const routes: Routes = [
   {
     path: `:${RouteParamEnum.idScore}`,
     component: ScoreComponent,
-    resolve: [SingleScoreResolver, ScoreLikeResolver],
+    resolve: [SingleScoreResolver, ScoreLikeResolver, ReasonResolver],
   },
 ];
 

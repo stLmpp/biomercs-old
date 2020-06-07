@@ -1,7 +1,6 @@
 <ng-container
   *ngIf="{
-    isAdmin: isAdmin$ | async,
-    isEditable: (isAdmin$ | async) || isSameAsLogged,
+    isEditable: (authQuery.isOwner$ | async) || isSameAsLogged,
     isFollowing: user | isFollowing
   } as state"
 >
@@ -42,18 +41,9 @@
         >
         </mat-icon>
         {{ user.username }}
-        <mat-icon
-          class="edit"
-          *ngIf="state.isEditable"
-          (click)="openEditOther()"
-          >edit</mat-icon
-        >
+        <mat-icon class="edit" *ngIf="state.isEditable" (click)="openEditOther()">edit</mat-icon>
       </mat-card-title>
-      <mat-card-subtitle
-        class="editable"
-        #title
-        (click)="state.isEditable && openEdit(title, 'title')"
-      >
+      <mat-card-subtitle class="editable" #title (click)="state.isEditable && openEdit(title, 'title')">
         {{ user.title | default: 'No title':'loose' }}
         <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
       </mat-card-subtitle>
@@ -62,9 +52,7 @@
       <div
         class="editable"
         #aboutMe
-        (click)="
-          state.isEditable && openEdit(aboutMe, 'aboutMe', 'textarea', 1000)
-        "
+        (click)="state.isEditable && openEdit(aboutMe, 'aboutMe', 'textarea', 1000)"
       >
         {{ user.aboutMe | default: 'No info':'loose' }}
         <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
@@ -80,14 +68,8 @@
         <mat-list-item *ngIf="!user.userLinks?.length">
           No links found
         </mat-list-item>
-        <mat-list-item
-          *ngFor="let userLink of user.userLinks; trackBy: trackByUserLink"
-        >
-          <mat-icon
-            mat-list-icon
-            [svgIcon]="userLink.site.icon"
-            class="svg"
-          ></mat-icon>
+        <mat-list-item *ngFor="let userLink of user.userLinks; trackBy: trackByUserLink">
+          <mat-icon mat-list-icon [svgIcon]="userLink.site.icon" class="svg"></mat-icon>
           <span matLine>{{ userLink.name }}</span>
           <button
             mat-icon-button
@@ -126,19 +108,14 @@
             {{ user.userFollowers?.length | default: 0 }}
           </app-badge>
         </div>
-        <mat-list-item
-          *ngIf="!user.userFollowers?.length && !userFollowersLoading"
-        >
+        <mat-list-item *ngIf="!user.userFollowers?.length && !userFollowersLoading">
           No followers found
         </mat-list-item>
         <mat-list-item *ngIf="userFollowersLoading">
           <mat-spinner diameter="22"></mat-spinner>
         </mat-list-item>
         <mat-list-item
-          *ngFor="
-            let userFollower of user.userFollowers | slice: 0:5;
-            trackBy: trackByUserFollower
-          "
+          *ngFor="let userFollower of user.userFollowers | slice: 0:5; trackBy: trackByUserFollower"
           [routerLink]="['../../', userFollower.idFollower, 'profile']"
         >
           <img
@@ -154,10 +131,7 @@
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </mat-list-item>
-        <mat-list-item
-          *ngIf="user.userFollowers?.length > 5"
-          (click)="seeAllFollowers('follower')"
-        >
+        <mat-list-item *ngIf="user.userFollowers?.length > 5" (click)="seeAllFollowers('follower')">
           See all
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -167,19 +141,14 @@
             {{ user.userFollowed?.length | default: 0 }}
           </app-badge>
         </div>
-        <mat-list-item
-          *ngIf="!user.userFollowed?.length && !userFollowingLoading"
-        >
+        <mat-list-item *ngIf="!user.userFollowed?.length && !userFollowingLoading">
           {{ user.username }} is following no one!
         </mat-list-item>
         <mat-list-item *ngIf="userFollowingLoading">
           <mat-spinner diameter="22"></mat-spinner>
         </mat-list-item>
         <mat-list-item
-          *ngFor="
-            let userFollowed of user.userFollowed | slice: 0:5;
-            trackBy: trackByUserFollower
-          "
+          *ngFor="let userFollowed of user.userFollowed | slice: 0:5; trackBy: trackByUserFollower"
           [routerLink]="['../../', userFollowed.idFollowed, 'profile']"
         >
           <img
@@ -195,10 +164,7 @@
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </mat-list-item>
-        <mat-list-item
-          *ngIf="user.userFollowed?.length > 5"
-          (click)="seeAllFollowers('followed')"
-        >
+        <mat-list-item *ngIf="user.userFollowed?.length > 5" (click)="seeAllFollowers('followed')">
           See all
         </mat-list-item>
       </mat-nav-list>
@@ -219,15 +185,16 @@
       >
         {{ state.isFollowing ? 'Unfollow' : 'Follow' }}
       </button>
+      <app-report-button
+        *ngIf="!isSameAsLogged"
+        [type]="referenceTypeEnum.user"
+        [idReference]="user.id"
+        [reasons]="reasonQuery.all$ | async"
+      ></app-report-button>
     </mat-card-actions>
   </mat-card>
 
-  <ng-template
-    #editOverlayRef
-    let-type="type"
-    let-field="field"
-    let-maxlength="maxlength"
-  >
+  <ng-template #editOverlayRef let-type="type" let-field="field" let-maxlength="maxlength">
     <mat-form-field #form cdkTrapFocus cdkTrapFocusAutoCapture>
       <mat-label>{{ field | startCase }}</mat-label>
       <input matInput *ngIf="type === 'input'" [ngModel]="user[field]" />
@@ -258,18 +225,10 @@
     <h1>Choose your region</h1>
     <mat-form-field>
       <mat-label>Search</mat-label>
-      <input
-        matInput
-        [formControl]="regionSearchControl"
-        placeholder="Search"
-      />
+      <input matInput [formControl]="regionSearchControl" placeholder="Search" />
     </mat-form-field>
     <mat-dialog-content
-      *let="
-        regionQuery.all$
-          | async
-          | search: ['name', 'shortName']:(regionSearch$ | async) as regions
-      "
+      *let="regionQuery.all$ | async | search: ['name', 'shortName']:(regionSearch$ | async) as regions"
     >
       <cdk-virtual-scroll-viewport itemSize="56" [style.height.px]="426">
         <mat-nav-list>
