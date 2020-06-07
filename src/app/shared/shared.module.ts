@@ -35,6 +35,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconSizeDirective } from './custom-material/mat-icon-size.directive';
 import { FindPipe } from './find/find.pipe';
+import { AssertNumberPipe } from './assert/assert-number.pipe';
 
 const PIPES = [
   DefaultPipe,
@@ -48,6 +49,7 @@ const PIPES = [
   IsSameAsLoggedPipe,
   ScorePipe,
   FindPipe,
+  AssertNumberPipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,

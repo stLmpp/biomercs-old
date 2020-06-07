@@ -34,25 +34,26 @@ export class TableComponent implements OnInit {
     distinctUntilChanged<ScoreTableParamsDto>(isEqual),
     switchMap(dto => {
       const { idPlatform, type, idCharacter, idGame, idMode, idPlayer, idType, limit } = dto;
+      let http$: Observable<ScoreTable[][]>;
       if (!this.executeWhen(dto) || isNil(idType && idPlatform && idMode && idGame && type)) {
-        return of(null);
-      }
-      this.loading.emit(true);
-      let http: Observable<ScoreTable[][]>;
-      if (type === ScoreTableType.character) {
-        http = this.scoreService.getTableScorePlayer(idGame, idMode, idPlatform, idType, idPlayer);
+        http$ = of(null);
       } else {
-        http = this.scoreService.getManyTopScore(
-          idPlatform,
-          idGame,
-          idMode,
-          idType,
-          limit,
-          idCharacter,
-          idPlayer
-        );
+        this.loading.emit(true);
+        if (type === ScoreTableType.character) {
+          http$ = this.scoreService.getTableScorePlayer(idGame, idMode, idPlatform, idType, idPlayer);
+        } else {
+          http$ = this.scoreService.getManyTopScore(
+            idPlatform,
+            idGame,
+            idMode,
+            idType,
+            limit,
+            idCharacter,
+            idPlayer
+          );
+        }
       }
-      return http.pipe(
+      return http$.pipe(
         finalize(() => {
           this.loading.emit(false);
         })
