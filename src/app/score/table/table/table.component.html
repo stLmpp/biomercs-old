@@ -6,23 +6,12 @@
     } as state"
   >
     <ng-container *ngIf="_params.type === scoreTableType.character">
-      <mat-table
-        *ngIf="state.table && state.columns"
-        [dataSource]="state.table"
-      >
+      <mat-table *ngIf="state.table && state.columns" [dataSource]="state.table">
         <ng-container
-          *ngFor="
-            let column of state.columns;
-            let $colIndex = index;
-            let $first = first;
-            let $last = last
-          "
+          *ngFor="let column of state.columns; let $colIndex = index; let $first = first; let $last = last"
           [matColumnDef]="column"
         >
-          <mat-header-cell
-            *matHeaderCellDef
-            [ngClass]="{ last: $last, first: $first }"
-          >
+          <mat-header-cell *matHeaderCellDef [ngClass]="{ last: $last, first: $first }">
             {{ column }}
           </mat-header-cell>
           <mat-cell
@@ -33,45 +22,25 @@
               {{ state.table[$rowIndex][$colIndex].character.name }}
             </ng-container>
             <ng-container *ngIf="!$last && !$first">
-              <ng-container
-                *let="state.table[$rowIndex][$colIndex - 1] as score"
-              >
-                <ng-container
-                  *ngTemplateOutlet="scoreRef; context: { $implicit: score }"
-                ></ng-container>
+              <ng-container *let="state.table[$rowIndex][$colIndex - 1] as score">
+                <ng-container *ngTemplateOutlet="scoreRef; context: { $implicit: score }"></ng-container>
               </ng-container>
             </ng-container>
             <ng-container *ngIf="$last">
-              {{
-                state.table[$rowIndex]
-                  | sumBy: ['score', 'score']
-                  | number: '1.0-0'
-              }}
+              {{ state.table[$rowIndex] | sumBy: ['score', 'score'] | number: '1.0-0' }}
             </ng-container>
           </mat-cell>
-          <mat-footer-cell
-            *matFooterCellDef
-            [ngClass]="{ last: $last, first: $first }"
-          >
+          <mat-footer-cell *matFooterCellDef [ngClass]="{ last: $last, first: $first }">
             <ng-container *ngIf="$first">
               Best
             </ng-container>
             <ng-container *ngIf="!$first && !$last">
-              <ng-container
-                *let="state.table | bestScore: $colIndex - 1 as score"
-              >
-                <ng-container
-                  *ngTemplateOutlet="scoreRef; context: { $implicit: score }"
-                ></ng-container>
+              <ng-container *let="state.table | bestScore: $colIndex - 1 as score">
+                <ng-container *ngTemplateOutlet="scoreRef; context: { $implicit: score }"></ng-container>
               </ng-container>
             </ng-container>
             <ng-container *ngIf="$last">
-              {{
-                state.table
-                  | bestScoreTotal: state.columns.length - 2
-                  | default: 0
-                  | number: '1.0-0'
-              }}
+              {{ state.table | bestScoreTotal: state.columns.length - 2 | default: 0 | number: '1.0-0' }}
             </ng-container>
           </mat-footer-cell>
         </ng-container>
@@ -82,23 +51,12 @@
     </ng-container>
     <!-- TOP -->
     <ng-container *ngIf="_params.type === scoreTableType.top">
-      <mat-table
-        *ngIf="state.table && state.columns"
-        [dataSource]="state.table"
-      >
+      <mat-table *ngIf="state.table && state.columns" [dataSource]="state.table">
         <ng-container
-          *ngFor="
-            let column of state.columns;
-            let $colIndex = index;
-            let $first = first;
-            let $last = last
-          "
+          *ngFor="let column of state.columns; let $colIndex = index; let $first = first; let $last = last"
           [matColumnDef]="column"
         >
-          <mat-header-cell
-            *matHeaderCellDef
-            [ngClass]="{ last: $last, first: $first }"
-          >
+          <mat-header-cell *matHeaderCellDef [ngClass]="{ last: $last, first: $first }">
             {{ column }}
           </mat-header-cell>
           <mat-cell
@@ -120,11 +78,7 @@
               ></ng-container>
             </ng-container>
             <ng-container *ngIf="$last">
-              {{
-                state.table[$rowIndex]
-                  | sumBy: ['score', 'score']
-                  | number: '1.0-0'
-              }}
+              {{ state.table[$rowIndex] | sumBy: ['score', 'score'] | number: '1.0-0' }}
             </ng-container>
           </mat-cell>
         </ng-container>

@@ -1,9 +1,5 @@
 <mat-card class="other" *let="loading$ | async as loading">
-  <mat-progress-bar
-    mode="indeterminate"
-    class="top"
-    *ngIf="loading"
-  ></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" class="top" *ngIf="loading"></mat-progress-bar>
   <mat-card-content>
     <app-score-table
       (loading)="onLoading($event)"
@@ -23,13 +19,7 @@
       *ngIf="user.userShowcase as showcase"
       mat-button
       color="accent"
-      [disabled]="
-        loading ||
-        !showcase.idType ||
-        !showcase.idGame ||
-        !showcase.idMode ||
-        !showcase.idPlatform
-      "
+      [disabled]="loading || !showcase.idType || !showcase.idGame || !showcase.idMode || !showcase.idPlatform"
       (click)="saveShowcase()"
     >
       Save showcase

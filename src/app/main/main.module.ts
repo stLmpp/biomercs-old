@@ -10,13 +10,7 @@ import { HomeComponent } from './home/home.component';
 const DECLARATIONS = [HeaderComponent, HomeComponent];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatProgressBarModule,
-    RouterModule,
-  ],
+  imports: [SharedModule, MatToolbarModule, MatMenuModule, MatProgressBarModule, RouterModule],
   declarations: [...DECLARATIONS],
   exports: [...DECLARATIONS],
 })

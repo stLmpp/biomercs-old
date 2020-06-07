@@ -21,9 +21,7 @@
   </button>
 </form>
 <mat-list>
-  <ng-container
-    *ngFor="let user of users$ | async; trackBy: trackBy; let $last = last"
-  >
+  <ng-container *ngFor="let user of users$ | async; trackBy: trackBy; let $last = last">
     <mat-divider></mat-divider>
     <mat-list-item>
       <span matLine>{{ user.username }}</span>

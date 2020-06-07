@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UserShowcase } from '../../model/user-showcase';
 import { UserShowcaseService } from './user-showcase.service';
@@ -17,8 +13,6 @@ export class UserShowcaseResolver implements Resolve<UserShowcase> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<UserShowcase> | Promise<UserShowcase> | UserShowcase {
-    return this.userShowcaseService.findByIdUser(
-      +route.paramMap.get(RouteParamEnum.idUser)
-    );
+    return this.userShowcaseService.findByIdUser(+route.paramMap.get(RouteParamEnum.idUser));
   }
 }

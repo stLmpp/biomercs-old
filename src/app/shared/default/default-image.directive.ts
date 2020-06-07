@@ -38,20 +38,14 @@ export class DefaultImageDirective implements OnInit, OnDestroy {
     if (this.imageDirective) {
       this.imageDirective.src = this.default;
     } else {
-      this.renderer2.setAttribute(
-        this.elementRef.nativeElement,
-        'src',
-        '' + this.default
-      );
+      this.renderer2.setAttribute(this.elementRef.nativeElement, 'src', '' + this.default);
     }
   }
 
   ngOnInit(): void {
-    this.imageDirective?.imgError
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(() => {
-        this._onError();
-      });
+    this.imageDirective?.imgError.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      this._onError();
+    });
     if (this.imageDirective?.hasError) {
       this._onError();
     }

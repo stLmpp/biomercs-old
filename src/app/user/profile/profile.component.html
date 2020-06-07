@@ -4,12 +4,6 @@
     isSameAsLogged: isSameAsLogged$ | async
   } as state"
 >
-  <app-user-card
-    [user]="state.user"
-    [isSameAsLogged]="state.isSameAsLogged"
-  ></app-user-card>
-  <app-user-showcase
-    [user]="state.user"
-    [isSameAsLogged]="state.isSameAsLogged"
-  ></app-user-showcase>
+  <app-user-card [user]="state.user" [isSameAsLogged]="state.isSameAsLogged"></app-user-card>
+  <app-user-showcase [user]="state.user" [isSameAsLogged]="state.isSameAsLogged"></app-user-showcase>
 </ng-container>

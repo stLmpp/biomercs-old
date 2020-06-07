@@ -2,13 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ScoreQuery } from '../../state/score/store.query';
 import { RouterQuery } from '@stlmpp/router';
 import { RouteParamEnum } from '../../model/route-param.enum';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  shareReplay,
-  switchMap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, shareReplay, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-score',
@@ -17,10 +11,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScoreComponent implements OnInit {
-  constructor(
-    private scoreQuery: ScoreQuery,
-    private routerQuery: RouterQuery
-  ) {}
+  constructor(private scoreQuery: ScoreQuery, private routerQuery: RouterQuery) {}
 
   score$ = this.routerQuery.selectParams(RouteParamEnum.idScore).pipe(
     filter(idScore => !!idScore),
@@ -35,10 +26,7 @@ export class ScoreComponent implements OnInit {
       [
         ...new Set(
           score.characterWorldRecords
-            .filter(
-              cwr =>
-                !!score.isCharacterWorldRecord[cwr.scorePlayers[0].idCharacter]
-            )
+            .filter(cwr => !!score.isCharacterWorldRecord[cwr.scorePlayers[0].idCharacter])
             .map(cwr => cwr.scorePlayers[0].character.name)
         ),
       ].join(' and ')

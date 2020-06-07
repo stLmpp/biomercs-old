@@ -1,9 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-export function replaceParams(
-  value: string,
-  args: { [key: string]: any }
-): string {
+export function replaceParams(value: string, args: { [key: string]: any }): string {
   if (!value || !args) {
     return value;
   }

@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { UserLink } from '../../../../model/user-link';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
@@ -82,9 +76,7 @@ export class UserLinkComponent implements OnInit {
     this.form = new FormGroup({
       name: new FormControl(this.data.userLink?.name, [Validators.required]),
       url: new FormControl(this.data.userLink?.url, [Validators.required]),
-      idSite: new FormControl(this.data.userLink?.idSite, [
-        Validators.required,
-      ]),
+      idSite: new FormControl(this.data.userLink?.idSite, [Validators.required]),
     });
     this.form.get('idSite').disable();
     this.siteService

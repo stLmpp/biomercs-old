@@ -41,18 +41,13 @@ registerLocaleData(localeBr, localeBrExtra);
 })
 export class AppModule {
   constructor(matIconRegistry: MatIconRegistry, domSanitizer: DomSanitizer) {
-    matIconRegistry.addSvgIconSet(
-      domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg')
-    );
+    matIconRegistry.addSvgIconSet(domSanitizer.bypassSecurityTrustResourceUrl('./assets/mdi.svg'));
     matIconRegistry.addSvgIcon(
       'flag-unknown',
       domSanitizer.bypassSecurityTrustResourceUrl('./assets/flag-unknown.svg')
     );
     for (const { name, path } of flagIcons) {
-      matIconRegistry.addSvgIcon(
-        name,
-        domSanitizer.bypassSecurityTrustResourceUrl(path)
-      );
+      matIconRegistry.addSvgIcon(name, domSanitizer.bypassSecurityTrustResourceUrl(path));
     }
   }
 }

@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SuperService } from '../../shared/super/super-service';
-import {
-  Like,
-  LikeAddDto,
-  LikeCount,
-  LikeDeleteDto,
-  LikeParamsDto,
-  LikeUpdateDto,
-} from '../../model/like';
+import { Like, LikeAddDto, LikeCount, LikeDeleteDto, LikeParamsDto, LikeUpdateDto } from '../../model/like';
 import { HttpClient } from '@angular/common/http';
 import { LikeStore } from './like.store';
 import { LikeQuery } from './like.query';
@@ -25,11 +18,7 @@ export class LikeService extends SuperService<
   LikeDeleteDto,
   LikeParamsDto
 > {
-  constructor(
-    private http: HttpClient,
-    private likeStore: LikeStore,
-    private likeQuery: LikeQuery
-  ) {
+  constructor(private http: HttpClient, private likeStore: LikeStore, private likeQuery: LikeQuery) {
     super({
       http,
       store: likeStore,
@@ -41,10 +30,7 @@ export class LikeService extends SuperService<
     });
   }
 
-  findCountForAll(
-    type: ReferenceTypeEnum,
-    idReference: number
-  ): Observable<LikeCount> {
+  findCountForAll(type: ReferenceTypeEnum, idReference: number): Observable<LikeCount> {
     const params = new HttpParams({ type, idReference });
     return this.http.get<LikeCount>(`${this.endPoint}/count-all`, {
       params,

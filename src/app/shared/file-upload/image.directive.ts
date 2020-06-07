@@ -30,9 +30,7 @@ export class ImageDirective implements OnInit, OnDestroy {
       this.imgError.emit();
       this.hasError = true;
     } else {
-      this._src = `${environment.api}${
-        isString(id) ? environment.uploadName : environment.uploadId
-      }/${id}`;
+      this._src = `${environment.api}${isString(id) ? environment.uploadName : environment.uploadId}/${id}`;
     }
   }
 

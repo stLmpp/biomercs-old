@@ -1,16 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  ValidatorsModel,
-} from '@ng-stack/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, ValidatorsModel } from '@ng-stack/forms';
 import { AuthService } from '../../state/auth.service';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -52,9 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   form = new FormGroup<LoginForm>({
     username: new FormControl(null, [Validators.required]),
-    password: new FormControl<string, LoginFormValidators>(null, [
-      Validators.required,
-    ]),
+    password: new FormControl<string, LoginFormValidators>(null, [Validators.required]),
     rememberMe: new FormControl(false),
   });
 

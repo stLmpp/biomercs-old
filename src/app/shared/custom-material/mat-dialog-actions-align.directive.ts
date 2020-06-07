@@ -1,8 +1,7 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 
 @Directive({
-  selector:
-    '[mat-dialog-actions][align], mat-dialog-actions[align], [matDialogActions][align]',
+  selector: '[mat-dialog-actions][align], mat-dialog-actions[align], [matDialogActions][align]',
 })
 export class MatDialogActionsAlignDirective {
   @Input() align: 'end' | 'start' = 'start';

@@ -57,23 +57,20 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
       );
     } else if (isAnyObject(this.error)) {
       return Object.entries(this.error).every(
-        ([key, value]) =>
-          this.matFormField._control.ngControl.hasError(key) === value
+        ([key, value]) => this.matFormField._control.ngControl.hasError(key) === value
       );
     }
   }
 
   ngOnInit(): void {
     this.viewContainerRef.clear();
-    this.matFormField?._control.stateChanges
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(() => {
-        if (this.matFormField._control.errorState && this.checkErrors()) {
-          this.showError();
-        } else {
-          this.hideError();
-        }
-      });
+    this.matFormField?._control.stateChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
+      if (this.matFormField._control.errorState && this.checkErrors()) {
+        this.showError();
+      } else {
+        this.hideError();
+      }
+    });
   }
 
   ngOnDestroy(): void {

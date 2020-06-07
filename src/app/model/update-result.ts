@@ -14,6 +14,3 @@ export interface UpdateResult {
   affected?: number;
   generatedMaps: any[];
 }
-
-
-

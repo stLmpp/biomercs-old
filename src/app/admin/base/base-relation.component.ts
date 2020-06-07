@@ -76,11 +76,7 @@ export class BaseRelationComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.markForCheck();
   }
 
-  onChange(
-    one: CommonColumns,
-    many: CommonColumns,
-    entity?: CommonColumns
-  ): void {
+  onChange(one: CommonColumns, many: CommonColumns, entity?: CommonColumns): void {
     if (entity) {
       this.service
         .delete(entity.id)

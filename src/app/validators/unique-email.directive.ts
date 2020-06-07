@@ -1,8 +1,4 @@
-import {
-  AbstractControl,
-  AsyncValidator,
-  NG_ASYNC_VALIDATORS,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS } from '@angular/forms';
 import { ValidationErrors, AsyncValidatorFn } from '@ng-stack/forms';
 import { Observable, of, timer } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -15,8 +11,7 @@ export interface UniqueEmailValidator {
 }
 
 @Directive({
-  selector:
-    '[formControl][uniqueEmail], [formControlName][uniqueEmail], [ngModel][uniqueEmail]',
+  selector: '[formControl][uniqueEmail], [formControlName][uniqueEmail], [ngModel][uniqueEmail]',
   providers: [
     {
       provide: NG_ASYNC_VALIDATORS,
@@ -45,9 +40,7 @@ export const uniqueEmailValidator = (
   return timer(400).pipe(
     distinctUntilChanged(),
     switchMap(() => {
-      return userService
-        .existsByEmail(value, idUser)
-        .pipe(mapToError('uniqueEmail'));
+      return userService.existsByEmail(value, idUser).pipe(mapToError('uniqueEmail'));
     })
   );
 };

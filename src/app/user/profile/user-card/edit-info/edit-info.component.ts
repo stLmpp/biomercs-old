@@ -57,9 +57,7 @@ export class EditInfoComponent implements OnInit, OnDestroy {
     if (this.form.invalid) return;
     this.saving = true;
     this.matDialogRef.disableClose = true;
-    const { confirmPassword, password, ...dto } = removeNullObject(
-      this.form.value
-    );
+    const { confirmPassword, password, ...dto } = removeNullObject(this.form.value);
     let password$: Observable<User> = of(null);
     let update$: Observable<User> = of(null);
     if (confirmPassword && password && confirmPassword === password) {
@@ -75,10 +73,7 @@ export class EditInfoComponent implements OnInit, OnDestroy {
           this.changeDetectorRef.markForCheck();
         }),
         catchHttpError(err => {
-          this.matSnackBar.open(
-            err?.message ?? `Couldn't save, please try again later`,
-            'Close'
-          );
+          this.matSnackBar.open(err?.message ?? `Couldn't save, please try again later`, 'Close');
           this.matDialogRef.disableClose = false;
         }),
         tap(() => {
@@ -96,14 +91,8 @@ export class EditInfoComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.email],
         [uniqueEmailValidator(this.userService, this.user.id)]
       ),
-      password: new FormControl(null, [
-        confirmPasswordValidator('confirmPassword'),
-        Validators.minLength(4),
-      ]),
-      confirmPassword: new FormControl(null, [
-        confirmPasswordValidator('password'),
-        Validators.minLength(4),
-      ]),
+      password: new FormControl(null, [confirmPasswordValidator('confirmPassword'), Validators.minLength(4)]),
+      confirmPassword: new FormControl(null, [confirmPasswordValidator('password'), Validators.minLength(4)]),
     });
     watchPasswords(
       this.form.get('password'),

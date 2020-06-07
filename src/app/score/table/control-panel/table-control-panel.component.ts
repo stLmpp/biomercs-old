@@ -10,14 +10,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
 import { ScoreTableParamsDto, ScoreTableType } from '../../../model/score';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  skip,
-  switchMap,
-  takeUntil,
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { GameService } from '../../../state/game/game.service';
 import { ModeService } from '../../../state/mode/mode.service';
 import { TypeService } from '../../../state/type/type.service';
@@ -130,15 +123,9 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
 
   form = new FormGroup<ScoreTableParamsForm>({
     idPlatform: new FormControl(null, [Validators.required]),
-    idGame: new FormControl({ value: null, disabled: true }, [
-      Validators.required,
-    ]),
-    idMode: new FormControl({ value: null, disabled: true }, [
-      Validators.required,
-    ]),
-    idType: new FormControl({ value: null, disabled: true }, [
-      Validators.required,
-    ]),
+    idGame: new FormControl({ value: null, disabled: true }, [Validators.required]),
+    idMode: new FormControl({ value: null, disabled: true }, [Validators.required]),
+    idType: new FormControl({ value: null, disabled: true }, [Validators.required]),
     idCharacter: new FormControl({ value: null, disabled: true }),
     idPlayer: new FormControl({ value: null, disabled: true }),
     limit: new FormControl(10),
@@ -171,29 +158,14 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   games$ = this.valueChanges('idPlatform', true).pipe(
     switchMap(idPlatform => this.gameService.findByParams({ idPlatform }))
   );
-  modes$ = combineLatest([
-    this.valueChanges('idPlatform', true),
-    this.valueChanges('idGame', true),
-  ]).pipe(
-    switchMap(([idPlatform, idGame]) =>
-      this.modeService.findByParams({ idGame, idPlatform })
-    )
+  modes$ = combineLatest([this.valueChanges('idPlatform', true), this.valueChanges('idGame', true)]).pipe(
+    switchMap(([idPlatform, idGame]) => this.modeService.findByParams({ idGame, idPlatform }))
   );
-  types$ = combineLatest([
-    this.valueChanges('idGame', true),
-    this.valueChanges('idMode', true),
-  ]).pipe(
-    switchMap(([idGame, idMode]) =>
-      this.typeService.findByParams({ idGame, idMode })
-    )
+  types$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
+    switchMap(([idGame, idMode]) => this.typeService.findByParams({ idGame, idMode }))
   );
-  characters$ = combineLatest([
-    this.valueChanges('idGame', true),
-    this.valueChanges('idMode', true),
-  ]).pipe(
-    switchMap(([idGame, idMode]) =>
-      this.characterService.findByParams({ idGame, idMode })
-    )
+  characters$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
+    switchMap(([idGame, idMode]) => this.characterService.findByParams({ idGame, idMode }))
   );
 
   trackByPlatform = trackByPlatform;
@@ -206,9 +178,9 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
     key: K,
     filterNil?: boolean
   ): Observable<ScoreTableParamsForm[K]> {
-    let changes$ = (this.form.get(key).valueChanges as Observable<
-      ScoreTableParamsForm[K]
-    >).pipe(distinctUntilChanged());
+    let changes$ = (this.form.get(key).valueChanges as Observable<ScoreTableParamsForm[K]>).pipe(
+      distinctUntilChanged()
+    );
     if (filterNil) {
       changes$ = changes$.pipe(filter(value => !!value));
     }

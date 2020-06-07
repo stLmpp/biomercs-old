@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SuperService } from '../../shared/super/super-service';
-import {
-  Region,
-  RegionAddDto,
-  RegionExistsDto,
-  RegionUpdateDto,
-} from '../../model/region';
+import { Region, RegionAddDto, RegionExistsDto, RegionUpdateDto } from '../../model/region';
 import { HttpClient } from '@angular/common/http';
 import { RegionStore } from './region.store';
 import { RegionQuery } from './region.query';
@@ -18,11 +13,7 @@ export class RegionService extends SuperService<
   RegionExistsDto,
   RegionExistsDto
 > {
-  constructor(
-    private http: HttpClient,
-    private regionStore: RegionStore,
-    private regionQuery: RegionQuery
-  ) {
+  constructor(private http: HttpClient, private regionStore: RegionStore, private regionQuery: RegionQuery) {
     super({
       http,
       store: regionStore,

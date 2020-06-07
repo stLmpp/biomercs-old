@@ -14,14 +14,14 @@ import { ForgotPasswordComponent } from './login-register/forgot-password/forgot
 import { ResetPasswordComponent } from './login-register/reset-password/reset-password.component';
 
 @NgModule({
-  declarations: [LoginComponent, RegisterComponent, LoginRegisterComponent, ForgotPasswordComponent, ResetPasswordComponent],
-  imports: [
-    AuthRoutingModule,
-    SharedModule,
-    MatTabsModule,
-    MatCardModule,
-    MatSnackBarModule,
+  declarations: [
+    LoginComponent,
+    RegisterComponent,
+    LoginRegisterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
+  imports: [AuthRoutingModule, SharedModule, MatTabsModule, MatCardModule, MatSnackBarModule],
 })
 export class AuthModule {
   static forRoot(): ModuleWithProviders {
@@ -30,8 +30,7 @@ export class AuthModule {
       providers: [
         {
           provide: APP_INITIALIZER,
-          useFactory: (authService: AuthService) => () =>
-            authService.autoLogin().toPromise(),
+          useFactory: (authService: AuthService) => () => authService.autoLogin().toPromise(),
           deps: [AuthService],
           multi: true,
         },

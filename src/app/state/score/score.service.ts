@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {
-  Score,
-  ScoreAddDto,
-  ScoreRandomDto,
-  ScoreTable,
-} from '../../model/score';
+import { Score, ScoreAddDto, ScoreRandomDto, ScoreTable } from '../../model/score';
 import { HttpParams } from '../../util/http-params';
 import { ScoreStore } from './score.store';
 import { tap } from 'rxjs/operators';

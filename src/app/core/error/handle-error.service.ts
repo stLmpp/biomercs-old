@@ -10,11 +10,7 @@ import { catchHttpError } from '../../util/operators/catchError';
 
 @Injectable({ providedIn: 'root' })
 export class HandleErrorService {
-  constructor(
-    private matSnackBar: MatSnackBar,
-    private authQuery: AuthQuery,
-    private matDialog: MatDialog
-  ) {}
+  constructor(private matSnackBar: MatSnackBar, private authQuery: AuthQuery, private matDialog: MatDialog) {}
 
   handleErrorOperator<T>(): OperatorFunction<T, T> {
     return catchHttpError(err => {
@@ -39,12 +35,7 @@ export class HandleErrorService {
     });
   }
 
-  private snackBar(
-    message: string,
-    button: string,
-    err: HttpError,
-    isAdmin: boolean
-  ): void {
+  private snackBar(message: string, button: string, err: HttpError, isAdmin: boolean): void {
     const snack = this.matSnackBar.open(message, button);
     if (isAdmin) {
       snack

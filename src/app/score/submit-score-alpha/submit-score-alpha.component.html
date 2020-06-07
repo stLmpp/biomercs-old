@@ -4,10 +4,7 @@
       <mat-form-field>
         <mat-label>Platform</mat-label>
         <mat-select formControlName="idPlatform">
-          <mat-option
-            *ngFor="let platform of platformQuery.all$ | async"
-            [value]="platform.id"
-          >
+          <mat-option *ngFor="let platform of platformQuery.all$ | async" [value]="platform.id">
             {{ platform.name }}
           </mat-option>
         </mat-select>
@@ -15,10 +12,7 @@
       <mat-form-field>
         <mat-label>Game</mat-label>
         <mat-select formControlName="idGame">
-          <mat-option
-            *ngFor="let game of gameQuery.all$ | async"
-            [value]="game.id"
-          >
+          <mat-option *ngFor="let game of gameQuery.all$ | async" [value]="game.id">
             {{ game.name }}
           </mat-option>
         </mat-select>
@@ -26,10 +20,7 @@
       <mat-form-field>
         <mat-label>Mode</mat-label>
         <mat-select formControlName="idMode">
-          <mat-option
-            *ngFor="let mode of modeQuery.all$ | async"
-            [value]="mode.id"
-          >
+          <mat-option *ngFor="let mode of modeQuery.all$ | async" [value]="mode.id">
             {{ mode.name }}
           </mat-option>
         </mat-select>
@@ -37,10 +28,7 @@
       <mat-form-field>
         <mat-label>Type</mat-label>
         <mat-select formControlName="idType">
-          <mat-option
-            *ngFor="let type of typeQuery.all$ | async"
-            [value]="type.id"
-          >
+          <mat-option *ngFor="let type of typeQuery.all$ | async" [value]="type.id">
             {{ type.name }}
           </mat-option>
         </mat-select>
@@ -48,49 +36,26 @@
       <mat-form-field>
         <mat-label>Stage</mat-label>
         <mat-select formControlName="idStage">
-          <mat-option
-            *ngFor="let stage of stageQuery.all$ | async"
-            [value]="stage.id"
-          >
+          <mat-option *ngFor="let stage of stageQuery.all$ | async" [value]="stage.id">
             {{ stage.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Score</mat-label>
-        <input
-          matInput
-          placeholder="Score"
-          type="number"
-          formControlName="score"
-        />
+        <input matInput placeholder="Score" type="number" formControlName="score" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Max Combo</mat-label>
-        <input
-          matInput
-          placeholder="Max Combo"
-          type="number"
-          formControlName="maxCombo"
-        />
+        <input matInput placeholder="Max Combo" type="number" formControlName="maxCombo" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Time</mat-label>
-        <input
-          matInput
-          placeholder="Time"
-          formControlName="time"
-          [mask]="maskEnum.time"
-        />
+        <input matInput placeholder="Time" formControlName="time" [mask]="maskEnum.time" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Description</mat-label>
-        <textarea
-          matInput
-          placeholder="Time"
-          formControlName="description"
-          rows="0"
-        ></textarea>
+        <textarea matInput placeholder="Time" formControlName="description" rows="0"></textarea>
       </mat-form-field>
       <mat-divider></mat-divider>
       <button
@@ -110,10 +75,7 @@
           <mat-form-field>
             <mat-label>Character</mat-label>
             <mat-select formControlName="idCharacter">
-              <mat-option
-                *ngFor="let char of characterQuery.all$ | async"
-                [value]="char.id"
-              >
+              <mat-option *ngFor="let char of characterQuery.all$ | async" [value]="char.id">
                 {{ char.name }}
               </mat-option>
             </mat-select>

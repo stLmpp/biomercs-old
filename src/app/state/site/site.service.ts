@@ -7,18 +7,8 @@ import { replaceParams } from '../../shared/replace-params/replace-params.pipe';
 import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
-export class SiteService extends SuperService<
-  Site,
-  SiteAddDto,
-  SiteUpdateDto,
-  SiteUpdateDto,
-  SiteUpdateDto
-> {
-  constructor(
-    private siteStore: SiteStore,
-    private http: HttpClient,
-    private siteQuery: SiteQuery
-  ) {
+export class SiteService extends SuperService<Site, SiteAddDto, SiteUpdateDto, SiteUpdateDto, SiteUpdateDto> {
+  constructor(private siteStore: SiteStore, private http: HttpClient, private siteQuery: SiteQuery) {
     super({
       http,
       store: siteStore,

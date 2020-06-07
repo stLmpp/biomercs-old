@@ -1,15 +1,7 @@
-import {
-  Inject,
-  InjectionToken,
-  Optional,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
+import { Inject, InjectionToken, Optional, Pipe, PipeTransform } from '@angular/core';
 
 export type DefaultPipeType = 'strict' | 'loose';
-export const DEFAULT_PIPE_TYPE = new InjectionToken<DefaultPipeType>(
-  'DEFAULT_PIPE_TYPE'
-);
+export const DEFAULT_PIPE_TYPE = new InjectionToken<DefaultPipeType>('DEFAULT_PIPE_TYPE');
 
 @Pipe({ name: 'default' })
 export class DefaultPipe implements PipeTransform {
@@ -19,11 +11,7 @@ export class DefaultPipe implements PipeTransform {
     private defaultPipeType: DefaultPipeType
   ) {}
 
-  transform<T = any, R = any>(
-    value: T,
-    defaultValue: R,
-    type?: DefaultPipeType
-  ): T | R {
+  transform<T = any, R = any>(value: T, defaultValue: R, type?: DefaultPipeType): T | R {
     type = type ?? this.defaultPipeType ?? 'strict';
     switch (type) {
       case 'strict':

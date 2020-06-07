@@ -16,10 +16,7 @@
         <mat-icon svgIcon="trophy"></mat-icon>
         <div class="label">World Record</div>
       </div>
-      <div
-        class="combination-world-record"
-        *ngIf="score.isCombinationWorldRecord"
-      >
+      <div class="combination-world-record" *ngIf="score.isCombinationWorldRecord">
         <mat-icon svgIcon="trophy-award"></mat-icon>
         <div class="label">
           <div>Team</div>
@@ -114,10 +111,7 @@
         options="left bottom / 85% no-repeat"
         bypassSecurity
       >
-        <app-score-player
-          [player]="player1"
-          [playerNumber]="1"
-        ></app-score-player>
+        <app-score-player [player]="player1" [playerNumber]="1"></app-score-player>
       </div>
       <div
         class="char-2"
@@ -126,10 +120,7 @@
         options="right bottom / 85% no-repeat"
         bypassSecurity
       >
-        <app-score-player
-          [player]="player2"
-          [playerNumber]="2"
-        ></app-score-player>
+        <app-score-player [player]="player2" [playerNumber]="2"></app-score-player>
       </div>
     </div>
     <app-score-footer [score]="score"></app-score-footer>

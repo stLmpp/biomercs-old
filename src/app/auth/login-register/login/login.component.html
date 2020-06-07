@@ -4,12 +4,7 @@
     <mat-card-content>
       <mat-form-field>
         <mat-label>Email / Username</mat-label>
-        <input
-          matInput
-          placeholder="Email / Username"
-          formControlName="username"
-          autocomplete="username"
-        />
+        <input matInput placeholder="Email / Username" formControlName="username" autocomplete="username" />
         <mat-error *error="'required'">
           Email / Username is required
         </mat-error>
@@ -45,12 +40,7 @@
       </mat-checkbox>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button
-        mat-button
-        color="accent"
-        type="submit"
-        [disabled]="form.invalid || form.disabled"
-      >
+      <button mat-button color="accent" type="submit" [disabled]="form.invalid || form.disabled">
         Login
       </button>
       <button

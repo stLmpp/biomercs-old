@@ -10,13 +10,7 @@ import {
 import { ReferenceTypeEnum } from '../../model/reference-type.enum';
 import { LikeService } from '../../state/like/like.service';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import {
-  filter,
-  finalize,
-  map,
-  switchMap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { filter, finalize, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AuthQuery } from '../../auth/state/auth.query';
 import { Like, LikeStyleEnum } from '../../model/like';
 import { convertToBoolProperty } from '../../util/util';
@@ -58,21 +52,16 @@ export class LikeComponent implements OnInit, OnChanges {
   }
   readonly: boolean;
 
-  likeCount$ = combineLatest([
-    this.params$.asObservable(),
-    this.updateCount$.asObservable(),
-  ]).pipe(
+  likeCount$ = combineLatest([this.params$.asObservable(), this.updateCount$.asObservable()]).pipe(
     map(([params]) => params),
     filter(params => !!(params?.idReference && params?.type)),
     switchMap(params => {
       this.loadingCount = true;
-      return this.likeService
-        .findCountForAll(params.type, params.idReference)
-        .pipe(
-          finalize(() => {
-            this.loadingCount = false;
-          })
-        );
+      return this.likeService.findCountForAll(params.type, params.idReference).pipe(
+        finalize(() => {
+          this.loadingCount = false;
+        })
+      );
     })
   );
 
@@ -122,10 +111,7 @@ export class LikeComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const params = Object.entries(changes)
       .filter(([key]) => ['type', 'idReference'].includes(key))
-      .reduce(
-        (acc, [key, value]) => ({ ...acc, [key]: value.currentValue }),
-        {}
-      );
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value.currentValue }), {});
     this.params$.next({ ...this.params$.value, ...params });
   }
 

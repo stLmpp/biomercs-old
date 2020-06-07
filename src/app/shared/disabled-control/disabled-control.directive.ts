@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  ContentChildren,
-  Directive,
-  Host,
-  Input,
-  Optional,
-  QueryList,
-} from '@angular/core';
+import { AfterViewInit, ContentChildren, Directive, Host, Input, Optional, QueryList } from '@angular/core';
 import { AbstractControl, ControlContainer, NgControl } from '@angular/forms';
 import { isUndefined } from 'is-what';
 

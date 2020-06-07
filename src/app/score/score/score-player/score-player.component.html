@@ -1,14 +1,6 @@
 <div class="info" [class.player2]="playerNumber === 2">
-  <div
-    class="item link"
-    [clipPath]="playerNumber"
-    [routerLink]="['/user', player.idPlayer, 'profile']"
-  >
-    <div
-      matTooltip="Visit profile"
-      [matTooltipShowDelay]="200"
-      matTooltipPosition="above"
-    >
+  <div class="item link" [clipPath]="playerNumber" [routerLink]="['/user', player.idPlayer, 'profile']">
+    <div matTooltip="Visit profile" [matTooltipShowDelay]="200" matTooltipPosition="above">
       <mat-icon svgIcon [region]="player.player.region" size="lg"></mat-icon>
       {{ player.player.username }}
     </div>
@@ -36,18 +28,8 @@
   </div>
   <div class="item" [clipPath]="playerNumber">
     Proofs:
-    <ng-container
-      *ngFor="
-        let proof of player.scorePlayerProofs;
-        trackBy: trackByScorePlayerProof
-      "
-    >
-      <button
-        mat-icon-button
-        size="lg"
-        *ngIf="proof.url"
-        (click)="openVideo(proof.url)"
-      >
+    <ng-container *ngFor="let proof of player.scorePlayerProofs; trackBy: trackByScorePlayerProof">
+      <button mat-icon-button size="lg" *ngIf="proof.url" (click)="openVideo(proof.url)">
         <mat-icon *ngIf="proof.site" [svgIcon]="proof.site.icon"></mat-icon>
         <mat-icon *ngIf="!proof.site">launch</mat-icon>
       </button>
@@ -61,11 +43,7 @@
       </button>
     </ng-container>
   </div>
-  <div
-    class="item"
-    [clipPath]="playerNumber"
-    [class.description]="player.description"
-  >
+  <div class="item" [clipPath]="playerNumber" [class.description]="player.description">
     {{ player.description | default: 'No description' }}
   </div>
 </div>

@@ -1,11 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserService } from '../../state/user/user.service';
-import {
-  distinctUntilChanged,
-  filter,
-  finalize,
-  switchMap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, finalize, switchMap } from 'rxjs/operators';
 import { trackByFactory } from '../../util/util';
 import { User } from '../../model/user';
 import { DialogService } from '../../shared/dialog/dialog.service';

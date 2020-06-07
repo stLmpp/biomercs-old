@@ -3,12 +3,7 @@ import { PlatformQuery } from '../../state/platform/platform.query';
 import { GameQuery } from '../../state/game/game.query';
 import { ModeQuery } from '../../state/mode/mode.query';
 import { TypeQuery } from '../../state/type/type.query';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  ValidatorsModel,
-} from '@ng-stack/forms';
+import { FormArray, FormControl, FormGroup, ValidatorsModel } from '@ng-stack/forms';
 import { ScoreAddDto } from '../../model/score';
 import { ScorePlayerAddDto } from '../../model/score-player';
 import { AuthQuery } from '../../auth/state/auth.query';

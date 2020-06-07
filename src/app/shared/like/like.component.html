@@ -8,9 +8,7 @@
     [disabled]="saving || readonly || loadingCount || loadingLike"
     mat-icon-button
     (click)="addOrRemove(likeStyleEnum.like, state?.currentLike)"
-    [color]="
-      state.currentLike?.style === likeStyleEnum.like ? 'accent' : undefined
-    "
+    [color]="state.currentLike?.style === likeStyleEnum.like ? 'accent' : undefined"
     [matBadge]="'' + (state?.count?.like | default: 0)"
     matBadgeSize="small"
   >
@@ -20,9 +18,7 @@
     [disabled]="saving || readonly || loadingCount || loadingLike"
     mat-icon-button
     (click)="addOrRemove(likeStyleEnum.love, state?.currentLike)"
-    [color]="
-      state.currentLike?.style === likeStyleEnum.love ? 'accent' : undefined
-    "
+    [color]="state.currentLike?.style === likeStyleEnum.love ? 'accent' : undefined"
     [matBadge]="'' + (state?.count?.love | default: 0)"
     matBadgeSize="small"
   >

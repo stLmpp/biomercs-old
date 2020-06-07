@@ -1,11 +1,4 @@
-import {
-  Directive,
-  Input,
-  OnDestroy,
-  OnInit,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
+import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 
 class LetContext<T> {
   $implicit: T = null;
@@ -21,15 +14,9 @@ class LetContext<T> {
 export class LetDirective<T> implements OnDestroy, OnInit {
   private _context = new LetContext<T>();
 
-  constructor(
-    private viewContainer: ViewContainerRef,
-    private templateRef: TemplateRef<LetContext<T>>
-  ) {}
+  constructor(private viewContainer: ViewContainerRef, private templateRef: TemplateRef<LetContext<T>>) {}
 
-  static ngTemplateContextGuard<T>(
-    dir: LetDirective<T>,
-    ctx: any
-  ): ctx is LetContext<NonNullable<T>> {
+  static ngTemplateContextGuard<T>(dir: LetDirective<T>, ctx: any): ctx is LetContext<NonNullable<T>> {
     return true;
   }
 

@@ -14,11 +14,7 @@ export class LikeQuery extends EntityQuery<Like> {
 
   findOneByParams(dto: LikeParamsDto): Observable<Like> {
     return this.all$.pipe(
-      map(likes =>
-        likes.find(like =>
-          Object.entries(dto).every(([key, value]) => like[key] === value)
-        )
-      ),
+      map(likes => likes.find(like => Object.entries(dto).every(([key, value]) => like[key] === value))),
       distinctUntilChanged(isEqual)
     );
   }

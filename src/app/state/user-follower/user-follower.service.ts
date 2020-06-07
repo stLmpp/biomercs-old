@@ -2,11 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserFollowerStore } from './user-follower.store';
 import { UserFollowerQuery } from './user-follower.query';
-import {
-  UserFollower,
-  UserFollowerAddDto,
-  UserFollowerExistsDto,
-} from '../../model/user-follower';
+import { UserFollower, UserFollowerAddDto, UserFollowerExistsDto } from '../../model/user-follower';
 import { SuperService } from '../../shared/super/super-service';
 import { Observable, of } from 'rxjs';
 import { User } from '../../model/user';

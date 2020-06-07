@@ -10,10 +10,7 @@ import { take } from 'rxjs/operators';
 export class DialogService {
   constructor(private matDialog: MatDialog) {}
 
-  confirm(
-    data: Partial<DialogOptions>,
-    dialogOptions: MatDialogConfig = {}
-  ): Observable<boolean> {
+  confirm(data: Partial<DialogOptions>, dialogOptions: MatDialogConfig = {}): Observable<boolean> {
     return this.matDialog
       .open(DialogComponent, { ...dialogOptions, data })
       .afterClosed()

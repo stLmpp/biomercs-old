@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  Inject,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Inject } from '@angular/core';
 import { ScorePlayer } from '../../../model/score-player';
 import { trackByScorePlayerProof } from '../../../model/score-player-proof';
 import { WINDOW } from '../../../core/window.service';
@@ -17,10 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScorePlayerComponent implements OnInit {
-  constructor(
-    @Inject(WINDOW) public window: Window,
-    public matDialog: MatDialog
-  ) {}
+  constructor(@Inject(WINDOW) public window: Window, public matDialog: MatDialog) {}
 
   @Input() player: ScorePlayer;
   @Input() playerNumber: number;

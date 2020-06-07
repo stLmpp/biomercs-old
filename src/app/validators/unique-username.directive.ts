@@ -1,8 +1,4 @@
-import {
-  AbstractControl,
-  AsyncValidator,
-  NG_ASYNC_VALIDATORS,
-} from '@angular/forms';
+import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS } from '@angular/forms';
 import { AsyncValidatorFn, ValidationErrors } from '@ng-stack/forms';
 import { Observable, of, timer } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -15,8 +11,7 @@ export interface UniqueUsernameValidator {
 }
 
 @Directive({
-  selector:
-    '[formControl][uniqueUsername], [formControlName][uniqueUsername], [ngModel][uniqueUsername]',
+  selector: '[formControl][uniqueUsername], [formControlName][uniqueUsername], [ngModel][uniqueUsername]',
   providers: [
     {
       provide: NG_ASYNC_VALIDATORS,
@@ -44,9 +39,7 @@ export const uniqueUsernameValidator = (
   return timer(400).pipe(
     distinctUntilChanged(),
     switchMap(() => {
-      return userService
-        .existsByUsername(value)
-        .pipe(mapToError('uniqueUsername'));
+      return userService.existsByUsername(value).pipe(mapToError('uniqueUsername'));
     })
   );
 };

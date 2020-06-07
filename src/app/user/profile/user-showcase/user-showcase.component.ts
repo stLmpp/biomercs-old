@@ -13,14 +13,7 @@ import { User } from '../../../model/user';
 import { ScoreTableParamsForm } from '../../../score/table/control-panel/table-control-panel.component';
 import { UserService } from '../../../state/user/user.service';
 import { RouteParamEnum } from '../../../model/route-param.enum';
-import {
-  filter,
-  finalize,
-  map,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs/operators';
+import { filter, finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { RouterQuery } from '@stlmpp/router';
 import { UserShowcaseService } from '../../../state/user/user-showcase.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -71,12 +64,7 @@ export class UserShowcaseComponent implements OnInit, OnDestroy {
 
   saveShowcase(): void {
     const showcase = this.user.userShowcase;
-    if (
-      !showcase?.idType ||
-      !showcase?.idGame ||
-      !showcase?.idMode ||
-      !showcase?.idPlatform
-    ) {
+    if (!showcase?.idType || !showcase?.idGame || !showcase?.idMode || !showcase?.idPlatform) {
       return;
     }
     this.loading$.next(true);

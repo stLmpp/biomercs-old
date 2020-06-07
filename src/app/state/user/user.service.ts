@@ -93,10 +93,7 @@ export class UserService {
 
   upsert(user: User): void {
     this.userStore.upsert(user.id, user);
-    const followers = [
-      ...(user.userFollowers ?? []),
-      ...(user.userFollowed ?? []),
-    ];
+    const followers = [...(user.userFollowers ?? []), ...(user.userFollowed ?? [])];
     if (followers.length) {
       this.userFollowerService.upsert(followers);
     }

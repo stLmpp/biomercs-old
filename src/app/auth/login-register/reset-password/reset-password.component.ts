@@ -1,20 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  ValidatorsModel,
-} from '@ng-stack/forms';
-import {
-  confirmPasswordValidator,
-  watchPasswords,
-} from '../register/register.component';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators, ValidatorsModel } from '@ng-stack/forms';
+import { confirmPasswordValidator, watchPasswords } from '../register/register.component';
 import { interval, Subject } from 'rxjs';
 import { UserQuery } from '../../../state/user/user.query';
 import { RouterQuery } from '@stlmpp/router';
@@ -93,11 +79,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     const password = this.passwordControl.value;
     this.form.disable();
     this.authService
-      .changePassword(
-        this.user.id,
-        password,
-        this.routerQuery.getQueryParams(RouteParamEnum.token)
-      )
+      .changePassword(this.user.id, password, this.routerQuery.getQueryParams(RouteParamEnum.token))
       .pipe(
         catchHttpError(err => {
           this.form.enable();
@@ -133,18 +115,11 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    watchPasswords(
-      this.passwordControl,
-      this.confirmPasswordControl,
-      this._destroy$,
-      this.changeDetectorRef
-    );
+    watchPasswords(this.passwordControl, this.confirmPasswordControl, this._destroy$, this.changeDetectorRef);
     this.form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
       this.err = null;
     });
-    this.user = this.userQuery.getEntity(
-      +this.routerQuery.getParams(RouteParamEnum.idUser)
-    );
+    this.user = this.userQuery.getEntity(+this.routerQuery.getParams(RouteParamEnum.idUser));
     this.form.patchValue({
       username: this.user.username,
       email: this.user.email,

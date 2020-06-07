@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Score } from '../../model/score';
 import { Observable } from 'rxjs';
 import { ScoreService } from './score.service';
@@ -23,9 +18,7 @@ export class SingleScoreResolver implements Resolve<Score> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Score> | Promise<Score> | Score {
-    return this.scoreService.findById(
-      +route.paramMap.get(RouteParamEnum.idScore)
-    );
+    return this.scoreService.findById(+route.paramMap.get(RouteParamEnum.idScore));
   }
 }
 

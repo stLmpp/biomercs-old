@@ -11,13 +11,7 @@
 ></app-base>
 
 <ng-template let-entity #icon>
-  <a
-    mat-icon-button
-    matSuffix
-    [href]="entity.url"
-    target="_blank"
-    (click)="$event.stopPropagation()"
-  >
+  <a mat-icon-button matSuffix [href]="entity.url" target="_blank" (click)="$event.stopPropagation()">
     <mat-icon [svgIcon]="entity?.icon || (entity?.name | lowercase)"></mat-icon>
   </a>
 </ng-template>

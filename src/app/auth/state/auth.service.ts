@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthStore } from './auth.store';
 import { tap } from 'rxjs/operators';
-import {
-  User,
-  UserForgotPasswordDto,
-  UserRegisterDto,
-  UserRegisterResponse,
-} from '../../model/user';
+import { User, UserForgotPasswordDto, UserRegisterDto, UserRegisterResponse } from '../../model/user';
 import { Observable, of } from 'rxjs';
 import { AuthQuery } from './auth.query';
 import { catchHttpError } from '../../util/operators/catchError';
@@ -44,11 +39,7 @@ export class AuthService {
     );
   }
 
-  loginApi(
-    username: string,
-    password: string,
-    rememberMe = false
-  ): Observable<User> {
+  loginApi(username: string, password: string, rememberMe = false): Observable<User> {
     return this.http
       .post<User>(`${this.endPoint}/login`, { username, password, rememberMe })
       .pipe(
@@ -65,10 +56,7 @@ export class AuthService {
   }
 
   register(dto: UserRegisterDto): Observable<UserRegisterResponse> {
-    return this.http.post<UserRegisterResponse>(
-      `${this.endPoint}/register`,
-      dto
-    );
+    return this.http.post<UserRegisterResponse>(`${this.endPoint}/register`, dto);
   }
 
   forgotPassword(dto: UserForgotPasswordDto): Observable<string> {
@@ -84,30 +72,21 @@ export class AuthService {
     });
   }
 
-  changePassword(
-    idUser: number,
-    newPassword: string,
-    token?: string
-  ): Observable<User> {
+  changePassword(idUser: number, newPassword: string, token?: string): Observable<User> {
     const params: Params = {};
     let url = `${this.endPoint}/change-password/${idUser}`;
     if (token) {
       params.token = token;
       url += '/token';
     }
-    return this.http
-      .post<User>(url, { password: newPassword }, { params })
-      .pipe(
-        tap(user => {
-          this.authStore.update({ user });
-        })
-      );
+    return this.http.post<User>(url, { password: newPassword }, { params }).pipe(
+      tap(user => {
+        this.authStore.update({ user });
+      })
+    );
   }
 
   resetPassword(idUser: number): Observable<void> {
-    return this.http.post<void>(
-      `${this.endPoint}/reset-password/${idUser}`,
-      undefined
-    );
+    return this.http.post<void>(`${this.endPoint}/reset-password/${idUser}`, undefined);
   }
 }

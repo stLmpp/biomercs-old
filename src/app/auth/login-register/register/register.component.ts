@@ -7,12 +7,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ValidatorFn,
-  Validators,
-} from '@ng-stack/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@ng-stack/forms';
 import { AuthService } from '../../state/auth.service';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { catchHttpError } from '../../../util/operators/catchError';
@@ -31,11 +26,7 @@ interface RegisterForm {
   confirmPassword: string;
 }
 
-export const confirmPasswordValidator = (sibling: string): ValidatorFn => ({
-  parent,
-  value,
-  pristine,
-}) => {
+export const confirmPasswordValidator = (sibling: string): ValidatorFn => ({ parent, value, pristine }) => {
   if (!value || pristine) return null;
   const password = parent.get(sibling).value;
   if (value !== password) {
@@ -50,20 +41,16 @@ export const watchPasswords = (
   destroy: Subject<any>,
   changeDetectorRef: ChangeDetectorRef
 ) => {
-  control1.valueChanges
-    .pipe(takeUntil(destroy), debounceTime(500))
-    .subscribe(() => {
-      control2.updateValueAndValidity({
-        emitEvent: false,
-      });
-      changeDetectorRef.markForCheck();
+  control1.valueChanges.pipe(takeUntil(destroy), debounceTime(500)).subscribe(() => {
+    control2.updateValueAndValidity({
+      emitEvent: false,
     });
-  control2.valueChanges
-    .pipe(takeUntil(destroy), debounceTime(500))
-    .subscribe(() => {
-      control1.updateValueAndValidity({ emitEvent: false });
-      changeDetectorRef.markForCheck();
-    });
+    changeDetectorRef.markForCheck();
+  });
+  control2.valueChanges.pipe(takeUntil(destroy), debounceTime(500)).subscribe(() => {
+    control1.updateValueAndValidity({ emitEvent: false });
+    changeDetectorRef.markForCheck();
+  });
 };
 
 @Component({
@@ -91,11 +78,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   successTemplateRef: TemplateRef<any>;
 
   form = new FormGroup<RegisterForm>({
-    username: new FormControl(
-      null,
-      [Validators.required],
-      [uniqueUsernameValidator(this.userService)]
-    ),
+    username: new FormControl(null, [Validators.required], [uniqueUsernameValidator(this.userService)]),
     email: new FormControl(
       null,
       [Validators.required, Validators.email],
@@ -144,12 +127,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    watchPasswords(
-      this.passwordControl,
-      this.confirmPasswordControl,
-      this._destroy$,
-      this.changeDetectorRef
-    );
+    watchPasswords(this.passwordControl, this.confirmPasswordControl, this._destroy$, this.changeDetectorRef);
   }
 
   ngOnDestroy(): void {

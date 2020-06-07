@@ -1,16 +1,7 @@
-import {
-  Inject,
-  InjectionToken,
-  LOCALE_ID,
-  Optional,
-  Pipe,
-  PipeTransform,
-} from '@angular/core';
+import { Inject, InjectionToken, LOCALE_ID, Optional, Pipe, PipeTransform } from '@angular/core';
 import { formatNumber } from '@angular/common';
 
-export const SCORE_DEFAULT_DIGITS = new InjectionToken<string>(
-  'SCORE_DEFAULT_DIGITS'
-);
+export const SCORE_DEFAULT_DIGITS = new InjectionToken<string>('SCORE_DEFAULT_DIGITS');
 
 @Pipe({
   name: 'score',
@@ -24,11 +15,7 @@ export class ScorePipe implements PipeTransform {
   ) {}
 
   transform(value: number, digitsInfo?: string, locale?: string): unknown {
-    return formatNumber(
-      value,
-      locale ?? this.locale,
-      digitsInfo ?? this.defaultDigits ?? '1.0-0'
-    )
+    return formatNumber(value, locale ?? this.locale, digitsInfo ?? this.defaultDigits ?? '1.0-0')
       .split('.')
       .join(',');
   }

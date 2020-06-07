@@ -7,15 +7,9 @@ export function sum(values: number[]): number {
   return values.reduce((acc, item) => acc + +(item ?? 0), 0);
 }
 
-export function sumBy<T = any>(
-  values: T[],
-  key: keyof T | (keyof T)[]
-): number {
+export function sumBy<T = any>(values: T[], key: keyof T | (keyof T)[]): number {
   if (!values?.length || !key) return 0;
-  return values.reduce(
-    (acc, item) => acc + +(getDeep(item, key as string[]) ?? 0),
-    0
-  );
+  return values.reduce((acc, item) => acc + +(getDeep(item, key as string[]) ?? 0), 0);
 }
 
 export const sumOperator = () => map<number[], number>(values => sum(values));

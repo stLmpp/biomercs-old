@@ -13,11 +13,7 @@ export class StageService extends SuperService<
   StageUpdateDto,
   StageUpdateDto
 > {
-  constructor(
-    private http: HttpClient,
-    private stageStore: StageStore,
-    private stageQuery: StageQuery
-  ) {
+  constructor(private http: HttpClient, private stageStore: StageStore, private stageQuery: StageQuery) {
     super({
       http,
       store: stageStore,

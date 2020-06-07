@@ -20,9 +20,7 @@ export class AuthQuery extends Query<Auth> {
   isOwner$ = this.user$.pipe(map(this.isOwner));
 
   hasRoles(roles: RoleEnum[]): boolean {
-    return this.getUserSnapshot()?.userRoles.some(userRole =>
-      roles.includes(userRole.role.name)
-    );
+    return this.getUserSnapshot()?.userRoles.some(userRole => roles.includes(userRole.role.name));
   }
 
   isSameAsLogged$(idUser: number): Observable<boolean> {
@@ -39,21 +37,16 @@ export class AuthQuery extends Query<Auth> {
   isFollowing(idUser: number): boolean {
     const authUser = this.getUserSnapshot();
     return (
-      authUser?.id !== idUser &&
-      authUser?.userFollowed?.some(followed => followed.idFollowed === idUser)
+      authUser?.id !== idUser && authUser?.userFollowed?.some(followed => followed.idFollowed === idUser)
     );
   }
 
   private isAdmin(user: User): boolean {
-    return user?.userRoles?.some(
-      userRole => userRole.role.name === RoleEnum.admin
-    );
+    return user?.userRoles?.some(userRole => userRole.role.name === RoleEnum.admin);
   }
 
   private isOwner(user: User): boolean {
-    return user?.userRoles?.some(
-      userRole => userRole.role.name === RoleEnum.owner
-    );
+    return user?.userRoles?.some(userRole => userRole.role.name === RoleEnum.owner);
   }
 
   getIsOwner(): boolean {

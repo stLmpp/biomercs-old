@@ -12,10 +12,7 @@ import { Validators } from '@ng-stack/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterComponent implements OnInit {
-  constructor(
-    public characterService: CharacterService,
-    public characterQuery: CharacterQuery
-  ) {}
+  constructor(public characterService: CharacterService, public characterQuery: CharacterQuery) {}
 
   fieldsConfig: FieldsConfig<Game> = {
     name: {

@@ -33,14 +33,9 @@ export class ClipPathDirective implements OnInit, OnDestroy, AfterViewInit {
     const polygon =
       +this.clipPath === 1
         ? `polygon(0 0, 100% 0, 100% 100%, ${+this.height / 1.5}px 100%)`
-        : `polygon(0 0, 100% 0, ${this.elementRef.nativeElement.getBoundingClientRect()
-            .width -
+        : `polygon(0 0, 100% 0, ${this.elementRef.nativeElement.getBoundingClientRect().width -
             +this.height / 1.5}px 100%, 0 100%)`;
-    this.renderer2.setStyle(
-      this.elementRef.nativeElement,
-      'clip-path',
-      polygon
-    );
+    this.renderer2.setStyle(this.elementRef.nativeElement, 'clip-path', polygon);
   }
 
   ngOnInit(): void {

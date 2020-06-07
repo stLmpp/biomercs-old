@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Input,
-  ElementRef,
-  Renderer2,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ElementRef, Renderer2 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 
 @Component({

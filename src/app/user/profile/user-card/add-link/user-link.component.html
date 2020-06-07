@@ -18,10 +18,7 @@
     <mat-form-field>
       <mat-label>Site</mat-label>
       <mat-select formControlName="idSite" placeholder="Site">
-        <mat-option
-          *ngFor="let site of sites$ | async; trackBy: trackBySite"
-          [value]="site.id"
-        >
+        <mat-option *ngFor="let site of sites$ | async; trackBy: trackBySite" [value]="site.id">
           <mat-icon [svgIcon]="site.icon"></mat-icon>
           {{ site.name }}
         </mat-option>
@@ -32,21 +29,10 @@
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button
-      mat-button
-      color="accent"
-      [disabled]="saving"
-      type="button"
-      mat-dialog-close
-    >
+    <button mat-button color="accent" [disabled]="saving" type="button" mat-dialog-close>
       Cancel
     </button>
-    <button
-      mat-button
-      color="accent"
-      type="submit"
-      [disabled]="saving || form.invalid"
-    >
+    <button mat-button color="accent" type="submit" [disabled]="saving || form.invalid">
       Save
     </button>
   </mat-dialog-actions>

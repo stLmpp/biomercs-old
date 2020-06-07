@@ -6,10 +6,7 @@ import { GameModeTypeQuery } from './game-mode-type.query';
 import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })
-export class GameModeTypeService extends SuperService<
-  GameModeType,
-  GameModeTypeAddDto
-> {
+export class GameModeTypeService extends SuperService<GameModeType, GameModeTypeAddDto> {
   constructor(
     private gameModeTypeStore: GameModeTypeStore,
     private http: HttpClient,

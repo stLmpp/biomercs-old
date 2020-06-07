@@ -27,5 +27,4 @@ export class HttpParams extends OriginHttpParams {
   }
 }
 
-const convertToString = (value: any) =>
-  isDate(value) ? value.toISOString() : '' + value;
+const convertToString = (value: any) => (isDate(value) ? value.toISOString() : '' + value);

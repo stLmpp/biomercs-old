@@ -3,10 +3,7 @@
     <mat-form-field>
       <mat-label>Platform</mat-label>
       <mat-select placeholder="Platform" formControlName="idPlatform">
-        <mat-option
-          *ngFor="let platform of platforms; trackBy: trackByPlatform"
-          [value]="platform.id"
-        >
+        <mat-option *ngFor="let platform of platforms; trackBy: trackByPlatform" [value]="platform.id">
           {{ platform.name }}
         </mat-option>
       </mat-select>
@@ -14,10 +11,7 @@
     <mat-form-field>
       <mat-label>Game</mat-label>
       <mat-select placeholder="Game" formControlName="idGame">
-        <mat-option
-          *ngFor="let game of games$ | async; trackBy: trackByGame"
-          [value]="game.id"
-        >
+        <mat-option *ngFor="let game of games$ | async; trackBy: trackByGame" [value]="game.id">
           {{ game.name }}
         </mat-option>
       </mat-select>
@@ -25,10 +19,7 @@
     <mat-form-field>
       <mat-label>Mode</mat-label>
       <mat-select placeholder="Mode" formControlName="idMode">
-        <mat-option
-          *ngFor="let mode of modes$ | async; trackBy: trackByMode"
-          [value]="mode.id"
-        >
+        <mat-option *ngFor="let mode of modes$ | async; trackBy: trackByMode" [value]="mode.id">
           {{ mode.name }}
         </mat-option>
       </mat-select>
@@ -36,10 +27,7 @@
     <mat-form-field>
       <mat-label>Type</mat-label>
       <mat-select placeholder="Type" formControlName="idType">
-        <mat-option
-          *ngFor="let type of types$ | async; trackBy: trackByType"
-          [value]="type.id"
-        >
+        <mat-option *ngFor="let type of types$ | async; trackBy: trackByType" [value]="type.id">
           {{ type.name }}
         </mat-option>
       </mat-select>
@@ -49,10 +37,7 @@
       <mat-select placeholder="Character" formControlName="idCharacter">
         <mat-option [value]="null">All</mat-option>
         <mat-option
-          *ngFor="
-            let character of characters$ | async;
-            trackBy: trackByCharacter
-          "
+          *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
           [value]="character.id"
         >
           {{ character.name }}
@@ -61,12 +46,7 @@
     </mat-form-field>
   </div>
   <div class="actions" *ngIf="!autoExecute">
-    <button
-      mat-button
-      color="accent"
-      [disabled]="form.invalid || loading"
-      type="submit"
-    >
+    <button mat-button color="accent" [disabled]="form.invalid || loading" type="submit">
       Apply
     </button>
   </div>

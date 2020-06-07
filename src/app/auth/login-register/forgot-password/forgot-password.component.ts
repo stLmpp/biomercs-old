@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
 import { AuthService } from '../../state/auth.service';
 import { finalize } from 'rxjs/operators';
@@ -19,10 +14,7 @@ interface ForgotPasswordForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForgotPasswordComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  constructor(private authService: AuthService, private changeDetectorRef: ChangeDetectorRef) {}
 
   responseMessage: string;
   sending = false;

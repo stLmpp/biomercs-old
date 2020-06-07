@@ -16,9 +16,7 @@ import { Router } from '@angular/router';
         style({ transform: 'translateY(-100%)' }),
         animate('200ms ease-in', style({ transform: 'translateY(0%)' })),
       ]),
-      transition(':leave', [
-        animate('200ms ease-in', style({ transform: 'translateY(-100%)' })),
-      ]),
+      transition(':leave', [animate('200ms ease-in', style({ transform: 'translateY(-100%)' }))]),
     ]),
   ],
 })

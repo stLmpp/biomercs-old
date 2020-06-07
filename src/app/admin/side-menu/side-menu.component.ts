@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  OnDestroy,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { trackByFactory } from '../../util/util';
 import { SideMenu } from '../../model/side-menu';
 import { SideMenuService } from './side-menu.service';
@@ -37,18 +32,14 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   trackBy = trackByFactory<SideMenu>('title');
 
   ngOnInit(): void {
-    this.sideMenuService.setActive(
-      this.activatedRoute.snapshot.routeConfig.path
-    );
+    this.sideMenuService.setActive(this.activatedRoute.snapshot.routeConfig.path);
     this.router.events
       .pipe(
         takeUntil(this._destroy$),
         filter(event => event instanceof NavigationEnd)
       )
       .subscribe(() => {
-        this.sideMenuService.setActive(
-          this.activatedRoute.snapshot.routeConfig.path
-        );
+        this.sideMenuService.setActive(this.activatedRoute.snapshot.routeConfig.path);
       });
   }
 

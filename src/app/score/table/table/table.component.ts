@@ -1,25 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import {
-  ScoreTable,
-  ScoreTableParamsDto,
-  ScoreTableType,
-} from '../../../model/score';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ScoreTable, ScoreTableParamsDto, ScoreTableType } from '../../../model/score';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  finalize,
-  map,
-  shareReplay,
-  switchMap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
 import { ScoreService } from '../../../state/score/score.service';
 import { isEqual } from 'underscore';
 import { isNil } from '../../../util/util';
@@ -51,32 +33,14 @@ export class TableComponent implements OnInit {
     filter(params => !!params),
     distinctUntilChanged<ScoreTableParamsDto>(isEqual),
     switchMap(dto => {
-      const {
-        idPlatform,
-        type,
-        idCharacter,
-        idGame,
-        idMode,
-        idPlayer,
-        idType,
-        limit,
-      } = dto;
-      if (
-        !this.executeWhen(dto) ||
-        isNil(idType && idPlatform && idMode && idGame && type)
-      ) {
+      const { idPlatform, type, idCharacter, idGame, idMode, idPlayer, idType, limit } = dto;
+      if (!this.executeWhen(dto) || isNil(idType && idPlatform && idMode && idGame && type)) {
         return of(null);
       }
       this.loading.emit(true);
       let http: Observable<ScoreTable[][]>;
       if (type === ScoreTableType.character) {
-        http = this.scoreService.getTableScorePlayer(
-          idGame,
-          idMode,
-          idPlatform,
-          idType,
-          idPlayer
-        );
+        http = this.scoreService.getTableScorePlayer(idGame, idMode, idPlatform, idType, idPlayer);
       } else {
         http = this.scoreService.getManyTopScore(
           idPlatform,

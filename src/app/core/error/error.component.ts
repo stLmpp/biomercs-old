@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  Inject,
-  Optional,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { HttpError } from '../../model/http-error';
 

@@ -19,11 +19,9 @@ export class ImgBackgroundDirective {
 
   @HostBinding('style.background')
   get background(): string | SafeStyle {
-    const url = `url(${environment.api + environment.uploadId}/${
-      this.imgBackground
-    }) ${this.options ? this.options : ''}`;
-    return this._bypassSecurity
-      ? this.domSanitizer.bypassSecurityTrustStyle(url)
-      : url;
+    const url = `url(${environment.api + environment.uploadId}/${this.imgBackground}) ${
+      this.options ? this.options : ''
+    }`;
+    return this._bypassSecurity ? this.domSanitizer.bypassSecurityTrustStyle(url) : url;
   }
 }

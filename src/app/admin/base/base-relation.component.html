@@ -6,17 +6,9 @@
       (afterCollapse)="setOpenState($indexOne, false)"
     >
       <mat-expansion-panel-header>
-        <app-badge *ngIf="showCount">{{
-          entities | countRelation: [entityOne.id, oneIdKey]
-        }}</app-badge>
+        <app-badge *ngIf="showCount">{{ entities | countRelation: [entityOne.id, oneIdKey] }}</app-badge>
         <ng-container *ngIf="oneLabel | isType: 'Array'; else simpleLabel">
-          <ng-container
-            *ngFor="
-              let label of oneLabel;
-              trackBy: trackByLabel;
-              let $last = last
-            "
-          >
+          <ng-container *ngFor="let label of oneLabel; trackBy: trackByLabel; let $last = last">
             {{ entityOne | stGetDeep: label }}
             <ng-container *ngIf="!$last">
               -
@@ -30,13 +22,7 @@
       <ng-container *ngIf="openState[$indexOne]">
         <ng-container *ngIf="many?.length; else noDataFound">
           <mat-nav-list class="relative">
-            <ng-container
-              *ngFor="
-                let entityMany of many;
-                trackBy: trackBy;
-                let $last = last
-              "
-            >
+            <ng-container *ngFor="let entityMany of many; trackBy: trackBy; let $last = last">
               <mat-divider></mat-divider>
               <mat-list-item
                 *let="
@@ -49,10 +35,7 @@
                 "
                 [active]="!!entity"
                 (click)="onChange(entityOne, entityMany, entity)"
-                [disabled]="
-                  entity?.deleting ||
-                  loading[entityOne.id + '-' + entityMany.id]
-                "
+                [disabled]="entity?.deleting || loading[entityOne.id + '-' + entityMany.id]"
               >
                 <span matLine>
                   {{ entityMany | stGetDeep: manyLabel }}
@@ -61,9 +44,7 @@
                   <button
                     mat-icon-button
                     matSuffix
-                    (click)="
-                      $event.stopPropagation(); fileUploadInputRef.click()
-                    "
+                    (click)="$event.stopPropagation(); fileUploadInputRef.click()"
                     *ngIf="uploadImage"
                   >
                     <mat-icon *ngIf="!entity.uploading; else loadingImage">
@@ -84,10 +65,7 @@
                     mat-icon-button
                     matSuffix
                     *ngIf="entity[imageKey]"
-                    (click)="
-                      $event.stopPropagation();
-                      matDialog.open(imageRef, { data: entity[imageKey] })
-                    "
+                    (click)="$event.stopPropagation(); matDialog.open(imageRef, { data: entity[imageKey] })"
                   >
                     <mat-icon>image</mat-icon>
                   </button>

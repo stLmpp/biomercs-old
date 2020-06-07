@@ -12,11 +12,7 @@ import { AuthQuery } from '../../auth/state/auth.query';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileComponent implements OnInit {
-  constructor(
-    private routerQuery: RouterQuery,
-    private userQuery: UserQuery,
-    private authQuery: AuthQuery
-  ) {}
+  constructor(private routerQuery: RouterQuery, private userQuery: UserQuery, private authQuery: AuthQuery) {}
 
   user$ = this.routerQuery.selectParams(RouteParamEnum.idUser).pipe(
     map(Number),

@@ -14,10 +14,7 @@ import { of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlatformComponent implements OnInit {
-  constructor(
-    public platformQuery: PlatformQuery,
-    public platformService: PlatformService
-  ) {}
+  constructor(public platformQuery: PlatformQuery, public platformService: PlatformService) {}
 
   fieldsConfig: FieldsConfig<Platform, LabelValue> = {
     name: {
