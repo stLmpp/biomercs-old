@@ -8,8 +8,8 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, timer } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
 import { isAnyObject, isArray, isString } from 'is-what';
 
@@ -97,13 +97,19 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.viewContainerRef.clear();
-    this.matFormField?._control.stateChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      if (this.matFormField._control.errorState && this.checkErrors()) {
-        this.showError();
-      } else {
-        this.hideError();
-      }
-    });
+    timer(0)
+      .pipe(
+        switchMap(() => {
+          return this.matFormField?._control.stateChanges.pipe(takeUntil(this._destroy$));
+        })
+      )
+      .subscribe(() => {
+        if (this.matFormField._control.errorState && this.checkErrors()) {
+          this.showError();
+        } else {
+          this.hideError();
+        }
+      });
   }
 
   ngOnDestroy(): void {

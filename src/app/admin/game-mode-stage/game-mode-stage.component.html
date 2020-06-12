@@ -1,0 +1,13 @@
+<app-base-relation
+  [entities]="gameModeStageQuery.all$ | async"
+  [service]="gameModeStageService"
+  [many]="stageQuery.all$ | async"
+  manyIdKey="idStage"
+  manyLabel="name"
+  [one]="gameModeQuery.all$ | async"
+  oneIdKey="idGameMode"
+  [oneLabel]="['game.name', 'mode.name']"
+  [updateFields]="['maxEnemies', 'maxCombo']"
+  [fieldsConfig]="fieldsConfig"
+  [updateLabel]="['stage', 'name']"
+></app-base-relation>

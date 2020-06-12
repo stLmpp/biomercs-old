@@ -18,6 +18,7 @@ export class SideMenuService {
     { title: 'Mode', routerLink: 'mode' },
     { title: 'Game Mode', routerLink: 'game-mode' },
     { title: 'Stage', routerLink: 'stage' },
+    { title: 'Game Mode Stage', routerLink: 'game-mode-stage' },
     { title: 'Character', routerLink: 'character' },
     { title: 'Game Mode Character', routerLink: 'game-mode-character' },
     { title: 'Type', routerLink: 'type' },

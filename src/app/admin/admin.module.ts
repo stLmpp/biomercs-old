@@ -33,6 +33,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RoleComponent } from './role/role.component';
 import { ReasonComponent } from './reason/reason.component';
 import { BadgeModule } from '../shared/badge/badge.module';
+import { GameModeStageComponent } from './game-mode-stage/game-mode-stage.component';
+import { BaseAddEditComponent } from './base/base-add-edit/base-add-edit.component';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
   declarations: [
@@ -58,6 +61,8 @@ import { BadgeModule } from '../shared/badge/badge.module';
     UserRolesComponent,
     RoleComponent,
     ReasonComponent,
+    GameModeStageComponent,
+    BaseAddEditComponent,
   ],
   imports: [
     SharedModule,
@@ -71,6 +76,7 @@ import { BadgeModule } from '../shared/badge/badge.module';
     StUtilsModule,
     MatProgressBarModule,
     BadgeModule,
+    NgxCurrencyModule,
   ],
 })
 export class AdminModule {}

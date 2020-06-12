@@ -2,10 +2,10 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { StageService } from '../../state/stage/stage.service';
 import { StageQuery } from '../../state/stage/stage.query';
 import { GameQuery } from '../../state/game/game.query';
-import { FieldsConfig } from '../base/base.component';
 import { Game } from '../../model/game';
 import { Validators } from '@ng-stack/forms';
 import { Stage } from '../../model/stage';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-stage',

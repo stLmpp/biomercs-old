@@ -31,6 +31,8 @@ import { RoleResolver } from '../state/role/role.resolver';
 import { RoleComponent } from './role/role.component';
 import { ReasonComponent } from './reason/reason.component';
 import { ReasonResolver } from '../state/reason/reason.resolver';
+import { GameModeStageComponent } from './game-mode-stage/game-mode-stage.component';
+import { GameModeStageResolver } from '../state/game-mode-stage/game-mode-stage.resolver';
 
 const routes: Routes = [
   {
@@ -78,6 +80,11 @@ const routes: Routes = [
         path: 'stage',
         component: StageComponent,
         resolve: [GameResolver, StageResolver],
+      },
+      {
+        path: 'game-mode-stage',
+        component: GameModeStageComponent,
+        resolve: [GameModeStageResolver, GameModeResolver, StageResolver],
       },
       {
         path: 'character',

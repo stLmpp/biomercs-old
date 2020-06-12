@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TypeQuery } from '../../state/type/type.query';
 import { TypeService } from '../../state/type/type.service';
-import { FieldsConfig } from '../base/base.component';
 import { Type } from '../../model/type';
 import { Validators } from '@ng-stack/forms';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-type',

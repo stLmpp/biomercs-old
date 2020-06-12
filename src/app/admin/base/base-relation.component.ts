@@ -16,6 +16,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { HandleErrorService } from '../../core/error/handle-error.service';
 import { SuperService } from '../../shared/super/super-service';
 import { trackByFactory } from '@stlmpp/utils';
+import {
+  BaseAddEditComponent,
+  BaseAddEditOptions,
+  FieldsConfig,
+} from './base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-base-relation',
@@ -45,6 +50,10 @@ export class BaseRelationComponent implements OnInit, OnDestroy {
   @Input() idKey = 'id';
   @Input() service: SuperService<any>;
   @Input() showCount = true;
+
+  @Input() updateFields: string[] = [];
+  @Input() fieldsConfig: FieldsConfig;
+  @Input() updateLabel: string | string[];
 
   @Input('uploadImage')
   set _uploadImage(allowed: '' | boolean) {
@@ -111,6 +120,20 @@ export class BaseRelationComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  openEdit(entity: any): void {
+    this.matDialog.open(BaseAddEditComponent, {
+      data: {
+        fields: this.updateFields,
+        edit: entity,
+        updateLabel: this.updateLabel,
+        service: this.service,
+        idKey: this.idKey,
+        entityName: 'Teste',
+        fieldsConfig: this.fieldsConfig,
+      } as BaseAddEditOptions,
+    });
   }
 
   ngOnInit(): void {}

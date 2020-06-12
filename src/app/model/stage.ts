@@ -22,3 +22,7 @@ export interface StageAddDto {
 }
 
 export type StageUpdateDto = Partial<StageAddDto>;
+
+export interface StageParamsDto extends StageUpdateDto {
+  idMode?: number;
+}

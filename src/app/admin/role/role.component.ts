@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RoleQuery } from '../../state/role/role.query';
 import { RoleService } from '../../state/role/role.service';
-import { FieldsConfig } from '../base/base.component';
 import { Role } from '../../model/role';
 import { Validators } from '@ng-stack/forms';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-role',

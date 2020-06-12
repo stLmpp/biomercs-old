@@ -11,36 +11,20 @@ import {
   ViewChild,
 } from '@angular/core';
 import { convertToBoolProperty } from '../../util/util';
-import { AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@ng-stack/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subject } from 'rxjs';
+import { FormControl, FormGroup } from '@ng-stack/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';
 import { CommonColumns } from '../../model/common-history';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchHttpError } from '../../util/operators/catchError';
-import { startCase } from '../../shared/pipes/start-case.pipe';
 import { SuperService } from '../../shared/super/super-service';
 import { trackByFactory } from '@stlmpp/utils';
-
-export interface FieldConfig<S = any> {
-  type?: 'text' | 'number' | 'select' | 'checkbox';
-  placeholder?: string;
-  validators?: ValidatorFn[];
-  asyncValidators?: AsyncValidatorFn[];
-  validatorsMessages?: { [key: string]: string };
-  asyncValidatorsMessage?: { [key: string]: string };
-  selectOptions?: Observable<S[]>;
-  selectLabel?: keyof S;
-  selectValue?: keyof S;
-  selectTrackBy?: TrackByFunction<S>;
-  hint?: string;
-}
-
-export type FieldsConfig<T = any, S = any> = Partial<Record<keyof T, FieldConfig<S>>>;
-
-const DEFAULT_VALIDATORS_MESSAGES: { [key: string]: string } = {
-  required: '{field} is required',
-};
+import {
+  BaseAddEditComponent,
+  BaseAddEditOptions,
+  FieldsConfig,
+} from './base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-base',
@@ -57,18 +41,12 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
 
   private _destroy$ = new Subject();
 
-  @ViewChild('modalRef', { read: TemplateRef }) modalTemplateRef: TemplateRef<any>;
   @ViewChild('deleteRef', { read: TemplateRef }) deleteTemplateRef: TemplateRef<any>;
   @ViewChild('imageRef', { read: TemplateRef }) imageTemplateRef: TemplateRef<any>;
-
-  addRef: MatDialogRef<any>;
-  editRef: MatDialogRef<any>;
 
   loading = false;
 
   trackByLabel = trackByFactory<string>();
-  addForm: FormGroup;
-  editForm: FormGroup;
 
   searchControl = new FormControl();
   search$ = this.searchControl.valueChanges.pipe(debounceTime(300));
@@ -87,28 +65,7 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
   @Input() addFields: string[] = [];
   @Input() updateFields: string[] = [];
   @Input() searchBy: string[];
-
-  @Input('fieldsConfig')
-  set _fieldsConfig(config: FieldsConfig) {
-    this.fieldsConfig = [...new Set([...this.addFields, ...this.updateFields])].reduce((acc, key) => {
-      return {
-        ...acc,
-        [key]: {
-          ...{
-            type: 'text',
-            placeholder: startCase(key),
-            selectTrackBy: trackByFactory('id'),
-          },
-          ...(config?.[key] ?? {}),
-          validatorsMessages: {
-            ...DEFAULT_VALIDATORS_MESSAGES,
-            ...(config?.[key]?.validatorsMessages ?? {}),
-          },
-        },
-      };
-    }, {});
-  }
-  fieldsConfig: FieldsConfig;
+  @Input() fieldsConfig: FieldsConfig = {};
 
   @Input() idKey = 'id';
   @Input() matLineLabels: string[];
@@ -151,43 +108,30 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   openAdd(): void {
-    this.addRef = this.matDialog.open(this.modalTemplateRef);
-    this.addRef
-      .afterClosed()
-      .pipe(take(1), takeUntil(this._destroy$))
-      .subscribe(() => {
-        this.addForm = this.setForm(this.addFields);
-      });
+    this.matDialog.open(BaseAddEditComponent, {
+      data: {
+        fieldsConfig: this.fieldsConfig,
+        fields: this.addFields,
+        entityName: this.entityName,
+        idKey: this.idKey,
+        service: this.service,
+        updateLabel: this.updateLabel,
+      } as BaseAddEditOptions,
+    });
   }
 
   openEdit(entity: any): void {
-    this.editForm = this.setForm(this.updateFields, entity);
-    this.editRef = this.matDialog.open(this.modalTemplateRef, { data: entity });
-  }
-
-  save(entity?: any): void {
-    this.loading = true;
-    const id = entity?.[this.idKey];
-    const http: Observable<any> = id
-      ? this.service.update(id, this.editForm.getDirtyValues())
-      : this.service.add(this.addForm.value);
-    const form = this[id ? 'editForm' : 'addForm'];
-    form.disable({ emitEvent: false });
-    const modalRef = this[id ? 'editRef' : 'addRef'];
-    modalRef.disableClose = true;
-    http
-      .pipe(
-        tap(() => {
-          this.matSnackBar.open(`${this.entityName} saved successfully`, 'Close');
-        }),
-        finalize(() => {
-          this.loading = false;
-          modalRef.close();
-          form.enable({ emitEvent: false });
-          this.changeDetectorRef.markForCheck();
-        })
-      )
-      .subscribe();
+    this.matDialog.open(BaseAddEditComponent, {
+      data: {
+        fieldsConfig: this.fieldsConfig,
+        entityName: this.entityName,
+        idKey: this.idKey,
+        service: this.service,
+        fields: this.updateFields,
+        updateLabel: this.updateLabel,
+        edit: entity,
+      } as BaseAddEditOptions,
+    });
   }
 
   delete(entity: CommonColumns): void {
@@ -240,19 +184,9 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
     this.matDialog.open(this.imageTemplateRef, { data: idImage });
   }
 
-  ngOnInit(): void {
-    if (!this.fieldsConfig) {
-      this._fieldsConfig = {};
-    }
-    if (this.updateFields.length === 1) {
-      this.updateLabel = this.updateFields[0];
-    }
-    this.addForm = this.setForm(this.addFields);
-  }
+  ngOnInit(): void {}
 
-  ngOnChanges(): void {
-    this._fieldsConfig = this.fieldsConfig;
-  }
+  ngOnChanges(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();

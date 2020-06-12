@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { GameQuery } from '../../state/game/game.query';
 import { Game } from '../../model/game';
 import { GameService } from '../../state/game/game.service';
-import { FieldsConfig } from '../base/base.component';
 import { Validators } from '@ng-stack/forms';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-game',

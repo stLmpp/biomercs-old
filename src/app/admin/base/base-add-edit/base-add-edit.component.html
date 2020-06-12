@@ -1,0 +1,66 @@
+<form [formGroup]="form" (ngSubmit)="save(edit)">
+  <h1 mat-dialog-title>
+    {{ edit ? (edit | stGetDeep: updateLabel) : 'Add ' + (entityName | lowercase) }}
+  </h1>
+  <mat-dialog-content>
+    <ng-container *ngFor="let key of fields; trackBy: trackByLabel">
+      <ng-container *let="form.get(key) as control">
+        <mat-form-field *ngIf="['text', 'number'].includes(fieldsConfig[key]?.type)">
+          <mat-label>{{ fieldsConfig[key].placeholder }}</mat-label>
+          <input
+            matInput
+            *ngIf="fieldsConfig[key].type === 'text'"
+            [formControlName]="key"
+            [placeholder]="fieldsConfig[key].placeholder"
+          />
+          <input
+            *ngIf="fieldsConfig[key].type === 'number'"
+            matInput
+            [formControlName]="key"
+            [placeholder]="fieldsConfig[key].placeholder"
+            currencyMask
+            [options]="fieldsConfig[key].currencyOptions"
+          />
+          <mat-error *ngFor="let error of fieldsConfig[key].validatorsMessages | keyvalue">
+            <mat-error *error="error.key">
+              {{ error.value | replaceParams: { field: fieldsConfig[key].placeholder } }}
+            </mat-error>
+          </mat-error>
+          <mat-hint *ngIf="fieldsConfig[key].hint as hint">
+            {{ hint }}
+          </mat-hint>
+        </mat-form-field>
+        <mat-checkbox *ngIf="fieldsConfig[key]?.type === 'checkbox'" [formControlName]="key">
+          {{ fieldsConfig[key].placeholder }}
+        </mat-checkbox>
+        <mat-form-field *ngIf="fieldsConfig[key]?.type === 'select'">
+          <mat-label>{{ fieldsConfig[key].placeholder }}</mat-label>
+          <mat-select [placeholder]="fieldsConfig[key].placeholder" [formControlName]="key">
+            <mat-option
+              *ngFor="
+                let item of fieldsConfig[key].selectOptions | async;
+                trackBy: fieldsConfig[key].selectTrackBy
+              "
+              [value]="item[fieldsConfig[key].selectValue]"
+            >
+              {{ item[fieldsConfig[key].selectLabel] }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+    </ng-container>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close [disabled]="loading" color="accent">
+      Cancel
+    </button>
+    <button
+      mat-button
+      color="accent"
+      type="submit"
+      [disabled]="loading || form.invalid || form.pending || form.pristine"
+    >
+      Save
+    </button>
+  </mat-dialog-actions>
+</form>

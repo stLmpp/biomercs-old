@@ -6,12 +6,13 @@ import { ScorePlayer, ScorePlayerAddDto } from './score-player';
 import { Character } from './character';
 import { User } from './user';
 import { trackByFactory } from '@stlmpp/utils';
+import { GameModeStage } from './game-mode-stage';
 
 export interface Score extends CommonColumns {
   idGameModePlatform: number;
   gameModePlatform?: GameModePlatform;
-  idStage: number;
-  stage?: Stage;
+  idGameModeStage: number;
+  gameModeStage?: GameModeStage;
   idType: number;
   type: Type;
   scorePlayers: ScorePlayer[];

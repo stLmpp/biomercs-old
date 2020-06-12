@@ -44,6 +44,14 @@
                   <button
                     mat-icon-button
                     matSuffix
+                    *ngIf="updateFields?.length"
+                    (click)="$event.stopPropagation(); openEdit(entity)"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    matSuffix
                     (click)="$event.stopPropagation(); fileUploadInputRef.click()"
                     *ngIf="uploadImage"
                   >

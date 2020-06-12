@@ -156,10 +156,10 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
     }),
     shareReplay()
   );
-  stages$ = this.valueChanges('idGame', true).pipe(
-    switchMap(idGame => {
+  stages$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode')]).pipe(
+    switchMap(([idGame, idMode]) => {
       this.idStageControl.disable();
-      return this.stageService.findByParams({ idGame }).pipe(
+      return this.stageService.findByParams({ idGame, idMode }).pipe(
         finalize(() => {
           this.idStageControl.enable();
         })

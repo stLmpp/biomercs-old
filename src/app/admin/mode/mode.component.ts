@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ModeQuery } from '../../state/mode/mode.query';
 import { ModeService } from '../../state/mode/mode.service';
 import { Mode } from '../../model/mode';
-import { FieldsConfig } from '../base/base.component';
 import { Validators } from '@ng-stack/forms';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-mode',

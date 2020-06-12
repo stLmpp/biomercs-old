@@ -8,7 +8,7 @@
         'is-character-wr': score.isCharacterWorldRecord,
         solo: score.idType === 1
       }"
-      [imgBackground]="score.stage.idImage"
+      [imgBackground]="score.gameModeStage.stage.idImage"
       options="center/cover no-repeat"
       bypassSecurity
     >
@@ -83,14 +83,14 @@
           </button>
         </div>
         <div class="item">
-          {{ score.stage.name | uppercase }}
+          {{ score.gameModeStage.stage.name | uppercase }}
           <button
             mat-icon-button
             size="md"
             class="random"
             [routerLink]="['/score', 'random']"
             [queryParams]="{
-              idStage: score.idStage
+              idStage: score.gameModeStage.idStage
             }"
           >
             <mat-icon>shuffle</mat-icon>

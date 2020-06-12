@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CharacterService } from '../../state/character/character.service';
 import { CharacterQuery } from '../../state/character/character.query';
-import { FieldsConfig } from '../base/base.component';
 import { Game } from '../../model/game';
 import { Validators } from '@ng-stack/forms';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-character',

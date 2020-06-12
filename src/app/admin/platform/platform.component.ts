@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { PlatformQuery } from '../../state/platform/platform.query';
 import { PlatformService } from '../../state/platform/platform.service';
-import { FieldsConfig } from '../base/base.component';
 import { Platform, PlatformTypeEnum } from '../../model/platform';
 import { Validators } from '@ng-stack/forms';
 import { LabelValue, trackByValue } from '../../model/label-value';
 import { of } from 'rxjs';
+import { FieldsConfig } from '../base/base-add-edit/base-add-edit.component';
 
 @Component({
   selector: 'app-platform',
