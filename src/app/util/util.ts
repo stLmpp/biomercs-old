@@ -1,4 +1,3 @@
-import { TrackByFunction } from '@angular/core';
 import { isArray, isNumber, isObject, isString } from 'is-what';
 import { ID } from '@stlmpp/utils';
 
@@ -8,9 +7,6 @@ export type Dictionary<T = any, K extends ID = number> = Record<K, T>;
 
 export const compareByFactory = <T = any>(key: keyof T): CompareFn<T> => (valueA, valueB) =>
   valueA?.[key] === valueB?.[key];
-
-export const trackByFactory = <T = any>(key?: keyof T): TrackByFunction<T> => (index, element) =>
-  key ? element?.[key] ?? index : index;
 
 export function isNil(value: any): value is null | undefined {
   return value == null;
@@ -62,4 +58,9 @@ export function removeNullObject<T = any>(object: T, checkType: RemoveNullObject
 
 export function isAllNull<T = any>(obj: T): boolean {
   return !obj || Object.values(obj).every(isNil);
+}
+
+export function getFileExtesion(fname: string): string {
+  // tslint:disable-next-line:no-bitwise
+  return fname.slice(((fname.lastIndexOf('.') - 1) >>> 0) + 2);
 }

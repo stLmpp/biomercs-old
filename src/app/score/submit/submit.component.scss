@@ -1,0 +1,64 @@
+@import 'variables';
+
+form {
+  > .stages,
+  > .character {
+    grid-column: 1/-1;
+  }
+  > .group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    @media ($mat-sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media ($mat-md) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      &.player {
+        > .description {
+          grid-column: span 2;
+        }
+        > .proof {
+          grid-column: span 2;
+        }
+      }
+    }
+    grid-gap: 1rem;
+    padding-left: 40px;
+    padding-right: 40px;
+    > .title {
+      grid-column: 1/-1;
+    }
+    &.parameters {
+      > .form-group {
+      }
+    }
+    &.player {
+      > .host {
+        grid-column: 1/-1;
+      }
+    }
+    > .number {
+      grid-column: 1/-1;
+    }
+  }
+  .form-group {
+    .mat-radio-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      .mat-radio-button {
+        margin-top: 0.5rem;
+      }
+    }
+    margin-bottom: 1rem;
+  }
+  > .actions {
+    display: flex;
+    justify-content: flex-end;
+    @media ($mat-xs) {
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

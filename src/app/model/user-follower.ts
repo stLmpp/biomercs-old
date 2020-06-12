@@ -1,6 +1,6 @@
 import { CommonColumns } from './common-history';
 import { User } from './user';
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 import { SuperParamsDto } from '../shared/super/super-params.dto';
 
 export interface UserFollower extends CommonColumns {

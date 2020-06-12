@@ -1024,6 +1024,11 @@
     rxjs "6.5.4"
     webpack-sources "1.4.3"
 
+"@scarf/scarf@0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-0.1.5.tgz#fc4cc88294eca336eed9a91549180346de5e6946"
+  integrity sha512-Fx6atDc7JM1r0WkPCDhNetVZNp+DO21q/HGlomAKBG+k8vb1B8fg8Yige4oCf1P9OWTZWm5tM5i3jlXhrSbNOg==
+
 "@schematics/angular@9.1.7":
   version "9.1.7"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-9.1.7.tgz#b7801a5e20f844da560db81d2971590e8ac090ff"
@@ -1067,10 +1072,10 @@
     tslib ">= 1 < 2"
     underscore "^1.10.2"
 
-"@stlmpp/utils@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-0.1.0.tgz#83f18cf4defd52ca3fb756b78940b5d5d3627435"
-  integrity sha512-QzZ1qZ/ffFmgQQjXrSUAxDl9jm7W/omitchdysydOq5H3CuPTbAEi4YRaWG16a8OWNMAXeYXyUhM2aUFvMYTlg==
+"@stlmpp/utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@stlmpp/utils/-/utils-0.2.0.tgz#3d22943f5b90d0b4e5293bf01dd0abde8a96045f"
+  integrity sha512-WURO7i9KFYbJKrkRzCEGFvj3kNnqyr3NZLlhq77RB+iehszLZFRbxqtFkrEHIVPO5MvFaI20KI47YEpf3pUmGA==
   dependencies:
     is-what "^3.8.0"
     merge-anything "^3.0.3"
@@ -5605,6 +5610,21 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
+ngx-currency@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/ngx-currency/-/ngx-currency-2.3.3.tgz#69aae66bd362d73c377114f211d0da3b8d85d7a3"
+  integrity sha512-/5qBdyLC+6zR18eqgPg4gqcJxBfTOspO06Vv2/rAl3lz9JC/1Ctb9psXMWRzYQdgSEaFdqJeCPAYpgxL5Wj14A==
+  dependencies:
+    tslib "^1.9.0"
+
+ngx-infinite-scroll@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-9.0.0.tgz#8e648c266dd5744ed5aa68568a5479f398c94a2f"
+  integrity sha512-C8JhvrTip/AKv6f8oiB+GJjW+FGE3EPIc3Kk+v3MICGlW0nkOetyJDe/ejXr8tI8zwbNjbfvAKFRKenibDIW6w==
+  dependencies:
+    "@scarf/scarf" "0.1.5"
+    opencollective-postinstall "^2.0.2"
+
 ngx-mask@^9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/ngx-mask/-/ngx-mask-9.1.2.tgz#a48573adb489f7aaee1bd60e3070ecf47fdf968e"
@@ -5931,6 +5951,11 @@ open@7.0.3:
   dependencies:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
+
+opencollective-postinstall@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
+  integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
 
 opn@^5.5.0:
   version "5.5.0"

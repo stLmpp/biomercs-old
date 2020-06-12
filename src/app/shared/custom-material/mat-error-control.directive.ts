@@ -13,6 +13,11 @@ import { takeUntil } from 'rxjs/operators';
 import { MatFormField } from '@angular/material/form-field';
 import { isAnyObject, isArray, isString } from 'is-what';
 
+export class MatErrorContext {
+  // TODO add typing (generics maybe?)
+  constructor(public $implicit: any | { [key: string]: any }) {}
+}
+
 @Directive({
   selector: '[error]',
 })
@@ -20,7 +25,7 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
   constructor(
     @Optional() @Host() private matFormField: MatFormField,
     private viewContainerRef: ViewContainerRef,
-    private templateRef: TemplateRef<MatErrorControlDirective>
+    private templateRef: TemplateRef<MatErrorContext>
   ) {
     if (!this.matFormField) {
       console.warn('"ErrorDirective" must be used inside a MatFormField');
@@ -37,7 +42,7 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
   showError(): void {
     if (!this.isShow) {
       this.isShow = true;
-      this.viewContainerRef.createEmbeddedView(this.templateRef);
+      this.viewContainerRef.createEmbeddedView(this.templateRef, new MatErrorContext(this.getError()));
     }
   }
 
@@ -48,7 +53,35 @@ export class MatErrorControlDirective implements OnInit, OnDestroy {
     }
   }
 
-  checkErrors(): boolean {
+  private getError(): any | { [key: string]: any } {
+    if (isString(this.error)) {
+      return this.matFormField._control.ngControl.getError(this.error);
+    } else if (isArray(this.error)) {
+      return this.error.reduce((acc, item) => {
+        if (this.matFormField._control.ngControl.hasError(item)) {
+          return {
+            ...acc,
+            [item]: this.matFormField._control.ngControl.getError(item),
+          };
+        } else {
+          return acc;
+        }
+      }, {});
+    } else {
+      return Object.entries(this.error).reduce((acc, [key, value]) => {
+        if (value && this.matFormField._control.ngControl.hasError(key)) {
+          return {
+            ...acc,
+            [key]: this.matFormField._control.ngControl.getError(key),
+          };
+        } else {
+          return acc;
+        }
+      }, {});
+    }
+  }
+
+  private checkErrors(): boolean {
     if (isString(this.error)) {
       return this.matFormField._control.ngControl.hasError(this.error);
     } else if (isArray(this.error)) {

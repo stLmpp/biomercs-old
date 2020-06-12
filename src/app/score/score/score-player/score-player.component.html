@@ -44,7 +44,7 @@
     </ng-container>
   </div>
   <div class="item" [clipPath]="playerNumber" [class.description]="player.description">
-    {{ player.description | default: 'No description' }}
+    {{ player.description | stDefault: 'No description' }}
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 import { CommonColumns } from './common-history';
 import { FileUpload } from './file-upload';
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 
 export enum PlatformTypeEnum {
   console1 = 'console1',

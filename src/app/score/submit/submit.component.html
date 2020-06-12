@@ -1,0 +1,237 @@
+<ng-container
+  *ngIf="{
+    platforms: platformQuery.all$ | async,
+    games: games$ | async,
+    modes: modes$ | async,
+    types: types$ | async,
+    stages: stages$ | async,
+    characters: characters$ | async
+  } as state"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" #formRef="ngForm">
+    <div class="group parameters">
+      <div class="form-group">
+        <label>Platform</label>
+        <mat-radio-group formControlName="idPlatform">
+          <mat-radio-button
+            *ngFor="let platform of state.platforms; trackBy: trackByPlatform"
+            [value]="platform.id"
+          >
+            {{ platform.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="form-group" *ngIf="state.games?.length">
+        <label>Game</label>
+        <mat-radio-group formControlName="idGame">
+          <mat-radio-button *ngFor="let game of state.games; trackBy: trackByGame" [value]="game.id">
+            {{ game.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="form-group" *ngIf="state.modes?.length">
+        <label>Mode</label>
+        <mat-radio-group formControlName="idMode">
+          <mat-radio-button *ngFor="let mode of state.modes; trackBy: trackByMode" [value]="mode.id">
+            {{ mode.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="form-group" *ngIf="state.types?.length">
+        <label>Type</label>
+        <mat-radio-group formControlName="idType">
+          <mat-radio-button *ngFor="let type of state.types; trackBy: trackByType" [value]="type.id">
+            {{ type.name }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <hr />
+    <div class="form-group stages" *ngIf="state.stages?.length">
+      <app-select
+        formControlName="idStage"
+        [values]="state.stages"
+        [searchBy]="['name', 'shortName']"
+        imageKey="idImage"
+        labelKey="name"
+      ></app-select>
+    </div>
+    <ng-container formArrayName="scorePlayers" *ngIf="state.characters?.length">
+      <ng-container
+        *ngFor="
+          let scorePlayer of scorePlayersControl.controls
+            | slice: 0:((state.types | find: 'id':idTypeControl.value)?.playerQuantity | stDefault: 0);
+          trackBy: trackByScorePlayerControl;
+          let $index = index;
+          let $first = first
+        "
+        [formGroupName]="$index"
+      >
+        <hr />
+        <div class="group player">
+          <h2 class="number">Player {{ $index + 1 }}</h2>
+          <mat-radio-group class="host" name="host" formControlName="host">
+            <mat-radio-button [value]="true" (change)="changeHost($index)">Host</mat-radio-button>
+          </mat-radio-group>
+          <mat-form-field>
+            <mat-label>Player {{ $index + 1 }}</mat-label>
+            <input
+              matInput
+              formControlName="player"
+              placeholder="Player {{ $index + 1 }}"
+              autocomplete="off"
+              (input)="userInput$.next($any($event.target).value)"
+              [matAutocomplete]="auto"
+              [matAutocompleteDisabled]="$first"
+            />
+            <mat-autocomplete #auto [displayWith]="displayUser" autoActiveFirstOption>
+              <mat-option
+                *ngFor="let user of users$ | async"
+                [value]="user"
+                (onSelectionChange)="patchUser($index, $event)"
+              >
+                {{ user.username }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *error="'required'"> Player {{ $index + 1 }} is required </mat-error>
+          </mat-form-field>
+          <mat-form-field class="bullet-kills">
+            <mat-label>Bullet kills</mat-label>
+            <input
+              matInput
+              placeholder="Bullet kills"
+              formControlName="bulletKills"
+              currencyMask
+              [options]="{ precision: 0, allowNegative: false, max: 150 }"
+            />
+          </mat-form-field>
+          <ng-container formArrayName="scorePlayerProofs">
+            <ng-container [formGroupName]="0">
+              <mat-form-field>
+                <mat-label>Proof Site</mat-label>
+                <mat-select placeholder="Site" formControlName="idSite">
+                  <mat-option
+                    *ngFor="let site of siteQuery.all$ | async; trackBy: trackBySite"
+                    [value]="site.id"
+                  >
+                    <mat-icon [svgIcon]="site.icon" *ngIf="site.icon"></mat-icon>
+                    {{ site.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Proof URL</mat-label>
+                <input matInput placeholder="URL" formControlName="url" />
+              </mat-form-field>
+            </ng-container>
+          </ng-container>
+          <mat-form-field class="description">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              placeholder="Description"
+              formControlName="description"
+              maxlength="1000"
+            ></textarea>
+            <mat-hint> {{ scorePlayer.value?.description?.length | stDefault: 0 }} / 1000 </mat-hint>
+          </mat-form-field>
+          <ng-container formArrayName="scorePlayerProofs">
+            <div class="proof" [formGroupName]="1">
+              <app-mat-file-upload
+                color="primary"
+                [extensions]="defaultQuery.imageExtensions$ | async"
+                extensionErrorMsg="Only images are allowed"
+                formControlName="file"
+              >
+                <span btnLabel>Browse</span>
+                <mat-label>Select or drop a proof (image)</mat-label>
+              </app-mat-file-upload>
+            </div>
+          </ng-container>
+        </div>
+        <div class="form-group character">
+          <app-select
+            formControlName="idCharacter"
+            [values]="state.characters"
+            [searchBy]="['name', 'shortName']"
+            labelKey="name"
+            [label]="scorePlayer.getRawValue().player?.username"
+            imageKey="idImage"
+            position="bottom"
+          ></app-select>
+        </div>
+      </ng-container>
+    </ng-container>
+    <hr />
+    <div class="group">
+      <h2 class="title">Score info</h2>
+      <mat-form-field *let="isWr$ | async as isWr">
+        <mat-label>Score</mat-label>
+        <input
+          matInput
+          formControlName="score"
+          placeholder="Score"
+          currencyMask
+          [options]="{ precision: 0, allowNegative: false }"
+        />
+        <mat-icon
+          matSuffix
+          svgIcon="account-star"
+          *ngIf="isWr?.isCharacterWorldRecords"
+          [matTooltip]="(charactersWrs$ | async) + ' World record'"
+        ></mat-icon>
+        <mat-icon
+          matSuffix
+          svgIcon="trophy-award"
+          *ngIf="isWr?.isCombinationWorldRecord"
+          matTooltip="Team World Record"
+        ></mat-icon>
+        <mat-icon matSuffix svgIcon="trophy" *ngIf="isWr?.isWorldRecord" matTooltip="World Record"></mat-icon>
+
+        <mat-error *error="'required'">
+          Score is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Max combo</mat-label>
+        <input
+          matInput
+          placeholder="Max combo"
+          currencyMask
+          formControlName="maxCombo"
+          [options]="{ precision: 0, allowNegative: false, max: 150 }"
+        />
+        <mat-error *error="'required'">
+          Max combo is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Time</mat-label>
+        <input
+          matInput
+          placeholder="Time"
+          [patterns]="maskPatterns[maskEnum.time]"
+          [mask]="maskEnum.time"
+          formControlName="time"
+          [dropSpecialCharacters]="false"
+        />
+        <mat-error *error="'mask'">
+          Invalid time
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <hr />
+    <div class="actions">
+      <button mat-raised-button color="primary" type="button" (click)="resetForm()">Reset</button>
+      <button
+        mat-raised-button
+        color="accent"
+        type="submit"
+        [disabled]="form.invalid || form.disabled || form.pristine"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</ng-container>

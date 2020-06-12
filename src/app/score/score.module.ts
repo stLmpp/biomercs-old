@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ScoreRoutingModule } from './score-routing.module';
-import { SubmitScoreAlphaComponent } from './submit-score-alpha/submit-score-alpha.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -19,11 +18,19 @@ import { ScoreComponent } from './score/score.component';
 import { ClipPathDirective } from './score/clip-path.directive';
 import { ScorePlayerComponent } from './score/score-player/score-player.component';
 import { ScoreFooterComponent } from './score/score-footer/score-footer.component';
-import { ReportModule } from '../report/report.module';
+import { ReportModule } from '../shared/report/report.module';
+import { StUtilsModule } from '@stlmpp/utils';
+import { LikeModule } from '../shared/like/like.module';
+import { SubmitComponent } from './submit/submit.component';
+import { SelectComponent } from './submit/select/select.component';
+import { MatRippleModule } from '@angular/material/core';
+import { A11yModule } from '@angular/cdk/a11y';
+import { ScrollModule } from '../shared/scroll/scroll.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 @NgModule({
   declarations: [
-    SubmitScoreAlphaComponent,
     TableComponent,
     TableControlPanelComponent,
     ScoreTableComponent,
@@ -33,6 +40,8 @@ import { ReportModule } from '../report/report.module';
     ClipPathDirective,
     ScorePlayerComponent,
     ScoreFooterComponent,
+    SubmitComponent,
+    SelectComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +54,13 @@ import { ReportModule } from '../report/report.module';
     MatDividerModule,
     MatTableModule,
     ReportModule,
+    StUtilsModule,
+    LikeModule,
+    MatRippleModule,
+    A11yModule,
+    ScrollModule,
+    MatAutocompleteModule,
+    NgxCurrencyModule,
   ],
   exports: [ScoreTableComponent, ScoreComponent],
 })

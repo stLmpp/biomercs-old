@@ -1,5 +1,5 @@
 import { Site } from './site';
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 import { CommonColumns } from './common-history';
 
 export interface UserLink extends CommonColumns {

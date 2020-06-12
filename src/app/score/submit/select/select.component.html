@@ -1,0 +1,66 @@
+<ng-container
+  *let="{
+    selected: values | find: 'id':value,
+    search: search$ | async,
+    searchText: searchNoDelay$ | async
+  } as state"
+>
+  <h2 *ngIf="label || labelKey" (click)="scrollBooster.scrollToItem(state.selected?.id)">
+    <ng-container *ngIf="label; else labelKeyRef">
+      {{ label }} ({{ state.selected | stGetDeep: labelKey }})
+    </ng-container>
+    <ng-template #labelKeyRef>
+      {{ state.selected | stGetDeep: labelKey }}
+    </ng-template>
+  </h2>
+  <div class="select">
+    <div class="left">
+      <button mat-icon-button (click)="scrollBooster.moveLeft()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+    </div>
+    <div
+      class="items-viewport"
+      scrollBooster
+      [pointerDownPreventDefault]="false"
+      direction="horizontal"
+      #scrollBooster="scrollBooster"
+      #itemsRef
+      (keydown)="onSearch($event)"
+      (keyup.arrowRight)="scrollBooster.moveRight()"
+      (keyup.arrowLeft)="scrollBooster.moveLeft()"
+      tabindex="0"
+    >
+      <div class="search" *ngIf="searchBy?.length">{{ state.searchText }}</div>
+      <div class="items" scrollBoosterContent>
+        <div
+          tabindex="0"
+          *ngFor="let item of values | search: searchBy:state.search; trackBy: trackBy"
+          class="item"
+          [ngClass]="{
+            active: item.id === value
+          }"
+          scrollBoosterItem
+          [id]="item.id"
+          (keydown.enter)="onSelect(item)"
+          (click)="!scrollBooster.isMoving() && onSelect(item)"
+        >
+          <div class="title" *ngIf="labelKey" [ngClass]="position">
+            <div class="banner">
+              <h4>{{ item[labelKey] }}</h4>
+            </div>
+          </div>
+          <div class="image-box" matRipple>
+            <img auth [src]="item[imageKey]" [alt]="item[labelKey]" (load)="scrollBooster.updateMetrics()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <button mat-icon-button (click)="scrollBooster.moveRight()">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-container>

@@ -1,4 +1,4 @@
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface LabelValue<T = any> {
   label: string;

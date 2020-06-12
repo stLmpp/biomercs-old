@@ -11,6 +11,7 @@ import { ErrorComponent } from './error/error.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatListModule } from '@angular/material/list';
 import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
+import { FormBuilder } from '@ng-stack/forms';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -52,6 +53,10 @@ export class CoreModule {
           useValue: {
             appearance: 'outline',
           } as MatFormFieldDefaultOptions,
+        },
+        {
+          provide: FormBuilder,
+          useFactory: () => new FormBuilder(),
         },
       ],
     };

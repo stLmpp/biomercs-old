@@ -4,7 +4,7 @@ import { FileUpload } from './file-upload';
 import { CommonColumns } from './common-history';
 import { Region } from './region';
 import { UserFollower } from './user-follower';
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 import { UserShowcase } from './user-showcase';
 
 export interface User extends CommonColumns {

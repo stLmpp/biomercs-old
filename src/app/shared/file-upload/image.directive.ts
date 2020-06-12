@@ -34,7 +34,6 @@ export class ImageDirective implements OnInit, OnDestroy {
     }
   }
 
-  @Output() loading = new EventEmitter<boolean>();
   @Output() imgError = new EventEmitter<void>();
 
   @HostBinding('src') _src: string;

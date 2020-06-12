@@ -1,0 +1,26 @@
+@import 'variables';
+@import 'functions';
+
+$background: map-get($theme, background);
+
+:host {
+  display: flex;
+  align-items: center;
+  background-color: mat-color($background, 'card');
+  border-radius: 4px;
+  &.dragover {
+    border: 1px solid get-color($secondary-color);
+  }
+  > .label {
+    > div {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 0 16px;
+    overflow: hidden;
+  }
+}

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { SiteStore } from './site.store';
 import { SiteQuery } from './site.query';
 import { Site, SiteAddDto, SiteUpdateDto } from '../../model/site';
-import { replaceParams } from '../../shared/replace-params/replace-params.pipe';
+import { replaceParams } from '../../shared/pipes/replace-params.pipe';
 import { SuperService } from '../../shared/super/super-service';
 
 @Injectable({ providedIn: 'root' })

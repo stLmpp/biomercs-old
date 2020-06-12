@@ -10,7 +10,7 @@ import {
   TrackByFunction,
   ViewChild,
 } from '@angular/core';
-import { convertToBoolProperty, trackByFactory } from '../../util/util';
+import { convertToBoolProperty } from '../../util/util';
 import { AsyncValidatorFn, FormControl, FormGroup, ValidatorFn } from '@ng-stack/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
@@ -18,8 +18,9 @@ import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';
 import { CommonColumns } from '../../model/common-history';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchHttpError } from '../../util/operators/catchError';
-import { startCase } from '../../shared/start-case/start-case.pipe';
+import { startCase } from '../../shared/pipes/start-case.pipe';
 import { SuperService } from '../../shared/super/super-service';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface FieldConfig<S = any> {
   type?: 'text' | 'number' | 'select' | 'checkbox';

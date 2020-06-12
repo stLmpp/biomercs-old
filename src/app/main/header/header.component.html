@@ -1,27 +1,40 @@
-<mat-toolbar color="primary" *let="authQuery.user$ | async as user">
-  <span class="c-pointer" routerLink="/">Biomercs</span>
-  <span style="flex: 1 1 auto;"></span>
-  <button [matMenuTriggerFor]="userMenu" mat-button *ngIf="authQuery.isLogged$ | async; else loginRef">
-    {{ user?.username }}
-    <mat-icon>person</mat-icon>
-  </button>
-  <mat-menu #userMenu="matMenu" xPosition="before">
-    <button mat-menu-item [routerLink]="['/user', user?.id, 'profile']">
-      Profile
+<ng-container
+  *ngIf="{
+    user: authQuery.user$ | async,
+    isLogged: authQuery.isLogged$ | async,
+    isAdmin: authQuery.isAdmin$ | async,
+    isLoading: loadingService.isLoading$ | async
+  } as state"
+>
+  <mat-toolbar color="primary">
+    <span class="c-pointer" routerLink="/">Biomercs</span>
+    <span style="flex: 1 1 auto;"></span>
+    <button
+      mat-icon-button
+      *ngIf="state.isLogged"
+      matTooltip="Submit score"
+      [matTooltipShowDelay]="300"
+      [routerLink]="['/score', 'submit']"
+    >
+      <mat-icon>add</mat-icon>
     </button>
-    <button mat-menu-item routerLink="/admin" *ngIf="authQuery.isAdmin$ | async">
-      Admin
+    <button [matMenuTriggerFor]="userMenu" mat-button *ngIf="state.isLogged; else loginRef">
+      {{ state.user?.username }}
+      <mat-icon>person</mat-icon>
     </button>
-    <button mat-menu-item (click)="logout()">Logout</button>
-  </mat-menu>
-  <ng-template #loginRef>
-    <button mat-button [routerLink]="['/auth', 'login']">Login</button>
-    <button mat-button [routerLink]="['/auth', 'register']">Register</button>
-  </ng-template>
-</mat-toolbar>
-<mat-progress-bar
-  *ngIf="loadingService.isLoading$ | async"
-  mode="indeterminate"
-  color="accent"
-  @inOut
-></mat-progress-bar>
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <button mat-menu-item [routerLink]="['/user', state.user?.id, 'profile']">
+        Profile
+      </button>
+      <button mat-menu-item routerLink="/admin" *ngIf="state.isAdmin">
+        Admin
+      </button>
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+    <ng-template #loginRef>
+      <button mat-button [routerLink]="['/auth', 'login']">Login</button>
+      <button mat-button [routerLink]="['/auth', 'register']">Register</button>
+    </ng-template>
+  </mat-toolbar>
+  <mat-progress-bar *ngIf="state.isLoading" mode="indeterminate" color="accent" @inOut></mat-progress-bar>
+</ng-container>

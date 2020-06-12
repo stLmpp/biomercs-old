@@ -18,6 +18,7 @@ import { registerLocaleData } from '@angular/common';
 import localeBr from '@angular/common/locales/pt';
 import localeBrExtra from '@angular/common/locales/extra/pt';
 import { flagIcons } from '../assets/flags/config.js';
+import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
 
 registerLocaleData(localeBr, localeBrExtra);
 
@@ -34,6 +35,18 @@ registerLocaleData(localeBr, localeBrExtra);
     SharedModule.forRoot(),
     AuthModule.forRoot(),
     NgxMaskModule.forRoot(),
+    NgxCurrencyModule.forRoot({
+      align: 'left',
+      allowNegative: true,
+      decimal: '.',
+      precision: 2,
+      prefix: '',
+      suffix: '',
+      thousands: ',',
+      nullable: true,
+      allowZero: true,
+      inputMode: CurrencyMaskInputMode.NATURAL,
+    }),
     MainModule,
   ],
   providers: [],

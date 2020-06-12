@@ -1,0 +1,124 @@
+@import 'variables';
+@import 'functions';
+
+:host {
+  > h2 {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+  }
+  > .select {
+    display: flex;
+    position: relative;
+    max-width: calc(100vw - 3rem);
+    > .items-viewport {
+      display: flex;
+      overflow: hidden;
+      flex-grow: 1;
+      &.moving {
+        > .items > .item {
+          cursor: grabbing;
+        }
+      }
+      > .items {
+        display: flex;
+        flex-grow: 1;
+        > .item {
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          filter: grayscale(100%);
+          transition: filter 200ms ease;
+          &.active {
+            filter: grayscale(0%);
+          }
+          &.active,
+          &:active,
+          &:focus {
+            outline: 0;
+          }
+          > .title {
+            position: absolute;
+            z-index: 1;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            &.top {
+              top: 0;
+              padding-top: 1rem;
+            }
+            &.bottom {
+              bottom: 0;
+              padding-bottom: 1rem;
+            }
+            > .banner {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              background: linear-gradient(
+                90deg,
+                transparentize(get-color($primary-color), 1) 0%,
+                transparentize(get-color($primary-color), 0.2) 50%,
+                transparentize(get-color($primary-color), 1) 100%
+              );
+              padding: 0.25rem;
+              > h4 {
+                margin: 0;
+              }
+            }
+          }
+        }
+      }
+      > .search {
+        position: absolute;
+        top: -1rem;
+      }
+    }
+    > .left,
+    > .right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    ::ng-deep {
+      .drag-scroll-content {
+        overflow: hidden !important;
+      }
+    }
+  }
+  @media ($mat-xs) {
+    > .select {
+      height: 150px;
+      > .items-viewport > .items > .item > .image-box {
+        max-height: 150px;
+        > img {
+          height: 150px;
+        }
+      }
+    }
+  }
+  @media ($mat-sm) {
+    > .select {
+      height: 200px;
+      > .items-viewport > .items > .item > .image-box {
+        max-height: 200px;
+        > img {
+          height: 200px;
+        }
+      }
+    }
+  }
+  @media ($mat-md) {
+    > .select {
+      height: 250px;
+      > .items-viewport > .items > .item > .image-box {
+        max-height: 250px;
+        > img {
+          height: 250px;
+        }
+      }
+    }
+  }
+}

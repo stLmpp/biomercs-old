@@ -17,7 +17,6 @@
         auth
         [alt]="user.username"
         [default]="idDefaultAvatar$ | async"
-        (loading)="changeDetectorRef.markForCheck()"
         matTooltip="Change avatar"
         [matTooltipDisabled]="!state.isEditable"
         (click)="state.isEditable && inputAvataRef.click()"
@@ -44,7 +43,7 @@
         <mat-icon class="edit" *ngIf="state.isEditable" (click)="openEditOther()">edit</mat-icon>
       </mat-card-title>
       <mat-card-subtitle class="editable" #title (click)="state.isEditable && openEdit(title, 'title')">
-        {{ user.title | default: 'No title':'loose' }}
+        {{ user.title | stDefault: 'No title':'loose' }}
         <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
       </mat-card-subtitle>
     </mat-card-header>
@@ -54,7 +53,7 @@
         #aboutMe
         (click)="state.isEditable && openEdit(aboutMe, 'aboutMe', 'textarea', 1000)"
       >
-        {{ user.aboutMe | default: 'No info':'loose' }}
+        {{ user.aboutMe | stDefault: 'No info':'loose' }}
         <mat-icon class="edit" *ngIf="state.isEditable">edit</mat-icon>
       </div>
       <mat-divider></mat-divider>
@@ -105,7 +104,7 @@
         <div matSubheader>
           Followers
           <app-badge>
-            {{ user.userFollowers?.length | default: 0 }}
+            {{ user.userFollowers?.length | stDefault: 0 }}
           </app-badge>
         </div>
         <mat-list-item *ngIf="!user.userFollowers?.length && !userFollowersLoading">
@@ -124,7 +123,6 @@
             auth
             [alt]="userFollower.follower.username"
             [default]="idDefaultAvatar$ | async"
-            (loading)="changeDetectorRef.markForCheck()"
           />
           <span matLine>{{ userFollower.follower.username }}</span>
           <button mat-icon-button matSuffix>
@@ -138,7 +136,7 @@
         <div matSubheader>
           Following
           <app-badge>
-            {{ user.userFollowed?.length | default: 0 }}
+            {{ user.userFollowed?.length | stDefault: 0 }}
           </app-badge>
         </div>
         <mat-list-item *ngIf="!user.userFollowed?.length && !userFollowingLoading">
@@ -157,7 +155,6 @@
             auth
             [alt]="userFollowed.followed.username"
             [default]="idDefaultAvatar$ | async"
-            (loading)="changeDetectorRef.markForCheck()"
           />
           <span matLine>{{ userFollowed.followed.username }}</span>
           <button mat-icon-button matSuffix>
@@ -171,11 +168,11 @@
       <mat-divider></mat-divider>
     </mat-card-content>
     <mat-card-actions align="end" [class.user-same-as-logged]="isSameAsLogged">
-      <app-like
+      <app-like-buttons
         [idReference]="user.id"
         [type]="referenceTypeEnum.user"
         [readonly]="isSameAsLogged"
-      ></app-like>
+      ></app-like-buttons>
       <button
         mat-button
         [color]="state.isFollowing ? 'warn' : 'accent'"
@@ -206,7 +203,7 @@
         *ngIf="type === 'textarea'"
       ></textarea>
       <mat-hint *ngIf="maxlength">
-        {{ form._control?.ngControl.value.length | default: 0 }}/{{ maxlength }}
+        {{ form._control?.ngControl.value.length | stDefault: 0 }}/{{ maxlength }}
       </mat-hint>
     </mat-form-field>
     <div>

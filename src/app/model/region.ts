@@ -1,6 +1,6 @@
 import { CommonColumns } from './common-history';
 import { SuperParamsDto } from '../shared/super/super-params.dto';
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface Region extends CommonColumns {
   name: string;

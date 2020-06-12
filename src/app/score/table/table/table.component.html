@@ -28,7 +28,7 @@
                 </ng-container>
               </ng-container>
               <ng-container *ngIf="$last">
-                {{ state.table[$rowIndex] | sumBy: ['score', 'score'] | number: '1.0-0' }}
+                {{ state.table[$rowIndex] | stSumBy: ['score', 'score'] | number: '1.0-0' }}
               </ng-container>
             </ng-container>
           </mat-cell>
@@ -42,7 +42,7 @@
               </ng-container>
             </ng-container>
             <ng-container *ngIf="$last">
-              {{ state.table | bestScoreTotal: state.columns.length - 2 | default: 0 | number: '1.0-0' }}
+              {{ state.table | bestScoreTotal: state.columns.length - 2 | stDefault: 0 | number: '1.0-0' }}
             </ng-container>
           </mat-footer-cell>
         </ng-container>
@@ -81,7 +81,7 @@
                 ></ng-container>
               </ng-container>
               <ng-container *ngIf="$last">
-                {{ state.table[$rowIndex] | sumBy: ['score', 'score'] | number: '1.0-0' }}
+                {{ state.table[$rowIndex] | stSumBy: ['score', 'score'] | number: '1.0-0' }}
               </ng-container>
             </ng-container>
           </mat-cell>
@@ -96,9 +96,9 @@
       *let="scoreTable?.score as score"
       [disabled]="!score"
       mat-button
-      [routerLink]="['/score', score?.id | default: 0]"
+      [routerLink]="['/score', score?.id | stDefault: 0]"
     >
-      {{ score?.score | default: 0 | score }}
+      {{ score?.score | stDefault: 0 | score }}
     </button>
   </ng-template>
 </ng-container>

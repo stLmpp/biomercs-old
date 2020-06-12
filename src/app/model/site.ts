@@ -1,5 +1,5 @@
 import { CommonColumns } from './common-history';
-import { trackByFactory } from '../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface Site extends CommonColumns {
   name: string;

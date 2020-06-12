@@ -2,11 +2,20 @@
   width: 100%;
   .mat-form-field-suffix {
     align-self: center;
+    display: flex;
   }
 }
 
 form {
   .mat-button-base + .mat-button-base {
     margin-left: 8px;
+  }
+}
+
+.mat-radio-button {
+  &.mat-radio-checked {
+    .mat-radio-inner-circle {
+      transform: scale(0.4999);
+    }
   }
 }

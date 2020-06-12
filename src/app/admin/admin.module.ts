@@ -32,6 +32,7 @@ import { UserRolesComponent } from './user/user-roles/user-roles.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RoleComponent } from './role/role.component';
 import { ReasonComponent } from './reason/reason.component';
+import { BadgeModule } from '../shared/badge/badge.module';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ReasonComponent } from './reason/reason.component';
     MatExpansionModule,
     StUtilsModule,
     MatProgressBarModule,
+    BadgeModule,
   ],
 })
 export class AdminModule {}

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { trackByFactory } from '../../util/util';
+import { trackByFactory } from '@stlmpp/utils';
 import { SideMenu } from '../../model/side-menu';
 import { SideMenuService } from './side-menu.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
