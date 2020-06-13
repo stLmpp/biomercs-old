@@ -5,7 +5,8 @@
     modes: modes$ | async,
     types: types$ | async,
     stages: stages$ | async,
-    characters: characters$ | async
+    characters: characters$ | async,
+    gameModeStage: gameModeStage$ | async
   } as state"
 >
   <form [formGroup]="form" (ngSubmit)="onSubmit()" #formRef="ngForm">
@@ -103,7 +104,11 @@
               placeholder="Bullet kills"
               formControlName="bulletKills"
               currencyMask
-              [options]="{ precision: 0, allowNegative: false, max: 150 }"
+              [options]="{
+                precision: 0,
+                allowNegative: false,
+                max: state.gameModeStage?.maxEnemies | stDefault: 150
+              }"
             />
           </mat-form-field>
           <ng-container formArrayName="scorePlayerProofs">
@@ -200,7 +205,11 @@
           placeholder="Max combo"
           currencyMask
           formControlName="maxCombo"
-          [options]="{ precision: 0, allowNegative: false, max: 150 }"
+          [options]="{
+            precision: 0,
+            allowNegative: false,
+            max: state.gameModeStage?.maxCombo | stDefault: 150
+          }"
         />
         <mat-error *error="'required'">
           Max combo is required

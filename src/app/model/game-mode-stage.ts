@@ -20,3 +20,9 @@ export interface GameModeStageUpdateDto {
   maxEnemies?: number;
   maxCombo?: number;
 }
+
+export interface GameModeStageParamsDto {
+  idStage?: number;
+  idGame?: number;
+  idMode?: number;
+}

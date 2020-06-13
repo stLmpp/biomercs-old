@@ -63,6 +63,7 @@ import { catchHttpError } from '../../util/operators/catchError';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroupDirective } from '@angular/forms';
+import { GameModeStageService } from '../../state/game-mode-stage/game-mode-stage.service';
 
 interface ScorePlayerAddDtoForm extends ScorePlayerAddDto {
   player?: Control<User>;
@@ -109,7 +110,8 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
     public defaultQuery: DefaultQuery,
     private matSnackBar: MatSnackBar,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private gameModeStageService: GameModeStageService
   ) {}
 
   private _destroy$ = new Subject();
@@ -120,10 +122,6 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
   maskPatterns = MaskEnumPatterns;
 
   form = this.initialForm();
-
-  get idPlatformControl(): FormControl<number> {
-    return this.form.get('idPlatform');
-  }
 
   get idGameControl(): FormControl<number> {
     return this.form.get('idGame');
@@ -192,6 +190,15 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
     switchMap(([idGame, idMode]) => this.characterService.findByParams({ idGame, idMode })),
     shareReplay()
   );
+  gameModeStage$ = combineLatest([
+    this.valueChanges('idStage', true),
+    this.valueChanges('idGame', true),
+    this.valueChanges('idMode', true),
+  ]).pipe(
+    switchMap(([idStage, idGame, idMode]) =>
+      this.gameModeStageService.findOneByParams({ idGame, idMode, idStage })
+    )
+  );
 
   userInput$ = new Subject<string>();
 
@@ -255,9 +262,7 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
   trackByGame = trackByGame;
   trackByMode = trackByMode;
   trackByType = trackByType;
-  trackByCharacter = trackByCharacter;
   trackByScorePlayerControl = trackByFactory<FormGroup<ScorePlayerAddDtoForm, ValidatorsModel>>();
-  trackByScorePlayerProofControl = trackByFactory<FormGroup<ScorePlayerProofAddDtoForm, ValidatorsModel>>();
   trackBySite = trackBySite;
 
   displayUser = (user: User): string => user?.username ?? '';

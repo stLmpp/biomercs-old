@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { SuperService } from '../../shared/super/super-service';
-import { GameModeStage, GameModeStageAddDto, GameModeStageUpdateDto } from '../../model/game-mode-stage';
+import {
+  GameModeStage,
+  GameModeStageAddDto,
+  GameModeStageParamsDto,
+  GameModeStageUpdateDto,
+} from '../../model/game-mode-stage';
 import { HttpClient } from '@angular/common/http';
 import { GameModeStageStore } from './game-mode-stage.store';
 import { GameModeStageQuery } from './game-mode-stage.query';
@@ -9,7 +14,9 @@ import { GameModeStageQuery } from './game-mode-stage.query';
 export class GameModeStageService extends SuperService<
   GameModeStage,
   GameModeStageAddDto,
-  GameModeStageUpdateDto
+  GameModeStageUpdateDto,
+  any,
+  GameModeStageParamsDto
 > {
   constructor(
     private http: HttpClient,
