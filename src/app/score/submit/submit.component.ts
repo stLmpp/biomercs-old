@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -24,11 +23,9 @@ import {
   filter,
   finalize,
   map,
-  pluck,
   shareReplay,
   switchMap,
   take,
-  takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -40,12 +37,10 @@ import { CharacterService } from '../../state/character/character.service';
 import { trackByGame } from '../../model/game';
 import { trackByMode } from '../../model/mode';
 import { trackByType } from '../../model/type';
-import { trackByCharacter } from '../../model/character';
 import { ScorePlayerAddDto } from '../../model/score-player';
 import { AuthQuery } from '../../auth/state/auth.query';
 import { TypeQuery } from '../../state/type/type.query';
-import { isEmpty, isNil } from '../../util/util';
-import { CommonColumns } from '../../model/common-history';
+import { isEmpty } from '../../util/util';
 import { StageService } from '../../state/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
 import { User } from '../../model/user';
@@ -64,6 +59,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroupDirective } from '@angular/forms';
 import { GameModeStageService } from '../../state/game-mode-stage/game-mode-stage.service';
+import { ScoreParameters } from '../score-parameters.super';
 
 interface ScorePlayerAddDtoForm extends ScorePlayerAddDto {
   player?: Control<User>;
@@ -92,7 +88,7 @@ interface SubmitScoreForm {
   styleUrls: ['./submit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements OnInit, AfterViewInit {
   constructor(
     public platformQuery: PlatformQuery,
     private gameService: GameService,
@@ -112,9 +108,10 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private gameModeStageService: GameModeStageService
-  ) {}
-
-  private _destroy$ = new Subject();
+  ) {
+    super(gameService, modeService, typeService);
+    this.init();
+  }
 
   @ViewChild('formRef') formRef: FormGroupDirective;
 
@@ -123,64 +120,20 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
 
   form = this.initialForm();
 
-  get idGameControl(): FormControl<number> {
-    return this.form.get('idGame');
-  }
-
-  get idModeControl(): FormControl<number> {
-    return this.form.get('idMode');
-  }
-
-  get idTypeControl(): FormControl<number> {
-    return this.form.get('idType');
-  }
-
-  get idStageControl(): FormControl<number> {
-    return this.form.get('idStage');
-  }
-
   get scorePlayersControl(): FormArray<ScorePlayerAddDtoForm> {
     return this.form.get('scorePlayers');
   }
 
-  games$ = this.valueChanges('idPlatform', true).pipe(
-    switchMap(idPlatform => {
-      this.idGameControl.disable();
-      return this.gameService.findByParams({ idPlatform }).pipe(
-        finalize(() => {
-          this.idGameControl.enable();
-        })
-      );
-    }),
-    shareReplay()
-  );
+  get idStageControl(): FormControl<number> {
+    return this.form.get('idStage') as FormControl<number>;
+  }
+
   stages$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode')]).pipe(
     switchMap(([idGame, idMode]) => {
       this.idStageControl.disable();
       return this.stageService.findByParams({ idGame, idMode }).pipe(
         finalize(() => {
           this.idStageControl.enable();
-        })
-      );
-    })
-  );
-  modes$ = combineLatest([this.valueChanges('idPlatform', true), this.valueChanges('idGame', true)]).pipe(
-    switchMap(([idPlatform, idGame]) => {
-      this.idModeControl.disable();
-      return this.modeService.findByParams({ idGame, idPlatform }).pipe(
-        finalize(() => {
-          this.idModeControl.enable();
-        })
-      );
-    }),
-    shareReplay()
-  );
-  types$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
-    switchMap(([idGame, idMode]) => {
-      this.idTypeControl.disable();
-      return this.typeService.findByParams({ idGame, idMode }).pipe(
-        finalize(() => {
-          this.idTypeControl.enable();
         })
       );
     }),
@@ -197,7 +150,8 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
   ]).pipe(
     switchMap(([idStage, idGame, idMode]) =>
       this.gameModeStageService.findOneByParams({ idGame, idMode, idStage })
-    )
+    ),
+    shareReplay()
   );
 
   userInput$ = new Subject<string>();
@@ -401,37 +355,6 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe();
   }
 
-  private valueChanges<K extends keyof SubmitScoreForm>(
-    key: K,
-    filterNil?: boolean
-  ): Observable<SubmitScoreForm[K]> {
-    let values$ = (this.form.get(key).valueChanges as Observable<SubmitScoreForm[K]>).pipe(
-      takeUntil(this._destroy$),
-      distinctUntilChanged()
-    );
-    if (filterNil) {
-      values$ = values$.pipe(filter(value => !isNil(value)));
-    }
-    return values$;
-  }
-
-  private checkNextParameter<T extends CommonColumns>(
-    observable: Observable<T[]>,
-    checkControl: FormControl<number>
-  ): void {
-    observable
-      .pipe(
-        takeUntil(this._destroy$),
-        filter(values => !!values.length),
-        filter(values => !values.some(value => value.id === checkControl.value)),
-        map(([value]) => value),
-        pluck('id')
-      )
-      .subscribe(id => {
-        checkControl.setValue(id);
-      });
-  }
-
   private initSub(): void {
     this.checkNextParameter(this.games$, this.idGameControl);
     this.checkNextParameter(this.modes$, this.idModeControl);
@@ -464,10 +387,5 @@ export class SubmitComponent implements OnInit, OnDestroy, AfterViewInit {
         .controls[0].get('player')
         .disable();
     });
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 }

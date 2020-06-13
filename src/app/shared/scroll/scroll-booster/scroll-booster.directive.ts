@@ -218,15 +218,15 @@ export class ScrollBoosterDirective implements AfterContentInit, OnInit, OnDestr
   getState(): ScrollBoosterState {
     return {
       isMoving: this.isMoving(),
-      isDragging: !!(this.dragOffset.x || this.dragOffset.y),
-      position: { x: -this.position.x, y: -this.position.y },
+      isDragging: !!((this.dragOffset?.x ?? 0) || (this.dragOffset?.y ?? 0)),
+      position: { x: -(this.position?.x ?? 0), y: -(this.position?.y ?? 0) },
       dragOffset: this.dragOffset,
-      dragAngle: this.getDragAngle(this.clientOffset.x, this.clientOffset.y),
+      dragAngle: this.getDragAngle(this.clientOffset?.x ?? 0, this.clientOffset?.y ?? 0),
       borderCollision: {
-        left: this.position.x >= this.edgeX.to,
-        right: this.position.x <= this.edgeX.from,
-        top: this.position.y >= this.edgeY.to,
-        bottom: this.position.y <= this.edgeY.from,
+        left: (this.position?.x ?? 0) >= (this.edgeX?.to ?? 0),
+        right: (this.position?.x ?? 0) <= (this.edgeX?.from ?? 0),
+        top: (this.position?.y ?? 0) >= (this.edgeY?.to ?? 0),
+        bottom: (this.position?.y ?? 0) <= (this.edgeY?.from ?? 0),
       },
     };
   }
@@ -391,8 +391,8 @@ export class ScrollBoosterDirective implements AfterContentInit, OnInit, OnDestr
     return (
       this.isDragging ||
       this.isScrolling ||
-      Math.abs(this.velocity.x) >= 0.01 ||
-      Math.abs(this.velocity.y) >= 0.01
+      Math.abs(this.velocity?.x ?? 0) >= 0.01 ||
+      Math.abs(this.velocity?.y ?? 0) >= 0.01
     );
   }
 

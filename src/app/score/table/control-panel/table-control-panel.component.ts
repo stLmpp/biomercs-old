@@ -9,8 +9,16 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
 import { ScoreTableParamsDto, ScoreTableType } from '../../../model/score';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { combineLatest, Subject } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  shareReplay,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 import { GameService } from '../../../state/game/game.service';
 import { ModeService } from '../../../state/mode/mode.service';
 import { TypeService } from '../../../state/type/type.service';
@@ -21,6 +29,7 @@ import { trackByMode } from '../../../model/mode';
 import { trackByType } from '../../../model/type';
 import { trackByCharacter } from '../../../model/character';
 import { isEqual } from 'underscore';
+import { ScoreParameters } from '../../score-parameters.super';
 
 export type ScoreTableParamsForm = Omit<ScoreTableParamsDto, 'type'>;
 
@@ -30,18 +39,19 @@ export type ScoreTableParamsForm = Omit<ScoreTableParamsDto, 'type'>;
   styleUrls: ['./table-control-panel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableControlPanelComponent implements OnInit, OnDestroy {
+export class TableControlPanelComponent extends ScoreParameters<ScoreTableParamsForm>
+  implements OnInit, OnDestroy {
   constructor(
     private gameService: GameService,
     private modeService: ModeService,
     private typeService: TypeService,
     private characterService: CharacterService
-  ) {}
+  ) {
+    super(gameService, modeService, typeService);
+    this.init();
+  }
 
-  private _destroy$ = new Subject();
   private _destroyParams$ = new Subject();
-
-  scoreTableType = ScoreTableType;
 
   @Input() platforms: Platform[] = [];
   @Input() tableType: ScoreTableType;
@@ -73,7 +83,6 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   }
   set idPlatform(idPlatform: number) {
     this._idPlatform = idPlatform;
-    this.resubToChangesIfNeeded();
     this.idPlatformControl.setValue(idPlatform);
   }
   private _idPlatform: number;
@@ -84,7 +93,6 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   }
   set idGame(idGame: number) {
     this._idGame = idGame;
-    this.resubToChangesIfNeeded();
     this.idGameControl.setValue(idGame);
   }
   private _idGame: number;
@@ -95,7 +103,6 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   }
   set idMode(idMode: number) {
     this._idMode = idMode;
-    this.resubToChangesIfNeeded();
     this.idModeControl.setValue(idMode);
   }
   private _idMode: number;
@@ -123,49 +130,36 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
 
   form = new FormGroup<ScoreTableParamsForm>({
     idPlatform: new FormControl(null, [Validators.required]),
-    idGame: new FormControl({ value: null, disabled: true }, [Validators.required]),
-    idMode: new FormControl({ value: null, disabled: true }, [Validators.required]),
-    idType: new FormControl({ value: null, disabled: true }, [Validators.required]),
-    idCharacter: new FormControl({ value: null, disabled: true }),
-    idPlayer: new FormControl({ value: null, disabled: true }),
+    idGame: new FormControl(null, [Validators.required]),
+    idMode: new FormControl(null, [Validators.required]),
+    idType: new FormControl(null, [Validators.required]),
+    idCharacter: new FormControl(null),
+    idPlayer: new FormControl(null),
     limit: new FormControl(10),
   });
 
-  get idPlayerControl(): FormControl {
+  get idPlayerControl(): FormControl<number> {
     return this.form.get('idPlayer');
   }
 
-  get idPlatformControl(): FormControl {
+  get idPlatformControl(): FormControl<number> {
     return this.form.get('idPlatform');
   }
 
-  get idGameControl(): FormControl {
-    return this.form.get('idGame');
-  }
-
-  get idModeControl(): FormControl {
-    return this.form.get('idMode');
-  }
-
-  get idCharacterControl(): FormControl {
+  get idCharacterControl(): FormControl<number> {
     return this.form.get('idCharacter');
   }
 
-  get idTypeControl(): FormControl {
-    return this.form.get('idType');
-  }
-
-  games$ = this.valueChanges('idPlatform', true).pipe(
-    switchMap(idPlatform => this.gameService.findByParams({ idPlatform }))
-  );
-  modes$ = combineLatest([this.valueChanges('idPlatform', true), this.valueChanges('idGame', true)]).pipe(
-    switchMap(([idPlatform, idGame]) => this.modeService.findByParams({ idGame, idPlatform }))
-  );
-  types$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
-    switchMap(([idGame, idMode]) => this.typeService.findByParams({ idGame, idMode }))
-  );
   characters$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
-    switchMap(([idGame, idMode]) => this.characterService.findByParams({ idGame, idMode }))
+    switchMap(([idGame, idMode]) => {
+      this.idCharacterControl.disable();
+      return this.characterService.findByParams({ idGame, idMode }).pipe(
+        finalize(() => {
+          this.idCharacterControl.enable();
+        })
+      );
+    }),
+    shareReplay()
   );
 
   trackByPlatform = trackByPlatform;
@@ -174,66 +168,16 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   trackByType = trackByType;
   trackByCharacter = trackByCharacter;
 
-  private valueChanges<K extends keyof ScoreTableParamsForm>(
-    key: K,
-    filterNil?: boolean
-  ): Observable<ScoreTableParamsForm[K]> {
-    let changes$ = (this.form.get(key).valueChanges as Observable<ScoreTableParamsForm[K]>).pipe(
-      distinctUntilChanged()
-    );
-    if (filterNil) {
-      changes$ = changes$.pipe(filter(value => !!value));
-    }
-    return changes$;
-  }
-
   onSubmit(): void {
     if (this.loading) return;
     this.paramsChange.emit({ ...this.form.value, type: this.tableType });
     this.params = { ...this.form.value, type: this.tableType };
   }
 
-  resubToChangesIfNeeded(): void {
-    if (this.autoExecute) {
-      this._destroyParams$.next();
-      this.subToChanges();
-    }
-  }
-
   subToChanges(): void {
-    this.valueChanges('idPlatform')
-      .pipe(takeUntil(this._destroyParams$), skip(1))
-      .subscribe(idPlatform => {
-        if (!idPlatform) {
-          this.idGameControl.disable();
-        } else {
-          this.idGameControl.enable();
-        }
-        this.idGameControl.setValue(null);
-      });
-    this.valueChanges('idGame')
-      .pipe(takeUntil(this._destroyParams$), skip(1))
-      .subscribe(idGame => {
-        if (!idGame) {
-          this.idModeControl.disable();
-        } else {
-          this.idModeControl.enable();
-        }
-        this.idModeControl.setValue(null);
-      });
-    this.valueChanges('idMode')
-      .pipe(takeUntil(this._destroyParams$), skip(1))
-      .subscribe(idMode => {
-        if (!idMode) {
-          this.idCharacterControl.disable();
-          this.idTypeControl.disable();
-        } else {
-          this.idCharacterControl.enable();
-          this.idTypeControl.enable();
-        }
-        this.idCharacterControl.setValue(null);
-        this.idTypeControl.setValue(null);
-      });
+    this.checkNextParameter(this.games$, this.idGameControl);
+    this.checkNextParameter(this.modes$, this.idModeControl);
+    this.checkNextParameter(this.types$, this.idTypeControl);
   }
 
   ngOnInit(): void {
@@ -251,8 +195,7 @@ export class TableControlPanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
+    super.ngOnDestroy();
     this._destroyParams$.next();
     this._destroyParams$.complete();
   }
