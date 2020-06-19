@@ -4,7 +4,7 @@ import { Like, LikeParamsDto } from '../../model/like';
 import { LikeStore } from './like.store';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { isEqual } from 'underscore';
+import { isEqual } from 'lodash';
 
 @Injectable({ providedIn: 'root' })
 export class LikeQuery extends EntityQuery<Like> {

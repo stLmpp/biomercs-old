@@ -3,7 +3,7 @@ import { ScoreTable, ScoreTableParamsDto, ScoreTableType } from '../../../model/
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, filter, finalize, map, shareReplay, switchMap } from 'rxjs/operators';
 import { ScoreService } from '../../../state/score/score.service';
-import { isEqual } from 'underscore';
+import { isEqual } from 'lodash';
 import { isNil } from '../../../util/util';
 import { ScoreTableParamsForm } from '../control-panel/table-control-panel.component';
 
