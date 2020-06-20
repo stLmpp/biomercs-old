@@ -6,7 +6,8 @@
     types: types$ | async,
     stages: stages$ | async,
     characters: characters$ | async,
-    gameModeStage: gameModeStage$ | async
+    gameModeStage: gameModeStage$ | async,
+    requireApprovalMsg: requireApprovalMsg$ | async
   } as state"
 >
   <form [formGroup]="form" (ngSubmit)="onSubmit()" #formRef="ngForm">
@@ -238,6 +239,8 @@
         color="accent"
         type="submit"
         [disabled]="form.invalid || form.disabled || form.pristine"
+        [matTooltip]="state.requireApprovalMsg"
+        [matTooltipDisabled]="!state.requireApprovalMsg"
       >
         Submit
       </button>

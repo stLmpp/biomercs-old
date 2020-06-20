@@ -6,7 +6,7 @@
         'is-wr': score.isWorldRecord,
         'is-combination-wr': score.isCombinationWorldRecord,
         'is-character-wr': score.isCharacterWorldRecord,
-        solo: score.idType === 1
+        solo: score.idType === typeEnum.solo
       }"
       [imgBackground]="score.gameModeStage.stage.idImage"
       options="center/cover no-repeat"
@@ -20,7 +20,7 @@
         <mat-icon svgIcon="trophy-award"></mat-icon>
         <div class="label">
           <div>Team</div>
-          <ng-container *ngIf="score.idType === 2; else notDuo">
+          <ng-container *ngIf="score.idType === typeEnum.duo; else notDuo">
             <ng-container
               *ngIf="
                 (score.combinationWorldRecord?.scorePlayers)[0].idCharacter ===

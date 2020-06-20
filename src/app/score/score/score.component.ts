@@ -3,6 +3,7 @@ import { ScoreQuery } from '../../state/score/store.query';
 import { RouterQuery } from '@stlmpp/router';
 import { RouteParamEnum } from '../../model/route-param.enum';
 import { distinctUntilChanged, filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { TypeEnum } from '../../model/type';
 
 @Component({
   selector: 'app-score',
@@ -12,6 +13,8 @@ import { distinctUntilChanged, filter, map, shareReplay, switchMap } from 'rxjs/
 })
 export class ScoreComponent implements OnInit {
   constructor(private scoreQuery: ScoreQuery, private routerQuery: RouterQuery) {}
+
+  typeEnum = TypeEnum;
 
   score$ = this.routerQuery.selectParams(RouteParamEnum.idScore).pipe(
     filter(idScore => !!idScore),

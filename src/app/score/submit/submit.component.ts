@@ -36,7 +36,7 @@ import { TypeService } from '../../state/type/type.service';
 import { CharacterService } from '../../state/character/character.service';
 import { trackByGame } from '../../model/game';
 import { trackByMode } from '../../model/mode';
-import { trackByType } from '../../model/type';
+import { trackByType, TypeEnum } from '../../model/type';
 import { ScorePlayerAddDto } from '../../model/score-player';
 import { AuthQuery } from '../../auth/state/auth.query';
 import { TypeQuery } from '../../state/type/type.query';
@@ -47,7 +47,7 @@ import { User } from '../../model/user';
 import { UserService } from '../../state/user/user.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { ScoreService } from '../../state/score/score.service';
-import { ScoreIsWrDto, ScoreIsWrViewModel } from '../../model/score';
+import { ScoreAverageDto, ScoreIsWrDto, ScoreIsWrViewModel } from '../../model/score';
 import { isEqual } from 'lodash';
 import { MaskEnum, MaskEnumPatterns } from '../../model/mask.enum';
 import { ScorePlayerProofAddDto } from '../../model/score-player-proof';
@@ -212,6 +212,22 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
     )
   );
 
+  requireApprovalMsg$ = this.form.valueChanges.pipe(
+    filter(() => this.form.valid),
+    distinctUntilChanged(isEqual),
+    switchMap(({ scorePlayers, ...dto }) => {
+      const dtoAverage: ScoreAverageDto = dto;
+      if (dto.idType === TypeEnum.duo) {
+        dtoAverage.idCharacters = scorePlayers.map(sp => sp.idCharacter);
+      } else {
+        dtoAverage.idCharacter = scorePlayers[0].idCharacter;
+      }
+      return this.scoreService
+        .findRequireApproval(dtoAverage)
+        .pipe(map(require => (require ? 'This score will require approval of an Admin' : null)));
+    })
+  );
+
   trackByPlatform = trackByPlatform;
   trackByGame = trackByGame;
   trackByMode = trackByMode;
@@ -257,7 +273,7 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
       idStage: [null, [Validators.required]],
       score: [null, { validators: [Validators.required], updateOn: 'blur' }],
       maxCombo: [null, [Validators.required]],
-      time: null,
+      time: [null, [Validators.required]],
       scorePlayers: this.formBuilder.array([
         this.formBuilder.group<ScorePlayerAddDtoForm>({
           idPlayer: [this.authQuery.getUserSnapshot().id, [Validators.required]],

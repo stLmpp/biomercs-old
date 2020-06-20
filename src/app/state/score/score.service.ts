@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import {
   Score,
   ScoreAddDto,
+  ScoreApprovalParamsDto,
+  ScoreAverageDto,
   ScoreIsWrDto,
   ScoreIsWrViewModel,
   ScoreRandomDto,
@@ -14,7 +16,7 @@ import { ScoreStore } from './score.store';
 import { tap } from 'rxjs/operators';
 import { ScorePlayerProofAddDto } from '../../model/score-player-proof';
 import { refreshMap } from '../../util/operators/refresh';
-import { ScorePlayerProofService } from '../score-player-proof.service';
+import { ScorePlayerProofService } from '../score-player-proof/score-player-proof.service';
 
 @Injectable({ providedIn: 'root' })
 export class ScoreService {
@@ -108,5 +110,15 @@ export class ScoreService {
 
   isWr(dto: ScoreIsWrDto): Observable<ScoreIsWrViewModel> {
     return this.http.post<ScoreIsWrViewModel>(`${this.endPoint}/is-wr`, dto);
+  }
+
+  findApprovalList(dto: ScoreApprovalParamsDto, user = false): Observable<Score[]> {
+    const params = new HttpParams(dto, true);
+    return this.http.get<Score[]>(`${this.endPoint}/approval-list${user ? '/user' : ''}`, { params });
+  }
+
+  findRequireApproval(dto: ScoreAverageDto): Observable<boolean> {
+    const params = new HttpParams(dto, true);
+    return this.http.get<boolean>(`${this.endPoint}/require-approval`, { params });
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SuperService } from '../shared/super/super-service';
-import { ScorePlayerProof, ScorePlayerProofAddDto } from '../model/score-player-proof';
+import { SuperService } from '../../shared/super/super-service';
+import { ScorePlayerProof, ScorePlayerProofAddDto } from '../../model/score-player-proof';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';

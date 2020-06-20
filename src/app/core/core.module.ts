@@ -12,6 +12,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MatListModule } from '@angular/material/list';
 import { AuthErrorInterceptor } from '../auth/auth-error.interceptor';
 import { FormBuilder } from '@ng-stack/forms';
+import { HandleErrorDevInterceptor } from './error/handle-error-dev.interceptor';
 
 const withInterceptors = (...interceptors: any[]): Provider[] =>
   interceptors.map(useClass => ({
@@ -40,7 +41,8 @@ export class CoreModule {
           LoadingInterceptor,
           DateInterceptor,
           FormatErrorInterceptor,
-          AuthErrorInterceptor
+          AuthErrorInterceptor,
+          HandleErrorDevInterceptor
         ),
         {
           provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

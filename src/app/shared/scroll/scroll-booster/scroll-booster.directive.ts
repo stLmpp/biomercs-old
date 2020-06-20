@@ -134,7 +134,7 @@ export class ScrollBoosterDirective implements AfterContentInit, OnInit, OnDestr
   }
   private _bounceForce = 0.1;
 
-  @Input() friction = 0.05;
+  @Input() friction = 0.1;
   @Input() textSelection = false;
   @Input() inputsFocus = true;
   @Input() emulateScroll = false;
