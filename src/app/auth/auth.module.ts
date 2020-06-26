@@ -24,7 +24,7 @@ import { ResetPasswordComponent } from './login-register/reset-password/reset-pa
   imports: [AuthRoutingModule, SharedModule, MatTabsModule, MatCardModule, MatSnackBarModule],
 })
 export class AuthModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<AuthModule> {
     return {
       ngModule: AuthModule,
       providers: [

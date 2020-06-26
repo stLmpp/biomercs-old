@@ -30,7 +30,7 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { BehaviorSubject, combineLatest, EMPTY, Observable } from 'rxjs';
 import { PaginationMeta } from '../../model/pagination';
 import { Sort } from '@angular/material/sort';

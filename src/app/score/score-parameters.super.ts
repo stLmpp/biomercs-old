@@ -1,5 +1,5 @@
 import { FormControl, FormGroup } from '@ng-stack/forms';
-import { OnDestroy } from '@angular/core';
+import { Directive, OnDestroy } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { CommonColumns } from '../model/common-history';
 import {
@@ -34,6 +34,8 @@ interface FormType {
   idCharacter?: number;
 }
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class ScoreParameters<T extends FormType> implements OnDestroy {
   constructor(
     private __gameService: GameService,

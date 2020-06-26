@@ -13,7 +13,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { StUtilsModule } from '@stlmpp/utils';
 import { StRouterModule } from '@stlmpp/router';
 import { NgxMaskModule } from 'ngx-mask';
-
 import { registerLocaleData } from '@angular/common';
 import localeBr from '@angular/common/locales/pt';
 import localeBrExtra from '@angular/common/locales/extra/pt';

@@ -90,7 +90,7 @@ const COMPONENTS = [DialogComponent, MatFileUploadComponent];
   exports: [...MODULES, ...PIPES, ...DIRECTIVES, ...COMPONENTS],
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule,
     };

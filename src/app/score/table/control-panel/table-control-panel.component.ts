@@ -20,7 +20,7 @@ import { trackByGame } from '../../../model/game';
 import { trackByMode } from '../../../model/mode';
 import { trackByType } from '../../../model/type';
 import { trackByCharacter } from '../../../model/character';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { ScoreParameters } from '../../score-parameters.super';
 
 export type ScoreTableParamsForm = Omit<ScoreTableParamsDto, 'type'>;

@@ -27,7 +27,7 @@ const withInterceptors = (...interceptors: any[]): Provider[] =>
   imports: [SharedModule, MatListModule],
 })
 export class CoreModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
       providers: [

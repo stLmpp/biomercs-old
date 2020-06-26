@@ -40,7 +40,7 @@ import { UserService } from '../../state/user/user.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { ScoreService } from '../../state/score/score.service';
 import { ScoreAverageDto, ScoreIsWrDto, ScoreIsWrViewModel } from '../../model/score';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { MaskEnum, MaskEnumPatterns } from '../../model/mask.enum';
 import { ScorePlayerProofAddDto } from '../../model/score-player-proof';
 import { SiteQuery } from '../../state/site/site.query';
