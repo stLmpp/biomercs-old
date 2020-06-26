@@ -1,0 +1,18 @@
+@import 'variables';
+@import 'functions';
+
+.bio-scroll {
+  overflow: hidden;
+  &:hover {
+    overflow: auto;
+  }
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: get-color($primary-color, 900);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: get-color($primary-color, 600);
+  }
+}

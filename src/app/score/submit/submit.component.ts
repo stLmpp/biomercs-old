@@ -8,15 +8,7 @@ import {
 } from '@angular/core';
 import { PlatformQuery } from '../../state/platform/platform.query';
 import { trackByPlatform } from '../../model/platform';
-import {
-  Control,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-  ValidatorsModel,
-} from '@ng-stack/forms';
+import { Control, FormArray, FormBuilder, FormGroup, Validators, ValidatorsModel } from '@ng-stack/forms';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -36,14 +28,14 @@ import { TypeService } from '../../state/type/type.service';
 import { CharacterService } from '../../state/character/character.service';
 import { trackByGame } from '../../model/game';
 import { trackByMode } from '../../model/mode';
-import { trackByType, TypeEnum } from '../../model/type';
+import { trackByType } from '../../model/type';
 import { ScorePlayerAddDto } from '../../model/score-player';
 import { AuthQuery } from '../../auth/state/auth.query';
 import { TypeQuery } from '../../state/type/type.query';
 import { isEmpty } from '../../util/util';
 import { StageService } from '../../state/stage/stage.service';
 import { trackByFactory } from '@stlmpp/utils';
-import { User } from '../../model/user';
+import { trackByUser, User } from '../../model/user';
 import { UserService } from '../../state/user/user.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { ScoreService } from '../../state/score/score.service';
@@ -60,6 +52,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroupDirective } from '@angular/forms';
 import { GameModeStageService } from '../../state/game-mode-stage/game-mode-stage.service';
 import { ScoreParameters } from '../score-parameters.super';
+import { siblingRequiredValidator } from '../sibling-validator.directive';
 
 interface ScorePlayerAddDtoForm extends ScorePlayerAddDto {
   player?: Control<User>;
@@ -80,6 +73,7 @@ interface SubmitScoreForm {
   score: number;
   maxCombo: number;
   time: string;
+  dateAchieved: Control<Date>;
 }
 
 @Component({
@@ -109,7 +103,7 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
     private activatedRoute: ActivatedRoute,
     private gameModeStageService: GameModeStageService
   ) {
-    super(gameService, modeService, typeService);
+    super(gameService, modeService, typeService, stageService);
     this.init();
   }
 
@@ -124,21 +118,6 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
     return this.form.get('scorePlayers');
   }
 
-  get idStageControl(): FormControl<number> {
-    return this.form.get('idStage') as FormControl<number>;
-  }
-
-  stages$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode')]).pipe(
-    switchMap(([idGame, idMode]) => {
-      this.idStageControl.disable();
-      return this.stageService.findByParams({ idGame, idMode }).pipe(
-        finalize(() => {
-          this.idStageControl.enable();
-        })
-      );
-    }),
-    shareReplay()
-  );
   characters$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
     switchMap(([idGame, idMode]) => this.characterService.findByParams({ idGame, idMode })),
     shareReplay()
@@ -217,11 +196,10 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
     distinctUntilChanged(isEqual),
     switchMap(({ scorePlayers, ...dto }) => {
       const dtoAverage: ScoreAverageDto = dto;
-      if (dto.idType === TypeEnum.duo) {
-        dtoAverage.idCharacters = scorePlayers.map(sp => sp.idCharacter);
-      } else {
-        dtoAverage.idCharacter = scorePlayers[0].idCharacter;
-      }
+      const type = this.typeQuery.getEntity(dtoAverage.idType);
+      dto.idCharacters = scorePlayers
+        .filter((_, index) => index + 1 <= type.playerQuantity)
+        .map(player => player.idCharacter);
       return this.scoreService
         .findRequireApproval(dtoAverage)
         .pipe(map(require => (require ? 'This score will require approval of an Admin' : null)));
@@ -234,6 +212,9 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
   trackByType = trackByType;
   trackByScorePlayerControl = trackByFactory<FormGroup<ScorePlayerAddDtoForm, ValidatorsModel>>();
   trackBySite = trackBySite;
+  trackByUser = trackByUser;
+
+  now = new Date();
 
   displayUser = (user: User): string => user?.username ?? '';
 
@@ -274,6 +255,7 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
       score: [null, { validators: [Validators.required], updateOn: 'blur' }],
       maxCombo: [null, [Validators.required]],
       time: [null, [Validators.required]],
+      dateAchieved: [null],
       scorePlayers: this.formBuilder.array([
         this.formBuilder.group<ScorePlayerAddDtoForm>({
           idPlayer: [this.authQuery.getUserSnapshot().id, [Validators.required]],
@@ -282,7 +264,7 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
           host: this.formBuilder.control<boolean>(true),
           player: this.formBuilder.control<User>(this.authQuery.getUserSnapshot(), [Validators.required]),
           description: this.formBuilder.control<string>(null),
-          scorePlayerProofs: this.scorePlayerProofArray(),
+          scorePlayerProofs: this.scorePlayerProofArray(true),
         }),
       ]),
     });
@@ -306,11 +288,17 @@ export class SubmitComponent extends ScoreParameters<SubmitScoreForm> implements
     );
   }
 
-  private scorePlayerProofArray(): FormArray<ScorePlayerProofAddDtoForm> {
+  private scorePlayerProofArray(validate?: boolean): FormArray<ScorePlayerProofAddDtoForm> {
     return this.formBuilder.array<ScorePlayerProofAddDtoForm>([
       this.formBuilder.group<ScorePlayerProofAddDtoForm>({
-        url: this.formBuilder.control(null),
-        idSite: this.formBuilder.control(null),
+        url: this.formBuilder.control(
+          null,
+          validate ? { validators: [siblingRequiredValidator('idSite')], updateOn: 'blur' } : []
+        ),
+        idSite: this.formBuilder.control(
+          null,
+          validate ? { validators: [siblingRequiredValidator('url')] } : []
+        ),
       }),
       this.formBuilder.group<ScorePlayerProofAddDtoForm>({
         file: this.formBuilder.control(null),

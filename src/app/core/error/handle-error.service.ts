@@ -19,7 +19,7 @@ export class HandleErrorService {
       const button = isAdmin ? 'Show more info' : 'Close';
       switch (err.status) {
         case 400:
-          message = 'The data send was wrong, bad request';
+          message = 'The data sent was wrong, bad request';
           break;
         case 404:
           message = 'The data was not found, 404';

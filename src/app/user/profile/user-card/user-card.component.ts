@@ -19,11 +19,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthQuery } from '../../../auth/state/auth.query';
 import { SiteService } from '../../../state/site/site.service';
 import { RouteParamEnum } from '../../../model/route-param.enum';
-import { debounceTime, filter, finalize, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { filter, finalize, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { User, UserUpdateDto } from '../../../model/user';
 import { trackByUserLink, UserLink } from '../../../model/user-link';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UserLinkComponent } from './add-link/user-link.component';
 import { WINDOW } from '../../../core/window.service';
 import { Overlay, OverlayRef, ScrollStrategyOptions } from '@angular/cdk/overlay';
@@ -32,12 +32,14 @@ import { trackByUserFollower, UserFollower } from '../../../model/user-follower'
 import { UserFollowerService } from '../../../state/user-follower/user-follower.service';
 import { FollowersComponent, UserFollowersData } from './followers/followers.component';
 import { UserLinkService } from '../../../state/user-link/user-link.service';
-import { RegionQuery } from '../../../state/region/region.query';
-import { trackByRegion } from '../../../model/region';
-import { FormControl } from '@ng-stack/forms';
+import { Region } from '../../../model/region';
 import { EditInfoComponent } from './edit-info/edit-info.component';
 import { ReferenceTypeEnum } from '../../../model/reference-type.enum';
 import { ReasonQuery } from '../../../state/reason/reason.query';
+import {
+  RegionModalOptions,
+  SelectRegionComponent,
+} from '../../../shared/region/select-region/select-region.component';
 
 @Component({
   selector: 'app-user-card',
@@ -62,7 +64,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private userFollowerService: UserFollowerService,
     private userLinkService: UserLinkService,
-    public regionQuery: RegionQuery,
     public reasonQuery: ReasonQuery
   ) {}
 
@@ -76,26 +77,18 @@ export class UserCardComponent implements OnInit, OnDestroy {
   @ViewChild('editOverlayRef', { read: TemplateRef })
   editTemplate: TemplateRef<any>;
 
-  @ViewChild('regionOverlayRef', { read: TemplateRef })
-  regionTemplate: TemplateRef<any>;
-
   @ViewChild('card', { read: ElementRef }) cardRef: ElementRef;
-
-  regionModalRef: MatDialogRef<any>;
 
   private overlayRef: OverlayRef;
   userFollowersLoading: boolean;
   userFollowingLoading: boolean;
   followingLoading: boolean;
 
-  regionSearchControl = new FormControl<string>(null);
-  regionSearch$ = this.regionSearchControl.valueChanges.pipe(debounceTime(400));
-
   idDefaultAvatar$: Observable<number> = this.defaultQuery.idAvatar$;
+  approvalCount$ = this.routerQuery.selectData<number>('5');
 
   trackByUserLink = trackByUserLink;
   trackByUserFollower = trackByUserFollower;
-  trackByRegion = trackByRegion;
 
   uploadAvatar(user: User, $event: Event): void {
     if (user.uploading) return;
@@ -121,15 +114,22 @@ export class UserCardComponent implements OnInit, OnDestroy {
   }
 
   openRegion(): void {
-    this.regionModalRef = this.matDialog.open(this.regionTemplate, {
-      width: '500px',
-      height: '600px',
-      panelClass: ['app-user-card', 'edit-region'],
-    });
-    this.regionModalRef
+    this.matDialog
+      .open(SelectRegionComponent, {
+        width: '500px',
+        height: '600px',
+        data: {
+          idRegion: this.user.idRegion,
+          title: 'Choose your region',
+        } as RegionModalOptions,
+      })
       .afterClosed()
       .pipe(take(1))
-      .subscribe(() => this.regionSearchControl.setValue(null));
+      .subscribe((region: Region) => {
+        if (region) {
+          this.edit('idRegion', region.id);
+        }
+      });
   }
 
   openEditOther(): void {
@@ -182,7 +182,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
   }
 
   edit<K extends keyof UserUpdateDto>(field: K, newValue: UserUpdateDto[K]): void {
-    this.regionModalRef?.close();
     this.userService.update(this.user.id, { [field]: newValue }).subscribe(() => {
       this.overlayRef?.detach();
     });

@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="save()">
-  <h1 mat-dialog-title>{{ data.userLink?.id ? 'Add' : 'Edit' }} link</h1>
+  <h1 mat-dialog-title>{{ data.userLink?.id ? 'Edit' : 'Add' }} link</h1>
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Name</mat-label>
@@ -29,10 +29,15 @@
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button color="accent" [disabled]="saving" type="button" mat-dialog-close>
+    <button mat-button [disabled]="saving" type="button" mat-dialog-close>
       Cancel
     </button>
-    <button mat-button color="accent" type="submit" [disabled]="saving || form.invalid">
+    <button
+      mat-raised-button
+      color="accent"
+      type="submit"
+      [disabled]="saving || form.invalid || form.pristine"
+    >
       Save
     </button>
   </mat-dialog-actions>

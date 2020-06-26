@@ -51,11 +51,11 @@
     </ng-container>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close [disabled]="loading" color="accent">
+    <button mat-button mat-dialog-close [disabled]="loading" type="button">
       Cancel
     </button>
     <button
-      mat-button
+      mat-raised-button
       color="accent"
       type="submit"
       [disabled]="loading || form.invalid || form.pending || form.pristine"

@@ -1,0 +1,18 @@
+@import 'variables';
+
+@mixin mat-table-theme-custom($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+  .mat-table {
+    > .mat-row {
+      &.active {
+        color: mat-color($accent, darker);
+        background: $background-list-active;
+        > .mat-cell {
+          color: mat-color($accent, darker);
+        }
+      }
+    }
+  }
+}

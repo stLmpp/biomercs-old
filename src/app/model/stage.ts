@@ -1,6 +1,7 @@
 import { CommonColumns } from './common-history';
 import { Game } from './game';
 import { FileUpload } from './file-upload';
+import { trackByFactory } from '@stlmpp/utils';
 
 export interface Stage extends CommonColumns {
   name: string;
@@ -26,3 +27,5 @@ export type StageUpdateDto = Partial<StageAddDto>;
 export interface StageParamsDto extends StageUpdateDto {
   idMode?: number;
 }
+
+export const trackByStage = trackByFactory<Stage>('id');

@@ -1,0 +1,165 @@
+<ng-container *ngIf="{ meta: meta$ | async, scores: scores$ | async } as state">
+  <form [formGroup]="form">
+    <div class="parameters">
+      <mat-form-field>
+        <mat-label>Platform</mat-label>
+        <mat-select formControlName="idPlatform" placeholder="platform">
+          <mat-option
+            *ngFor="let platform of platformQuery.all$ | async; trackBy: trackByPlatform"
+            [value]="platform.id"
+          >
+            {{ platform.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Game</mat-label>
+        <mat-select formControlName="idGame">
+          <mat-option *ngFor="let game of games$ | async; trackBy: trackByGame" [value]="game.id">
+            {{ game.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Mode</mat-label>
+        <mat-select formControlName="idMode">
+          <mat-option *ngFor="let mode of modes$ | async; trackBy: trackByMode" [value]="mode.id">
+            {{ mode.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="!userMode">
+        <mat-label>Type</mat-label>
+        <mat-select formControlName="idType">
+          <mat-option *ngFor="let type of types$ | async; trackBy: trackByType" [value]="type.id">
+            {{ type.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="idScoreStatus" placeholder="Status">
+          <mat-option [value]="userMode ? scoreStatusEnum.pendingUser : scoreStatusEnum.pendingAdmin">
+            Pending
+          </mat-option>
+          <mat-option [value]="userMode ? scoreStatusEnum.rejectedUser : scoreStatusEnum.rejectedAdmin">
+            Rejected
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="!userMode">
+        <mat-label>User</mat-label>
+        <input
+          matInput
+          [formControl]="usernameControl"
+          placeholder="User"
+          autocomplete="off"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete #auto [displayWith]="displayUser" autoActiveFirstOption>
+          <mat-option
+            *ngFor="let user of users$ | async; trackBy: trackByUser"
+            [value]="user"
+            (onSelectionChange)="patchUser($event)"
+          >
+            {{ user.username }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Start date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          formControlName="startDate"
+          [max]="endDateControl.value"
+        />
+        <button mat-icon-button matSuffix *ngIf="startDateControl.value" (click)="startPicker.select(null)">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>End date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endPicker"
+          formControlName="endDate"
+          [min]="startDateControl.value"
+        />
+        <button mat-icon-button matSuffix *ngIf="endDateControl.value" (click)="endPicker.select(null)">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Stage</mat-label>
+        <mat-select formControlName="idStage" placeholder="Stage">
+          <mat-option [value]="">-</mat-option>
+          <mat-option *ngFor="let stage of stages$ | async; trackBy: trackByStage" [value]="stage.id">
+            {{ stage.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Character</mat-label>
+        <mat-select formControlName="idCharacter" placeholder="Character">
+          <mat-option [value]="">-</mat-option>
+          <mat-option
+            *ngFor="let character of characters$ | async; trackBy: trackByCharacter"
+            [value]="character.id"
+          >
+            {{ character.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <app-score-approval-table
+      [scores]="state.scores | stDefault: []"
+      [idType]="idTypeControl.value"
+      [idScoreStatus]="idScoreStatusControl.value"
+      (sortChange)="onSortChange($event)"
+      (selectionChange)="onSelectionChange($event)"
+      [(selected)]="selectedIds"
+      [loading]="loadingData"
+      (approve)="approveOne($event)"
+      (reject)="rejectOne($event)"
+      [userMode]="userMode"
+    ></app-score-approval-table>
+    <mat-paginator
+      *ngIf="state.meta"
+      [length]="state.meta.totalItems"
+      [pageSize]="state.meta.itemsPerPage"
+      [pageSizeOptions]="[15]"
+      showFirstLastButtons
+      formControlName="page"
+    ></mat-paginator>
+    <div
+      class="actions"
+      *ngIf="
+        ![scoreStatusEnum.rejectedUser, scoreStatusEnum.rejectedAdmin].includes(idScoreStatusControl.value)
+      "
+    >
+      <button
+        mat-raised-button
+        color="accent"
+        type="button"
+        [disabled]="!selected?.length || loadingData"
+        (click)="approveAll()"
+      >
+        Approve selected
+      </button>
+      <button
+        mat-raised-button
+        color="warn"
+        type="button"
+        [disabled]="!selected?.length || loadingData"
+        (click)="rejectAll()"
+      >
+        Reject selected
+      </button>
+    </div>
+  </form>
+</ng-container>

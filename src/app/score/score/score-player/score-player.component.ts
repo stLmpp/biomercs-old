@@ -1,8 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ScorePlayer } from '../../../model/score-player';
-import { trackByScorePlayerProof } from '../../../model/score-player-proof';
-import { WINDOW } from '../../../core/window.service';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-score-player',
@@ -11,16 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScorePlayerComponent implements OnInit {
-  constructor(@Inject(WINDOW) public window: Window, public matDialog: MatDialog) {}
+  constructor() {}
 
   @Input() player: ScorePlayer;
   @Input() playerNumber: number;
-
-  trackByScorePlayerProof = trackByScorePlayerProof;
-
-  openVideo(url: string): void {
-    this.window.open(url, '_blank');
-  }
 
   ngOnInit(): void {}
 }

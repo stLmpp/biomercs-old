@@ -28,6 +28,16 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { ScrollModule } from '../shared/scroll/scroll.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { ScoreApprovalComponent } from './score-approval/score-approval.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ScoreApprovalTableComponent } from './score-approval/score-approval-table/score-approval-table.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatListModule } from '@angular/material/list';
+import { ScoreRejectionMotiveComponent } from './score-approval/score-rejection-motive/score-rejection-motive.component';
+import { ScorePlayerProofsIconsComponent } from './score-player-proofs-icons/score-player-proofs-icons.component';
+import { ScoreApprovalFillComponent } from './score-approval/score-approval-fill/score-approval-fill.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +52,11 @@ import { NgxCurrencyModule } from 'ngx-currency';
     ScoreFooterComponent,
     SubmitComponent,
     SelectComponent,
+    ScoreApprovalComponent,
+    ScoreApprovalTableComponent,
+    ScoreRejectionMotiveComponent,
+    ScorePlayerProofsIconsComponent,
+    ScoreApprovalFillComponent,
   ],
   imports: [
     CommonModule,
@@ -61,7 +76,12 @@ import { NgxCurrencyModule } from 'ngx-currency';
     ScrollModule,
     MatAutocompleteModule,
     NgxCurrencyModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatListModule,
   ],
-  exports: [ScoreTableComponent, ScoreComponent],
+  exports: [ScoreTableComponent, ScoreComponent, ScoreApprovalComponent, ScoreApprovalFillComponent],
 })
 export class ScoreModule {}

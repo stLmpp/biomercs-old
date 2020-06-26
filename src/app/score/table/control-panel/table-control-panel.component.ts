@@ -9,16 +9,8 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@ng-stack/forms';
 import { ScoreTableParamsDto, ScoreTableType } from '../../../model/score';
-import { combineLatest, Subject } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  shareReplay,
-  switchMap,
-  takeUntil,
-} from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, takeUntil } from 'rxjs/operators';
 import { GameService } from '../../../state/game/game.service';
 import { ModeService } from '../../../state/mode/mode.service';
 import { TypeService } from '../../../state/type/type.service';
@@ -47,7 +39,7 @@ export class TableControlPanelComponent extends ScoreParameters<ScoreTableParams
     private typeService: TypeService,
     private characterService: CharacterService
   ) {
-    super(gameService, modeService, typeService);
+    super(gameService, modeService, typeService, null, characterService);
     this.init();
   }
 
@@ -145,22 +137,6 @@ export class TableControlPanelComponent extends ScoreParameters<ScoreTableParams
   get idPlatformControl(): FormControl<number> {
     return this.form.get('idPlatform');
   }
-
-  get idCharacterControl(): FormControl<number> {
-    return this.form.get('idCharacter');
-  }
-
-  characters$ = combineLatest([this.valueChanges('idGame', true), this.valueChanges('idMode', true)]).pipe(
-    switchMap(([idGame, idMode]) => {
-      this.idCharacterControl.disable();
-      return this.characterService.findByParams({ idGame, idMode }).pipe(
-        finalize(() => {
-          this.idCharacterControl.enable();
-        })
-      );
-    }),
-    shareReplay()
-  );
 
   trackByPlatform = trackByPlatform;
   trackByGame = trackByGame;

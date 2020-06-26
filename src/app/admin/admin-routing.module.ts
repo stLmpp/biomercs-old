@@ -33,6 +33,7 @@ import { ReasonComponent } from './reason/reason.component';
 import { ReasonResolver } from '../state/reason/reason.resolver';
 import { GameModeStageComponent } from './game-mode-stage/game-mode-stage.component';
 import { GameModeStageResolver } from '../state/game-mode-stage/game-mode-stage.resolver';
+import { AdminScoreApprovalComponent } from './score-approval/admin-score-approval.component';
 
 const routes: Routes = [
   {
@@ -120,6 +121,11 @@ const routes: Routes = [
         path: 'site',
         component: SiteComponent,
         resolve: [SiteResolver],
+      },
+      {
+        path: 'score-approval',
+        component: AdminScoreApprovalComponent,
+        resolve: [PlatformResolver],
       },
       {
         path: '**',

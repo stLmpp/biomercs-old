@@ -19,7 +19,7 @@
       transparentize(get-color($primary-color), 1) 100%
     );
     margin-top: 0.5rem;
-    border-radius: 4px;
+    border-radius: $form-field-border-radius;
     text-shadow: 0 0 4px rgb(150, 150, 150);
     .mat-icon-button:not(.region),
     .mat-icon:not(.region) {

@@ -1,0 +1,20 @@
+<ng-container *ngFor="let proof of proofs; trackBy: trackByScorePlayerProof">
+  <button mat-icon-button size="lg" *ngIf="proof.url" (click)="openVideo(proof.url)">
+    <mat-icon *ngIf="proof.site" [svgIcon]="proof.site.icon"></mat-icon>
+    <mat-icon *ngIf="!proof.site">launch</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    size="lg"
+    *ngIf="proof.idImage"
+    (click)="matDialog.open(imageRef, { data: proof.idImage })"
+  >
+    <mat-icon>image</mat-icon>
+  </button>
+</ng-container>
+
+<ng-template #imageRef let-idImage>
+  <mat-dialog-content>
+    <img class="dialog-img" [src]="idImage" auth [alt]="idImage" />
+  </mat-dialog-content>
+</ng-template>

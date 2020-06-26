@@ -46,6 +46,7 @@
                     matSuffix
                     *ngIf="updateFields?.length"
                     (click)="$event.stopPropagation(); openEdit(entity)"
+                    type="button"
                   >
                     <mat-icon>edit</mat-icon>
                   </button>
@@ -54,6 +55,7 @@
                     matSuffix
                     (click)="$event.stopPropagation(); fileUploadInputRef.click()"
                     *ngIf="uploadImage"
+                    type="button"
                   >
                     <mat-icon *ngIf="!entity.uploading; else loadingImage">
                       cloud_upload
@@ -74,6 +76,7 @@
                     matSuffix
                     *ngIf="entity[imageKey]"
                     (click)="$event.stopPropagation(); matDialog.open(imageRef, { data: entity[imageKey] })"
+                    type="button"
                   >
                     <mat-icon>image</mat-icon>
                   </button>

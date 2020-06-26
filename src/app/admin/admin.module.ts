@@ -36,6 +36,8 @@ import { BadgeModule } from '../shared/badge/badge.module';
 import { GameModeStageComponent } from './game-mode-stage/game-mode-stage.component';
 import { BaseAddEditComponent } from './base/base-add-edit/base-add-edit.component';
 import { NgxCurrencyModule } from 'ngx-currency';
+import { AdminScoreApprovalComponent } from './score-approval/admin-score-approval.component';
+import { ScoreModule } from '../score/score.module';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     ReasonComponent,
     GameModeStageComponent,
     BaseAddEditComponent,
+    AdminScoreApprovalComponent,
   ],
   imports: [
     SharedModule,
@@ -77,6 +80,7 @@ import { NgxCurrencyModule } from 'ngx-currency';
     MatProgressBarModule,
     BadgeModule,
     NgxCurrencyModule,
+    ScoreModule,
   ],
 })
 export class AdminModule {}

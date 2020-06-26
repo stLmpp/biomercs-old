@@ -1,0 +1,170 @@
+<div
+  class="table"
+  *ngIf="{
+    selectable: ![scoreStatusEnum.rejectedAdmin, scoreStatusEnum.rejectedUser].includes(idScoreStatus),
+    duo: idType === typeEnum.duo
+  } as state"
+>
+  <div class="overlay" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  <mat-table
+    [dataSource]="dataSource"
+    [trackBy]="trackByScore"
+    matSort
+    (matSortChange)="onSortChange($event)"
+  >
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header [class.header-id]="!userMode">ID</mat-header-cell>
+      <mat-cell *matCellDef="let score" class="cell-id">
+        <ng-container *ngIf="!userMode && state.selectable; else notSelectable">
+          <mat-checkbox
+            (click)="$event.stopPropagation()"
+            (change)="onSelection($event.checked, score)"
+            [checked]="selected.includes(score.id)"
+          >
+            {{ score.id }}
+          </mat-checkbox>
+        </ng-container>
+        <ng-template #notSelectable>
+          {{ score.id }}
+        </ng-template>
+      </mat-cell>
+      <mat-footer-cell *matFooterCellDef>
+        <ng-container *ngIf="state.selectable"> Total selected: {{ selected.length }} </ng-container>
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="stage">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Stage</mat-header-cell>
+      <mat-cell
+        *matCellDef="let score"
+        [matTooltip]="score.gameModeStage.stage.name"
+        matTooltipPosition="before"
+      >
+        {{ score.gameModeStage.stage.shortName }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="score">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        {{ score.score | score }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="maxCombo">
+      <mat-header-cell *matHeaderCellDef>Max combo</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        {{ score.maxCombo }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="time">
+      <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        {{ score.time }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="player1Username">
+      <mat-header-cell *matHeaderCellDef>Player 1</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        {{ score.scorePlayers[0].player.username | stDefault: '-' }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="player1Character">
+      <mat-header-cell *matHeaderCellDef>Character</mat-header-cell>
+      <mat-cell
+        *matCellDef="let score"
+        [matTooltip]="score.scorePlayers[0].character.name"
+        matTooltipPosition="before"
+      >
+        {{ score.scorePlayers[0].character.shortName }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="player1Proofs">
+      <mat-header-cell *matHeaderCellDef>Proofs</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        <app-score-player-proofs-icons
+          [proofs]="score.scorePlayers[0].scorePlayerProofs"
+        ></app-score-player-proofs-icons>
+      </mat-cell>
+    </ng-container>
+    <ng-container *ngIf="state.duo">
+      <ng-container matColumnDef="player2Username">
+        <mat-header-cell *matHeaderCellDef>Player 2</mat-header-cell>
+        <mat-cell *matCellDef="let score">
+          {{ score.scorePlayers[1]?.player.username | stDefault: '-' }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="player2Character">
+        <mat-header-cell *matHeaderCellDef>Character</mat-header-cell>
+        <mat-cell
+          *matCellDef="let score"
+          [matTooltip]="score.scorePlayers[1]?.character.name"
+          matTooltipPosition="before"
+        >
+          {{ score.scorePlayers[1]?.character.shortName }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="player2Proofs">
+        <mat-header-cell *matHeaderCellDef>Proofs</mat-header-cell>
+        <mat-cell *matCellDef="let score">
+          <app-score-player-proofs-icons
+            [proofs]="score.scorePlayers[1]?.scorePlayerProofs"
+          ></app-score-player-proofs-icons>
+        </mat-cell>
+      </ng-container>
+    </ng-container>
+    <ng-container matColumnDef="dateAchieved">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date achieved</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        {{ score.dateAchieved | date: 'dd/MM/yyyy' | stDefault: '-' }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="creationDate">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Creation date</mat-header-cell>
+      <mat-cell *matCellDef="let score">
+        {{ score.creationDate | date: 'dd/MM/yyyy' }}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="wr">
+      <mat-header-cell *matHeaderCellDef class="header-wr">WR</mat-header-cell>
+      <mat-cell *matCellDef="let score" class="cell-wr">
+        <mat-icon
+          svgIcon="account-star"
+          *ngIf="score.isCharacterWorldRecords"
+          [matTooltip]="(score | formatCharWr) + ' World Record'"
+        ></mat-icon>
+        <mat-icon
+          svgIcon="trophy-award"
+          *ngIf="score.isCombinationWorldRecord"
+          matTooltip="Team World Record"
+        ></mat-icon>
+        <mat-icon svgIcon="trophy" *ngIf="score.isWorldRecord" matTooltip="World Record"></mat-icon>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef class="header-action">Action</mat-header-cell>
+      <mat-cell *matCellDef="let score" class="cell-action">
+        <button
+          mat-icon-button
+          matTooltip="Approve"
+          matTooltipPosition="above"
+          (click)="$event.stopPropagation(); approve.emit(score)"
+        >
+          <mat-icon>check</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Reject"
+          matTooltipPosition="above"
+          (click)="$event.stopPropagation(); reject.emit(score)"
+          *ngIf="state.selectable"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+    <mat-row [active]="selected.includes(score.id)" *matRowDef="let score; columns: columns"></mat-row>
+
+    <mat-footer-row *matFooterRowDef="state.selectable ? ['id'] : []"></mat-footer-row>
+  </mat-table>
+</div>

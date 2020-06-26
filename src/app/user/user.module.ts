@@ -23,6 +23,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ReportModule } from '../shared/report/report.module';
 import { LikeModule } from '../shared/like/like.module';
 import { BadgeModule } from '../shared/badge/badge.module';
+import { UserScoreApprovalComponent } from './user-score-approval/user-score-approval.component';
+import { RegionModule } from '../shared/region/region.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { BadgeModule } from '../shared/badge/badge.module';
     FollowersComponent,
     UserShowcaseComponent,
     EditInfoComponent,
+    UserScoreApprovalComponent,
   ],
   imports: [
     SharedModule,
@@ -51,6 +54,7 @@ import { BadgeModule } from '../shared/badge/badge.module';
     ReportModule,
     LikeModule,
     BadgeModule,
+    RegionModule,
   ],
 })
 export class UserModule {}

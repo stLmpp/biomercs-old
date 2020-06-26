@@ -21,6 +21,23 @@
           background-color: mat-color($background, disabled-list-option);
           color: mat-color($accent, lighter);
         }
+        &.left,
+        &.right {
+          &::before {
+            content: '';
+            position: absolute;
+            background-color: mat-color($accent);
+            top: 0;
+            bottom: 0;
+            width: 5px;
+          }
+        }
+        &.left::before {
+          left: 0;
+        }
+        &.right::before {
+          right: 0;
+        }
       }
     }
   }

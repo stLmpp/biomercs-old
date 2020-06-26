@@ -89,7 +89,7 @@
             />
             <mat-autocomplete #auto [displayWith]="displayUser" autoActiveFirstOption>
               <mat-option
-                *ngFor="let user of users$ | async"
+                *ngFor="let user of users$ | async; trackBy: trackByUser"
                 [value]="user"
                 (onSelectionChange)="patchUser($index, $event)"
               >
@@ -117,6 +117,7 @@
               <mat-form-field>
                 <mat-label>Proof Site</mat-label>
                 <mat-select placeholder="Site" formControlName="idSite">
+                  <mat-option [value]=""></mat-option>
                   <mat-option
                     *ngFor="let site of siteQuery.all$ | async; trackBy: trackBySite"
                     [value]="site.id"
@@ -125,10 +126,16 @@
                     {{ site.name }}
                   </mat-option>
                 </mat-select>
+                <mat-error *error="'siblingRequired'">
+                  Site is required when URL is specified
+                </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Proof URL</mat-label>
                 <input matInput placeholder="URL" formControlName="url" />
+                <mat-error *error="'siblingRequired'">
+                  URL is required when Site is specified
+                </mat-error>
               </mat-form-field>
             </ng-container>
           </ng-container>
@@ -230,10 +237,22 @@
           Invalid time
         </mat-error>
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date achieved</mat-label>
+        <input
+          matInput
+          [max]="now"
+          formControlName="dateAchieved"
+          placeholder="Date achieved"
+          [matDatepicker]="dateAchievedPicker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="dateAchievedPicker"></mat-datepicker-toggle>
+        <mat-datepicker #dateAchievedPicker></mat-datepicker>
+      </mat-form-field>
     </div>
     <hr />
     <div class="actions">
-      <button mat-raised-button color="primary" type="button" (click)="resetForm()">Reset</button>
+      <button mat-button type="button" (click)="resetForm()" [disabled]="form.pristine">Reset</button>
       <button
         mat-raised-button
         color="accent"

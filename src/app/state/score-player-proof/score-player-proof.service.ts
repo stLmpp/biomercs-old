@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
 import { SuperService } from '../../shared/super/super-service';
-import { ScorePlayerProof, ScorePlayerProofAddDto } from '../../model/score-player-proof';
+import {
+  ScorePlayerProof,
+  ScorePlayerProofAddDto,
+  ScorePlayerProofUpdateDto,
+} from '../../model/score-player-proof';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { flatten } from '@angular/compiler';
 
 @Injectable({ providedIn: 'root' })
-export class ScorePlayerProofService extends SuperService<ScorePlayerProof, ScorePlayerProofAddDto> {
+export class ScorePlayerProofService extends SuperService<
+  ScorePlayerProof,
+  ScorePlayerProofAddDto,
+  ScorePlayerProofUpdateDto
+> {
   constructor(private http: HttpClient) {
     super(http, { endPoint: 'score-player-proof', file: { idKey: 'idImage', key: 'image' } });
   }
@@ -29,5 +37,16 @@ export class ScorePlayerProofService extends SuperService<ScorePlayerProof, Scor
       : of([]);
     const urls$: Observable<ScorePlayerProof[]> = urls.length ? this.addMany(urls) : of([]);
     return forkJoin([files$, urls$]).pipe(map(flatten));
+  }
+
+  updateFile(idScorePlayerProof: number, file: File): Observable<ScorePlayerProof> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+    });
+    return this.http.patch<ScorePlayerProof>(`${this.endPoint}/${idScorePlayerProof}/image`, formData, {
+      headers,
+    });
   }
 }

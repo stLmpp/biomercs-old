@@ -1,9 +1,20 @@
 import { isArray, isNumber, isObject, isString } from 'is-what';
 import { ID } from '@stlmpp/utils';
+import { Control } from '@ng-stack/forms';
 
 export type CompareFn<T = any> = (valueA: T, valueB: T) => boolean;
 export type Constructor<T = any> = new (...args: any[]) => T;
 export type Dictionary<T = any, K extends ID = number> = Record<K, T>;
+export type ToControls<T> = {
+  [P in keyof T]: T[P] extends object
+    ? Control<T[P]>
+    : T[P] extends Date
+    ? Control<T[P]>
+    : T[P] extends any[]
+    ? Control<T[P]>
+    : T[P];
+};
+export type OrderByDirection = 'ASC' | 'DESC';
 
 export const compareByFactory = <T = any>(key: keyof T): CompareFn<T> => (valueA, valueB) =>
   valueA?.[key] === valueB?.[key];

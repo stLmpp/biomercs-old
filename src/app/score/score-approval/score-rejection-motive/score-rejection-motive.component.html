@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="onConfirm()">
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Motive</mat-label>
+      <mat-select formControlName="rejectionMotive" placeholder="Motive">
+        <mat-option *ngFor="let motive of rejectionMotives; trackBy: trackBy" [value]="motive.value">
+          {{ motive.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *error="'required'">
+        Motive is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        #descriptionRef
+        formControlName="description"
+        placeholder="Description"
+        maxlength="1000"
+      ></textarea>
+      <mat-hint>{{ descriptionRef.value?.length | stDefault: 0 }} / 1000</mat-hint>
+      <mat-error *error="'required'">
+        Description is required
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close type="button">Cancel</button>
+    <button mat-button color="accent" type="submit" [disabled]="form.invalid">Confirm</button>
+  </mat-dialog-actions>
+</form>

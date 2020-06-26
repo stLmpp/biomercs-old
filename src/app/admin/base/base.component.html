@@ -1,5 +1,5 @@
 <div class="toolbar">
-  <button mat-icon-button color="accent" (click)="openAdd()" *ngIf="addFields.length">
+  <button mat-icon-button color="accent" (click)="openAdd()" *ngIf="addFields.length" type="button">
     <mat-icon>add</mat-icon>
   </button>
   <mat-form-field *ngIf="searchBy">
@@ -33,6 +33,7 @@
           matSuffix
           *ngIf="deleteAllowed"
           (click)="$event.stopPropagation(); delete(entity)"
+          type="button"
         >
           <mat-icon *ngIf="!entity.deleting; else deleting">delete</mat-icon>
           <ng-template #deleting>
@@ -44,6 +45,7 @@
           matSuffix
           *ngIf="uploadImage"
           (click)="$event.stopPropagation(); fileUploadInputRef.click()"
+          type="button"
         >
           <mat-icon *ngIf="!entity.uploading; else loadingImage">cloud_upload</mat-icon>
           <ng-template #loadingImage>
@@ -76,8 +78,8 @@
     This action can't be undone!
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button color="accent" [mat-dialog-close]="false">Cancel</button>
-    <button mat-button color="accent" [mat-dialog-close]="true">Delete</button>
+    <button mat-button color="accent" [mat-dialog-close]="false" type="button">Cancel</button>
+    <button mat-button color="accent" [mat-dialog-close]="true" type="button">Delete</button>
   </mat-dialog-actions>
 </ng-template>
 

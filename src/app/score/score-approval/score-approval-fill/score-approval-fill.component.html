@@ -1,0 +1,44 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <h1 mat-dialog-title>Add description and proofs</h1>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea #textArea matInput formControlName="description" rows="2"></textarea>
+      <mat-hint>{{ textArea.value?.length | stDefault: 0 }} / 1000</mat-hint>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Site</mat-label>
+      <mat-select formControlName="idSite" placeholder="Site">
+        <mat-option>-</mat-option>
+        <mat-option *ngFor="let site of siteQuery.all$ | async; trackBy: trackBySite" [value]="site.id">
+          <mat-icon *ngIf="site.icon" [svgIcon]="site.icon"></mat-icon>
+          {{ site.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *error="'siblingRequired'">
+        Site is required when URL is specified
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>URL</mat-label>
+      <input matInput formControlName="url" placeholder="URL" />
+      <mat-error *error="'siblingRequired'">
+        URL is required when Site is specified
+      </mat-error>
+    </mat-form-field>
+    <app-mat-file-upload
+      color="primary"
+      formControlName="file"
+      [extensions]="defaultQuery.imageExtensions$ | async"
+    >
+      <span btnLabel>Browse</span>
+      <mat-label>Select or drop a proof (image)</mat-label>
+    </app-mat-file-upload>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" type="button">Cancel</button>
+    <button mat-raised-button color="accent" type="submit" [disabled]="form.disabled">
+      Save and approve
+    </button>
+  </mat-dialog-actions>
+</form>

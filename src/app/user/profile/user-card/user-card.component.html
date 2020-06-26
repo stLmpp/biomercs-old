@@ -1,7 +1,8 @@
 <ng-container
   *ngIf="{
     isEditable: (authQuery.isOwner$ | async) || isSameAsLogged,
-    isFollowing: user | isFollowing
+    isFollowing: user | isFollowing,
+    approvalCount: approvalCount$ | async
   } as state"
 >
   <mat-card class="user" #card>
@@ -167,27 +168,42 @@
       </mat-nav-list>
       <mat-divider></mat-divider>
     </mat-card-content>
-    <mat-card-actions align="end" [class.user-same-as-logged]="isSameAsLogged">
-      <app-like-buttons
-        [idReference]="user.id"
-        [type]="referenceTypeEnum.user"
-        [readonly]="isSameAsLogged"
-      ></app-like-buttons>
-      <button
-        mat-button
-        [color]="state.isFollowing ? 'warn' : 'accent'"
-        (click)="onFollow(user)"
-        [disabled]="followingLoading"
-        *ngIf="!isSameAsLogged"
-      >
-        {{ state.isFollowing ? 'Unfollow' : 'Follow' }}
-      </button>
-      <app-report-button
-        *ngIf="!isSameAsLogged"
-        [type]="referenceTypeEnum.user"
-        [idReference]="user.id"
-        [reasons]="reasonQuery.all$ | async"
-      ></app-report-button>
+    <mat-card-actions class="user-card-actions" [class.user-same-as-logged]="isSameAsLogged">
+      <div>
+        <button
+          mat-raised-button
+          *ngIf="isSameAsLogged"
+          [matBadge]="'' + (state.approvalCount > 99 ? 99 : state.approvalCount)"
+          matBadgeSize="small"
+          color="primary"
+          matBadgeColor="accent"
+          [routerLink]="['../', 'score-approval']"
+        >
+          Approvals
+        </button>
+      </div>
+      <div>
+        <app-like-buttons
+          [idReference]="user.id"
+          [type]="referenceTypeEnum.user"
+          [readonly]="isSameAsLogged"
+        ></app-like-buttons>
+        <button
+          mat-button
+          [color]="state.isFollowing ? 'warn' : 'accent'"
+          (click)="onFollow(user)"
+          [disabled]="followingLoading"
+          *ngIf="!isSameAsLogged"
+        >
+          {{ state.isFollowing ? 'Unfollow' : 'Follow' }}
+        </button>
+        <app-report-button
+          *ngIf="!isSameAsLogged"
+          [type]="referenceTypeEnum.user"
+          [idReference]="user.id"
+          [reasons]="reasonQuery.all$ | async"
+        ></app-report-button>
+      </div>
     </mat-card-actions>
   </mat-card>
 
@@ -216,36 +232,5 @@
         Save
       </button>
     </div>
-  </ng-template>
-
-  <ng-template #regionOverlayRef>
-    <h1>Choose your region</h1>
-    <mat-form-field>
-      <mat-label>Search</mat-label>
-      <input matInput [formControl]="regionSearchControl" placeholder="Search" />
-    </mat-form-field>
-    <mat-dialog-content
-      *let="regionQuery.all$ | async | search: ['name', 'shortName']:(regionSearch$ | async) as regions"
-    >
-      <cdk-virtual-scroll-viewport itemSize="56" [style.height.px]="426">
-        <mat-nav-list>
-          <mat-list-item
-            *cdkVirtualFor="let region of regions; trackBy: trackByRegion"
-            [active]="region.id === user.region?.id"
-            (click)="edit('region', region)"
-          >
-            <mat-icon mat-list-icon svgIcon [region]="region"></mat-icon>
-            <span matLine>
-              {{ region.name }}
-            </span>
-          </mat-list-item>
-        </mat-nav-list>
-      </cdk-virtual-scroll-viewport>
-      <mat-list *ngIf="!regions?.length">
-        <mat-list-item>
-          No region found
-        </mat-list-item>
-      </mat-list>
-    </mat-dialog-content>
   </ng-template>
 </ng-container>

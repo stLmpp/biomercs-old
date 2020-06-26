@@ -19,4 +19,9 @@ export interface ScorePlayerProofAddDto {
   idPlayer?: number;
 }
 
+export interface ScorePlayerProofUpdateDto {
+  idSite?: number;
+  url?: string;
+}
+
 export const trackByScorePlayerProof = trackByFactory<ScorePlayerProof>('id');

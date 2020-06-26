@@ -8,6 +8,7 @@ import { User } from './user';
 import { trackByFactory } from '@stlmpp/utils';
 import { GameModeStage } from './game-mode-stage';
 import { ScoreStatus, ScoreStatusEnum } from './score-status';
+import { OrderByDirection } from '../util/util';
 
 export interface Score extends CommonColumns {
   idGameModePlatform: number;
@@ -26,7 +27,7 @@ export interface Score extends CommonColumns {
   dateAchieved?: Date;
 
   isWorldRecord?: boolean;
-  wordRecord?: Score;
+  worldRecord?: Score;
   isCharacterWorldRecords?: boolean;
   isCharacterWorldRecord?: { [idCharacter: number]: boolean };
   characterWorldRecords?: Score[];
@@ -36,7 +37,7 @@ export interface Score extends CommonColumns {
 
 export interface ScoreIsWrViewModel {
   isWorldRecord?: boolean;
-  wordRecord?: Score;
+  worldRecord?: Score;
   isCharacterWorldRecords?: boolean;
   isCharacterWorldRecord?: { [idCharacter: number]: boolean };
   characterWorldRecords?: Score[];
@@ -55,6 +56,7 @@ export interface ScoreAddDto {
   maxCombo?: number;
   time?: string;
   description?: string;
+  dateAchieved?: Date;
 }
 
 export interface ScoreTable {
@@ -107,16 +109,19 @@ export interface ScoreIsWrDto extends Omit<ScoreTopScoreDto, 'idCharacter' | 'id
 }
 
 export interface ScoreApprovalParamsDto {
-  idGame?: number;
-  idMode?: number;
-  idType?: number;
-  idPlatform?: number;
+  idGame: number;
+  idMode: number;
+  idType: number;
+  idPlatform: number;
   idCharacter?: number;
   idStage?: number;
   idPlayer?: number;
   idScoreStatus: ScoreStatusEnum;
   startDate?: Date;
   endDate?: Date;
+  page: number;
+  orderBy?: string;
+  orderByDirection?: OrderByDirection;
 }
 
 export interface ScoreAverageDto extends ScoreTopScoreDto {

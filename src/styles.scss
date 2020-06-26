@@ -14,10 +14,13 @@
 @import 'icon';
 @import 'mixins';
 @import './src/app/shared/badge/badge.component';
+@import 'table';
+@import 'scroll';
 
 @include angular-material-theme($theme);
 @include mat-list-theme-custom($theme);
 @include bio-badge($theme);
+@include mat-table-theme-custom($theme);
 
 html,
 body {

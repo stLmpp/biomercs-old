@@ -1,6 +1,12 @@
-<button mat-button color="warn" (click)="openReport()" [disabled]="form.disabled || disabled">
+<button
+  mat-icon-button
+  color="warn"
+  (click)="openReport()"
+  [disabled]="form.disabled || disabled"
+  matTooltip="Report"
+  matTooltipPosition="above"
+>
   <mat-icon>flag</mat-icon>
-  Report
 </button>
 
 <ng-template #reportModalRef>

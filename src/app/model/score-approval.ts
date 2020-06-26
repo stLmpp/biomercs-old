@@ -1,4 +1,5 @@
 import { CommonColumns } from './common-history';
+import { LabelValue } from './label-value';
 
 export interface ScoreApproval extends CommonColumns {
   status: ScoreApprovalStatusEnum;
@@ -20,6 +21,21 @@ export enum ScoreApprovalRejectionMotiveEnum {
   other = 'other',
 }
 
+export const rejectionMotives = (): LabelValue<ScoreApprovalRejectionMotiveEnum>[] => [
+  {
+    label: 'Lack of evidence',
+    value: ScoreApprovalRejectionMotiveEnum.evidence,
+  },
+  {
+    label: 'Cheating',
+    value: ScoreApprovalRejectionMotiveEnum.cheat,
+  },
+  {
+    label: 'Other',
+    value: ScoreApprovalRejectionMotiveEnum.other,
+  },
+];
+
 export enum ScoreApprovalTypeEnum {
   admin = 'admin',
   user = 'user',
@@ -31,4 +47,8 @@ export interface ScoreApprovalAddDto {
   description?: string;
   rejectionMotive?: ScoreApprovalRejectionMotiveEnum;
   type?: ScoreApprovalTypeEnum;
+}
+
+export interface ScoreApprovalAddManyDto extends Omit<ScoreApprovalAddDto, 'idScore'> {
+  idScores: number[];
 }

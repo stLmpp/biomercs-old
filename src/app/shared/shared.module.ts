@@ -34,6 +34,9 @@ import { FindPipe } from './pipes/find.pipe';
 import { AssertNumberPipe } from './pipes/assert-number.pipe';
 import { StUtilsModule } from '@stlmpp/utils';
 import { MatFileUploadComponent } from './custom-material/mat-file-upload/mat-file-upload.component';
+import { MatPaginatorDirective } from './custom-material/mat-paginator.directive';
+import { FormatCharWrPipe } from './pipes/format-char-wr.pipe';
+import { MatRowActiveDirective } from './custom-material/mat-row-active.directive';
 
 const PIPES = [
   FilterPipe,
@@ -46,6 +49,7 @@ const PIPES = [
   ScorePipe,
   FindPipe,
   AssertNumberPipe,
+  FormatCharWrPipe,
 ];
 const DIRECTIVES = [
   DisabledControlDirective,
@@ -58,6 +62,8 @@ const DIRECTIVES = [
   MatIconSvgDirective,
   MatIconSizeDirective,
   ImgBackgroundDirective,
+  MatPaginatorDirective,
+  MatRowActiveDirective,
 ];
 
 const MODULES = [

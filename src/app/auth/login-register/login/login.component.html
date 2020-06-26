@@ -34,23 +34,17 @@
         <mat-error *error="'loginError'">
           {{ passwordControl.getError('loginError') }}
         </mat-error>
+        <mat-hint align="end">
+          <span class="link" [routerLink]="['../', 'forgot-password']">Forgot password</span>
+        </mat-hint>
       </mat-form-field>
       <mat-checkbox formControlName="rememberMe">
         Remember me
       </mat-checkbox>
     </mat-card-content>
     <mat-card-actions align="end">
-      <button mat-button color="accent" type="submit" [disabled]="form.invalid || form.disabled">
+      <button mat-raised-button color="accent" type="submit" [disabled]="form.invalid || form.disabled">
         Login
-      </button>
-      <button
-        mat-button
-        color="accent"
-        type="button"
-        [disabled]="form.disabled"
-        [routerLink]="['../', 'forgot-password']"
-      >
-        Forgot password
       </button>
     </mat-card-actions>
   </mat-card>

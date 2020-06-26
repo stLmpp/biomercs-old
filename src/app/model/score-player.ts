@@ -25,3 +25,10 @@ export interface ScorePlayerAddDto {
   description?: string;
   scorePlayerProofs?: ScorePlayerProofAddDto[];
 }
+
+export interface ScorePlayerUpdateDto {
+  idCharacter?: number;
+  host?: boolean;
+  bulletKills?: number;
+  description?: string;
+}

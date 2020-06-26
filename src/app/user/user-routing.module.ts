@@ -6,12 +6,34 @@ import { SingleUserResolver, UserLikeResolver } from '../state/user/user.resolve
 import { PlatformResolver } from '../state/platform/platform.resolver';
 import { RegionResolver } from '../state/region/region.resolver';
 import { ReasonResolver } from '../state/reason/reason.resolver';
+import { UserScoreApprovalComponent } from './user-score-approval/user-score-approval.component';
+import { SameAsLoggedGuard } from '../auth/same-as-logged.guard';
+import { ScoreCountApprovalResolver } from './score-count-approval.resolver';
+import { SiteResolver } from '../state/site/site.resolver';
 
 const routes: Routes = [
   {
-    path: `:${RouteParamEnum.idUser}/profile`,
-    component: ProfileComponent,
-    resolve: [SingleUserResolver, PlatformResolver, RegionResolver, UserLikeResolver, ReasonResolver],
+    path: `:${RouteParamEnum.idUser}`,
+    children: [
+      {
+        path: `profile`,
+        component: ProfileComponent,
+        resolve: [
+          SingleUserResolver,
+          PlatformResolver,
+          RegionResolver,
+          UserLikeResolver,
+          ReasonResolver,
+          ScoreCountApprovalResolver,
+        ],
+      },
+      {
+        path: 'score-approval',
+        component: UserScoreApprovalComponent,
+        resolve: [PlatformResolver, SiteResolver],
+        canActivate: [SameAsLoggedGuard],
+      },
+    ],
   },
 ];
 

@@ -1,19 +1,21 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
-  forwardRef,
-  ViewChild,
-  ElementRef,
-  HostListener,
-  HostBinding,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
+  forwardRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
 } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { convertToBoolProperty, getFileExtesion } from '../../../util/util';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-mat-file-upload',
@@ -28,8 +30,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     },
   ],
 })
-export class MatFileUploadComponent implements ControlValueAccessor, OnInit {
-  constructor(private matSnackBar: MatSnackBar, private changeDetectorRef: ChangeDetectorRef) {}
+export class MatFileUploadComponent implements ControlValueAccessor, OnInit, OnDestroy {
+  constructor(
+    private elementRef: ElementRef,
+    private matSnackBar: MatSnackBar,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+
+  private _destroy$ = new Subject();
 
   @ViewChild('inputRef') inputRef: ElementRef<HTMLInputElement>;
 
@@ -50,6 +58,15 @@ export class MatFileUploadComponent implements ControlValueAccessor, OnInit {
   _multiple: boolean;
   @Input() loading: boolean;
   @Input() showFilename = true;
+
+  @HostBinding('attr.tabindex')
+  get tabindex(): number {
+    if (this.disabled) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
 
   files: FileList;
 
@@ -147,4 +164,9 @@ export class MatFileUploadComponent implements ControlValueAccessor, OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
 }

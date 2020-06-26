@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>{{ data?.title | stDefault: 'Choose a region' }}</h1>
+<mat-form-field>
+  <mat-label>Search</mat-label>
+  <input matInput [formControl]="regionSearchControl" placeholder="Search" />
+</mat-form-field>
+<mat-dialog-content
+  *let="regionQuery.all$ | async | search: ['name', 'shortName']:(regionSearch$ | async) as regions"
+>
+  <cdk-virtual-scroll-viewport itemSize="56" [style.height.px]="426" bioScroll>
+    <mat-nav-list>
+      <mat-list-item
+        *cdkVirtualFor="let region of regions; trackBy: trackByRegion"
+        [active]="region.id === data?.idRegion"
+        [mat-dialog-close]="region"
+      >
+        <mat-icon mat-list-icon svgIcon [region]="region"></mat-icon>
+        <span matLine>
+          {{ region.name }}
+        </span>
+      </mat-list-item>
+    </mat-nav-list>
+  </cdk-virtual-scroll-viewport>
+  <mat-list *ngIf="!regions?.length">
+    <mat-list-item>
+      No region found
+    </mat-list-item>
+  </mat-list>
+</mat-dialog-content>

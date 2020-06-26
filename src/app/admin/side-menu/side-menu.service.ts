@@ -26,6 +26,7 @@ export class SideMenuService {
     { title: 'Platform', routerLink: 'platform' },
     { title: 'Game Mode Platform', routerLink: 'game-mode-platform' },
     { title: 'Site', routerLink: 'site' },
+    { title: 'Score Approval', routerLink: 'score-approval', padding: true },
   ]);
 
   list$ = this._list$

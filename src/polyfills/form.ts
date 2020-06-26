@@ -1,8 +1,10 @@
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@ng-stack/forms';
+import { ValidatorsModel } from '@ng-stack/forms/lib/types';
+import { FormGroup as NativeFormGroup } from '@angular/forms';
 
-declare module '@angular/forms/forms' {
-  interface FormGroup extends AbstractControl {
-    getDirtyValues(): { [key: string]: any };
+declare module '@ng-stack/forms/lib/form-group' {
+  interface FormGroup<T extends object = any, V extends object = ValidatorsModel> extends NativeFormGroup {
+    getDirtyValues(): T;
   }
 }
 

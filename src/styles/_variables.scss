@@ -14,6 +14,9 @@ $accent: mat-palette($secondary-color);
 $warn: mat-palette($warn-color, 900, 700);
 $theme: mat-dark-theme($primary, $accent, $warn);
 
+$form-field-border-radius: 5px;
+$card-border-radius: 4px;
+
 // Breakpoints
 $mat-xs: 'max-width: 599px';
 $mat-sm: 'min-width: 600px';

@@ -5,6 +5,7 @@
         *ngFor="let menu of sideMenuService.list$ | async; trackBy: trackBy"
         [routerLink]="menu.routerLink"
         routerLinkActive="active"
+        class="left"
       >
         <a matLine>{{ menu.title }}</a>
       </mat-list-item>

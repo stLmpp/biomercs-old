@@ -19,6 +19,7 @@ import localeBr from '@angular/common/locales/pt';
 import localeBrExtra from '@angular/common/locales/extra/pt';
 import { flagIcons } from '../assets/flags/config.js';
 import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
+import { MatNativeDateModule } from '@angular/material/core';
 
 registerLocaleData(localeBr, localeBrExtra);
 
@@ -48,6 +49,7 @@ registerLocaleData(localeBr, localeBrExtra);
       inputMode: CurrencyMaskInputMode.NATURAL,
     }),
     MainModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

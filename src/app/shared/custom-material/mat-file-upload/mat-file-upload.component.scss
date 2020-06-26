@@ -2,25 +2,57 @@
 @import 'functions';
 
 $background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+$outline-color: mat-color($foreground, divider, 0.3);
 
 :host {
+  border: 1px solid $outline-color;
   display: flex;
-  align-items: center;
-  background-color: mat-color($background, 'card');
-  border-radius: 4px;
+  border-radius: $form-field-border-radius;
+  transition: border-color 200ms ease;
+  overflow: hidden;
+  &:hover {
+    border-color: currentColor;
+    > .file {
+      border-color: currentColor;
+    }
+  }
   &.dragover {
     border: 1px solid get-color($secondary-color);
-  }
-  > .label {
-    > div {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    > .file {
+      border: 1px solid get-color($secondary-color);
     }
+  }
+  &:focus,
+  &:active,
+  &:focus-within {
+    border: 1px solid mat-color($primary);
+    > .file {
+      border: 1px solid mat-color($primary);
+    }
+    outline: 0;
+  }
+  > .file {
+    flex-grow: 1;
     display: flex;
     align-items: center;
-    flex-grow: 1;
-    padding: 0 16px;
+    border-radius: $form-field-border-radius;
+    border: 1px solid transparent;
+    padding: 2px;
+    transition: border-color 200ms ease;
     overflow: hidden;
+    > .label {
+      > div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      padding: 0 1rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }

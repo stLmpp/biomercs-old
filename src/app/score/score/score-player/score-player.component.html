@@ -28,28 +28,9 @@
   </div>
   <div class="item" [clipPath]="playerNumber">
     Proofs:
-    <ng-container *ngFor="let proof of player.scorePlayerProofs; trackBy: trackByScorePlayerProof">
-      <button mat-icon-button size="lg" *ngIf="proof.url" (click)="openVideo(proof.url)">
-        <mat-icon *ngIf="proof.site" [svgIcon]="proof.site.icon"></mat-icon>
-        <mat-icon *ngIf="!proof.site">launch</mat-icon>
-      </button>
-      <button
-        mat-icon-button
-        size="lg"
-        *ngIf="proof.idImage"
-        (click)="matDialog.open(imageRef, { data: proof.idImage })"
-      >
-        <mat-icon>image</mat-icon>
-      </button>
-    </ng-container>
+    <app-score-player-proofs-icons [proofs]="player.scorePlayerProofs"></app-score-player-proofs-icons>
   </div>
   <div class="item" [clipPath]="playerNumber" [class.description]="player.description">
     {{ player.description | stDefault: 'No description' }}
   </div>
 </div>
-
-<ng-template #imageRef let-idImage>
-  <mat-dialog-content>
-    <img class="dialog-img" [src]="idImage" auth [alt]="idImage" />
-  </mat-dialog-content>
-</ng-template>
