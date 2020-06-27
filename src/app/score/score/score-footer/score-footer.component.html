@@ -1,8 +1,17 @@
 <div class="actions">
-  <app-like-buttons [idReference]="score.id" [type]="referenceTypeEnum.score"></app-like-buttons>
-  <app-report-button
-    [type]="referenceTypeEnum.score"
-    [idReference]="score.id"
-    [reasons]="reasonQuery.all$ | async"
-  ></app-report-button>
+  <div class="start">
+    <ng-container *ngIf="score.idScoreStatus !== scoreStatusEnum.approved">
+      <h2>
+        {{ score.scoreStatus.description }}
+      </h2>
+    </ng-container>
+  </div>
+  <div class="end">
+    <app-like-buttons [idReference]="score.id" [type]="referenceTypeEnum.score"></app-like-buttons>
+    <app-report-button
+      [type]="referenceTypeEnum.score"
+      [idReference]="score.id"
+      [reasons]="reasonQuery.all$ | async"
+    ></app-report-button>
+  </div>
 </div>

@@ -52,7 +52,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroupDirective } from '@angular/forms';
 import { GameModeStageService } from '../../state/game-mode-stage/game-mode-stage.service';
 import { ScoreParameters } from '../score-parameters.super';
-import { siblingRequiredValidator } from '../sibling-validator.directive';
+import { siblingRequiredValidator } from '../../validators/sibling-validator.directive';
 
 interface ScorePlayerAddDtoForm extends ScorePlayerAddDto {
   player?: Control<User>;

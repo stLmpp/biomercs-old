@@ -11,7 +11,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { ScorePlayerProof } from '../../../model/score-player-proof';
 import { removeNullObject } from '../../../util/util';
 import { finalize, switchMap } from 'rxjs/operators';
-import { siblingRequiredValidator } from '../../sibling-validator.directive';
+import { siblingRequiredValidator } from '../../../validators/sibling-validator.directive';
 
 interface ScoreApprovalFillForm {
   description: string;

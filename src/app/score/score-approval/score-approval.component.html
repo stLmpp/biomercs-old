@@ -67,32 +67,13 @@
         </mat-autocomplete>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Start date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="startPicker"
-          formControlName="startDate"
-          [max]="endDateControl.value"
-        />
-        <button mat-icon-button matSuffix *ngIf="startDateControl.value" (click)="startPicker.select(null)">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>End date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="endPicker"
-          formControlName="endDate"
-          [min]="startDateControl.value"
-        />
-        <button mat-icon-button matSuffix *ngIf="endDateControl.value" (click)="endPicker.select(null)">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
+        <mat-label>Date</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" formControlName="startDate" />
+          <input matEndDate placeholder="End date" formControlName="endDate" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Stage</mat-label>
@@ -123,7 +104,7 @@
       (sortChange)="onSortChange($event)"
       (selectionChange)="onSelectionChange($event)"
       [(selected)]="selectedIds"
-      [loading]="loadingData"
+      [loading]="!!loadingData"
       (approve)="approveOne($event)"
       (reject)="rejectOne($event)"
       [userMode]="userMode"
@@ -146,7 +127,7 @@
         mat-raised-button
         color="accent"
         type="button"
-        [disabled]="!selected?.length || loadingData"
+        [disabled]="!selected?.length || !!loadingData"
         (click)="approveAll()"
       >
         Approve selected
@@ -155,7 +136,7 @@
         mat-raised-button
         color="warn"
         type="button"
-        [disabled]="!selected?.length || loadingData"
+        [disabled]="!selected?.length || !!loadingData"
         (click)="rejectAll()"
       >
         Reject selected

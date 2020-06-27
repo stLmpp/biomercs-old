@@ -129,4 +129,8 @@ export class ScoreService {
     const params = new HttpParams(dto, true);
     return this.http.get<number>(`${this.endPoint}/count-approval`, { params });
   }
+
+  canActivate(idScore: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.endPoint}/${idScore}/can-activate`);
+  }
 }

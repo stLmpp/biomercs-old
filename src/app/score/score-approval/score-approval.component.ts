@@ -123,14 +123,6 @@ export class ScoreApprovalComponent extends ScoreParameters<ScoreApprovalParamsF
 
   usernameControl = new FormControl<string>();
 
-  get startDateControl(): FormControl<Date> {
-    return this.form.get('startDate');
-  }
-
-  get endDateControl(): FormControl<Date> {
-    return this.form.get('endDate');
-  }
-
   get idPlayerControl(): FormControl<number> {
     return this.form.get('idPlayer');
   }
@@ -139,7 +131,7 @@ export class ScoreApprovalComponent extends ScoreParameters<ScoreApprovalParamsF
     return this.form.get('idScoreStatus');
   }
 
-  loadingData = false;
+  loadingData = 0;
 
   private refreshData$ = new BehaviorSubject<number>(0);
 
@@ -152,10 +144,6 @@ export class ScoreApprovalComponent extends ScoreParameters<ScoreApprovalParamsF
       return false;
     }),
     pluck(0),
-    tap(() => {
-      this.loadingData = true;
-      this.changeDetectorRef.markForCheck();
-    }),
     debounceTime(300),
     map(params => ({ ...params, page: params.page + 1 })),
     map(params => {
@@ -164,10 +152,14 @@ export class ScoreApprovalComponent extends ScoreParameters<ScoreApprovalParamsF
       }
       return params;
     }),
+    tap(() => {
+      this.loadingData++;
+      this.changeDetectorRef.markForCheck();
+    }),
     switchMap(params =>
       this.scoreService.findApprovalList(params).pipe(
         finalize(() => {
-          this.loadingData = false;
+          this.loadingData--;
           this.changeDetectorRef.markForCheck();
         })
       )

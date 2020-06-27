@@ -7,6 +7,7 @@ import { ReasonResolver } from '../state/reason/reason.resolver';
 import { SubmitComponent } from './submit/submit.component';
 import { PlatformResolver } from '../state/platform/platform.resolver';
 import { SiteResolver } from '../state/site/site.resolver';
+import { ScoreGuard } from './score/score.guard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     path: `:${RouteParamEnum.idScore}`,
     component: ScoreComponent,
     resolve: [SingleScoreResolver, ScoreLikeResolver, ReasonResolver],
+    canActivate: [ScoreGuard],
   },
 ];
 
