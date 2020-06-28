@@ -28,6 +28,7 @@ import {
   shareReplay,
   switchMap,
   take,
+  takeUntil,
   tap,
 } from 'rxjs/operators';
 import { isEqual } from 'lodash-es';
@@ -161,7 +162,8 @@ export class ScoreApprovalComponent extends ScoreParameters<ScoreApprovalParamsF
         finalize(() => {
           this.loadingData--;
           this.changeDetectorRef.markForCheck();
-        })
+        }),
+        takeUntil(this._destroy$)
       )
     ),
     shareReplay()

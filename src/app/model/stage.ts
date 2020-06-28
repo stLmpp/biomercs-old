@@ -12,6 +12,7 @@ export interface Stage extends CommonColumns {
   image?: FileUpload;
   customUrl?: boolean;
   custom?: boolean;
+  order?: number;
 }
 
 export interface StageAddDto {
@@ -20,6 +21,7 @@ export interface StageAddDto {
   idGame: number;
   custom?: boolean;
   customUrl?: boolean;
+  order?: number;
 }
 
 export type StageUpdateDto = Partial<StageAddDto>;

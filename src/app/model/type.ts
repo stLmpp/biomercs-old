@@ -10,16 +10,19 @@ export enum TypeEnum {
 export interface Type extends CommonColumns {
   name: string;
   playerQuantity: number;
+  order?: number;
 }
 
 export interface TypeAddDto {
   name: string;
   playerQuantity: number;
+  order?: number;
 }
 
 export interface TypeUpdateDto {
   name?: string;
   playerQuantity?: number;
+  order?: number;
 }
 
 export interface TypeExistsDto extends SuperParamsDto {

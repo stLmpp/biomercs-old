@@ -2,12 +2,14 @@
 @import 'functions';
 
 .bio-scroll {
-  overflow: hidden;
+  overflow: auto;
   &:hover {
-    overflow: auto;
+    &::-webkit-scrollbar {
+      width: 10px;
+    }
   }
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 0;
   }
   &::-webkit-scrollbar-track {
     background: get-color($primary-color, 900);

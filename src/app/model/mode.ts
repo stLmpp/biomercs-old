@@ -5,10 +5,12 @@ import { trackByFactory } from '@stlmpp/utils';
 export interface Mode extends CommonColumns {
   id: number;
   name: string;
+  order?: number;
 }
 
 export interface ModeAddDto {
   name: string;
+  order?: number;
 }
 
 export type ModeUpdateDto = Partial<ModeAddDto>;

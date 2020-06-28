@@ -11,10 +11,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { convertToBoolProperty } from '../../util/util';
-import { FormControl, FormGroup } from '@ng-stack/forms';
+import { FormControl } from '@ng-stack/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import { debounceTime, finalize, take, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, finalize, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { CommonColumns } from '../../model/common-history';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchHttpError } from '../../util/operators/catchError';
@@ -25,6 +25,9 @@ import {
   BaseAddEditOptions,
   FieldsConfig,
 } from './base-add-edit/base-add-edit.component';
+import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { maxBy } from 'lodash-es';
 
 @Component({
   selector: 'app-base',
@@ -40,6 +43,12 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
   ) {}
 
   private _destroy$ = new Subject();
+  private _updateOrder$ = new Subject();
+  updateOrder$ = this._updateOrder$.asObservable().pipe(
+    takeUntil(this._destroy$),
+    debounceTime(800),
+    switchMap(() => this.service.updateOrder(this.entities.map(entity => entity.id)))
+  );
 
   @ViewChild('deleteRef', { read: TemplateRef }) deleteTemplateRef: TemplateRef<any>;
   @ViewChild('imageRef', { read: TemplateRef }) imageTemplateRef: TemplateRef<any>;
@@ -80,7 +89,13 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
   set _deleteAllowed(allowed: '' | boolean) {
     this.deleteAllowed = convertToBoolProperty(allowed);
   }
-  deleteAllowed = false;
+  deleteAllowed: boolean;
+
+  @Input('orderingAllowed')
+  set _orderingAllowed(orderingAllowed: '' | boolean) {
+    this.orderingAllowed = convertToBoolProperty(orderingAllowed);
+  }
+  orderingAllowed: boolean;
 
   @Input('uploadImage')
   set _uploadImage(allowed: '' | boolean) {
@@ -93,30 +108,20 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() trackBy: TrackByFunction<CommonColumns> = (index, element) => element.id;
 
-  private setForm(fields: string[], data?: any): FormGroup {
-    return fields.reduce((formGroup, key) => {
-      formGroup.addControl(
-        key,
-        new FormControl(
-          data?.[key] ?? null,
-          this.fieldsConfig[key]?.validators ?? [],
-          this.fieldsConfig[key]?.asyncValidators ?? []
-        )
-      );
-      return formGroup;
-    }, new FormGroup({}));
-  }
-
   openAdd(): void {
+    const data: BaseAddEditOptions = {
+      fieldsConfig: this.fieldsConfig,
+      fields: this.addFields,
+      entityName: this.entityName,
+      idKey: this.idKey,
+      service: this.service,
+      updateLabel: this.updateLabel,
+    };
+    if (this.orderingAllowed) {
+      data.order = ((maxBy(this.entities, 'order') as any)?.order ?? 0) + 1;
+    }
     this.matDialog.open(BaseAddEditComponent, {
-      data: {
-        fieldsConfig: this.fieldsConfig,
-        fields: this.addFields,
-        entityName: this.entityName,
-        idKey: this.idKey,
-        service: this.service,
-        updateLabel: this.updateLabel,
-      } as BaseAddEditOptions,
+      data,
     });
   }
 
@@ -184,7 +189,19 @@ export class BaseComponent implements OnInit, OnDestroy, OnChanges {
     this.matDialog.open(this.imageTemplateRef, { data: idImage });
   }
 
-  ngOnInit(): void {}
+  onUpdateOrder($event: CdkDragDrop<CommonColumns>): void {
+    if ($event.currentIndex === $event.previousIndex) {
+      return;
+    }
+    moveItemInArray(this.entities, $event.previousIndex, $event.currentIndex);
+    this._updateOrder$.next();
+  }
+
+  ngOnInit(): void {
+    if (this.orderingAllowed) {
+      this.updateOrder$.subscribe();
+    }
+  }
 
   ngOnChanges(): void {}
 

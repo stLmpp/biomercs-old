@@ -8,11 +8,13 @@ export interface Game extends CommonColumns {
   shortName: string;
   idLogo?: number;
   logo?: FileUpload;
+  order?: number;
 }
 
 export interface GameAddDto {
   name: string;
   shortName: string;
+  order?: number;
 }
 
 export type GameUpdateDto = Partial<GameAddDto>;

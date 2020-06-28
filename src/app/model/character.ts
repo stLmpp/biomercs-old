@@ -8,11 +8,13 @@ export interface Character extends CommonColumns {
   shortName: string;
   idImage?: number;
   image?: FileUpload;
+  order?: number;
 }
 
 export interface CharacterAddDto {
   name: string;
   shortName: string;
+  order?: number;
 }
 
 export type CharacterUpdateDto = Partial<CharacterAddDto>;

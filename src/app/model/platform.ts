@@ -14,12 +14,14 @@ export interface Platform extends CommonColumns {
   type: PlatformTypeEnum;
   idLogo?: number;
   logo?: FileUpload;
+  order?: number;
 }
 
 export interface PlatformAddDto {
   name: string;
   shortName: string;
   type: PlatformTypeEnum;
+  order?: number;
 }
 
 export type PlatformUpdateDto = Partial<PlatformAddDto>;

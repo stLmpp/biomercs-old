@@ -16,6 +16,7 @@
 @import './src/app/shared/badge/badge.component';
 @import 'table';
 @import 'scroll';
+@import 'drag-and-drop';
 
 @include angular-material-theme($theme);
 @include mat-list-theme-custom($theme);

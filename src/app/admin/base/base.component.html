@@ -8,10 +8,15 @@
   </mat-form-field>
 </div>
 <ng-container *ngIf="entities | search: searchBy:(search$ | async) as entitiesFiltered">
-  <mat-nav-list *ngIf="entitiesFiltered?.length; else noDataFound">
+  <mat-nav-list
+    cdkDropList
+    *ngIf="entitiesFiltered?.length; else noDataFound"
+    (cdkDropListDropped)="onUpdateOrder($event)"
+    [cdkDropListDisabled]="!orderingAllowed"
+  >
     <ng-container *ngFor="let entity of entitiesFiltered; trackBy: trackBy; let $last = last">
       <mat-divider></mat-divider>
-      <mat-list-item (click)="openEdit(entity)">
+      <mat-list-item (click)="openEdit(entity)" cdkDrag [cdkDragData]="entity">
         <img
           auth
           [src]="entity[imageKey]"

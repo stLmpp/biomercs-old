@@ -38,6 +38,7 @@ import { BaseAddEditComponent } from './base/base-add-edit/base-add-edit.compone
 import { NgxCurrencyModule } from 'ngx-currency';
 import { AdminScoreApprovalComponent } from './score-approval/admin-score-approval.component';
 import { ScoreModule } from '../score/score.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ScoreModule } from '../score/score.module';
     BadgeModule,
     NgxCurrencyModule,
     ScoreModule,
+    DragDropModule,
   ],
 })
 export class AdminModule {}

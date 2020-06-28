@@ -6,6 +6,7 @@ import { HttpParams } from '../../util/http-params';
 import { FileUpload } from '../../model/file-upload';
 import { CommonColumns } from '../../model/common-history';
 import { EntityQuery, EntityStore, useCache } from '@stlmpp/store';
+import { refresh } from '../../util/operators/refresh';
 
 export type SuperServiceMethod =
   | 'add'
@@ -18,7 +19,8 @@ export type SuperServiceMethod =
   | 'findByParams'
   | 'search'
   | 'deleteByParams'
-  | 'count';
+  | 'count'
+  | 'updateOrder';
 
 export type SuperServiceTime = 'after' | 'before';
 export type SuperServiceErrorAction = 'restore' | 'keep';
@@ -203,14 +205,14 @@ export class SuperService<
     }
   }
 
-  findAll(): Observable<Entity[]> {
+  findAll(ignoreCache?: boolean): Observable<Entity[]> {
     if (this.isAllowed('findAll')) {
       const http$ = this.__http.get<Entity[]>(this.__options.endPoint).pipe(
         tap(entities => {
           this.__store?.set(entities);
         })
       );
-      if (this.__options.cache && !!this.__store) {
+      if (!ignoreCache && this.__options.cache && this.__store) {
         return http$.pipe(useCache(this.__store));
       } else {
         return http$;
@@ -296,5 +298,11 @@ export class SuperService<
           this.__store?.update(id, { uploading: false } as any);
         })
       );
+  }
+
+  updateOrder(ids: number[]): Observable<void> {
+    if (this.isAllowed('updateOrder')) {
+      return this.__http.post<void>(`${this.endPoint}/order`, ids).pipe(refresh(this.findAll(true)));
+    }
   }
 }

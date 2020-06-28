@@ -46,6 +46,7 @@ export interface BaseAddEditOptions<T = any> {
   service: SuperService<any>;
   idKey?: string;
   fieldsConfig: FieldsConfig<T>;
+  order?: number;
 }
 
 @Component({
@@ -71,6 +72,7 @@ export class BaseAddEditComponent<T extends CommonColumns = any> implements OnIn
   @Input() entityName: string;
   @Input() service: SuperService<any>;
   @Input() idKey = 'id';
+  @Input() order: number;
 
   trackByLabel = trackByFactory<string>();
   loading = false;
@@ -109,7 +111,7 @@ export class BaseAddEditComponent<T extends CommonColumns = any> implements OnIn
     const id = entity?.[this.idKey];
     const http: Observable<any> = id
       ? this.service.update(id, this.form.getDirtyValues())
-      : this.service.add(this.form.value);
+      : this.service.add(this.order ? { ...this.form.value, order: this.order } : this.form.value);
     this.form.disable({ emitEvent: false });
     this.matDialogRef.disableClose = true;
     http
