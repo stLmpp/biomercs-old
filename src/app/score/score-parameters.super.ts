@@ -3,6 +3,7 @@ import { Directive, OnDestroy } from '@angular/core';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { CommonColumns } from '../model/common-history';
 import {
+  debounceTime,
   distinctUntilChanged,
   filter,
   finalize,
@@ -92,6 +93,7 @@ export class ScoreParameters<T extends FormType> implements OnDestroy {
   ): void {
     const obs$ = observable.pipe(
       takeUntil(this._destroy$),
+      debounceTime(0),
       filter(values => !!values.length),
       filter(values => !values.some(value => value.id === checkControl.value))
     );
