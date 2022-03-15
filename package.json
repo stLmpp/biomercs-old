@@ -28,7 +28,7 @@
     "@stlmpp/utils": "^1.0.1",
     "date-fns": "^2.14.0",
     "is-what": "^3.9.1",
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.21",
     "ngx-currency": "^2.3.3",
     "ngx-infinite-scroll": "^9.0.0",
     "ngx-mask": "^9.1.2",
